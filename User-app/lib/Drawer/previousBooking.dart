@@ -521,7 +521,7 @@ class PreviousBookingState extends State<PreviousBooking> {
         var formattedDate =
             "${dateParse.day}/${dateParse.month}/${dateParse.year}";
         date = formattedDate.toString();
-        if (value.data["allBookings"].length==0) {
+        if (value.data["allBookings"] == "") {
           setState(() {
             empty = true;
           });

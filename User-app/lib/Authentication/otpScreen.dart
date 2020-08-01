@@ -7,11 +7,13 @@ import 'package:chale_chalo/NewUserDetail/NewUserInfo.dart';
 import 'package:chale_chalo/SerchDestination/searchDestination.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toast/toast.dart';
 
 import '../main.dart';
 
@@ -193,6 +195,31 @@ class OtpScreenState extends State<OtpScreen> {
               ),
             ),
           ],
+        ),
+        bottomNavigationBar: Container(
+          height: H * .08,
+          margin: EdgeInsets.symmetric(horizontal: H * .02),
+          decoration: BoxDecoration(
+              border: Border(top: BorderSide(color: Colors.grey[600], width: 2))
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Didn't Receive OTP ?  ",
+                style: TextStyle(fontSize: H * .018),),
+              GestureDetector(
+                  onTap: () {
+                    startPhoneAuth(_PhoneNumber);
+                    Toast.show("New Otp sent to your number", context,
+                        duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+                  },
+                  child: Text("Resend OTP", style: TextStyle(fontSize: H * .018,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline,
+                      color: Colors.blue),)),
+            ],
+          ),
         ),
       ),
     );

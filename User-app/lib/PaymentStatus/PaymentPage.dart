@@ -233,7 +233,12 @@ class _PaymentPageState extends State<PaymentPage> {
       case STATUS_CHECKSUM_FAILED:
         return CheckSumFailedScreen();
       case STATUS_FAILED:
-        return PaymentFailed();
+        return PaymentFailed(
+          busNo: widget.busNo,
+          from: widget.startingStop,
+          to: widget.destinationStop,
+          noOfTickets: widget.noOfTickets,
+        );
     }
     return PaymentSuccess(
       qrData: qrData,

@@ -33,15 +33,16 @@ dependencies:
   flutter_rating_bar: ^3.0.1+1
   intro_views_flutter: ^2.8.1
   intl_phone_field: ^1.2.0
+  screenshot: ^0.2.0
+  image_gallery_saver: ^1.5.0
+  image_downloader: ^0.20.0
   google_fonts: ^1.1.0
   geolocator: ^5.3.2+2
   geocoder: ^0.2.1
-  screenshot: ^0.2.0
   google_maps_webservice: ^0.0.17
   flutter_google_places: ^0.2.5
   latlong: ^0.6.1
   url_launcher: ^5.5.0
-  image_downloader: ^0.20.0
   flutter_mailer: ^0.5.1
   cloud_firestore:
   toast: ^0.1.5
@@ -61,7 +62,9 @@ dependencies:
   uuid: ^2.2.0
   mailgun: ^0.1.0
   dio: ^3.0.9
+  permission_handler: ^3.1.0
   qr_flutter: ^3.1.0
+  speech_to_text: ^2.3.0
   flutter_polyline_points: ^0.2.2
 
   

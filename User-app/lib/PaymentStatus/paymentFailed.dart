@@ -4,6 +4,11 @@ import 'package:flutter/material.dart';
 import '../main.dart';
 
 class PaymentFailed extends StatefulWidget {
+  final String busNo;
+  final String from;
+  final String to;
+  final int noOfTickets;
+  PaymentFailed({this.busNo, this.from, this.to, this.noOfTickets});
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -30,7 +35,7 @@ class PaymentFailedState extends State<PaymentFailed> {
         backgroundColor: YELLOW,
         elevation: 0,
         title: Text(
-          "Ticket Confirmation",
+          "Transaction Failed",
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
@@ -73,7 +78,7 @@ class PaymentFailedState extends State<PaymentFailed> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Text(
-                              "UK07BR1625",
+                              widget.busNo,
                               style: TextStyle(
                                   fontSize: H * .03,
                                   fontWeight: FontWeight.w900),
@@ -92,7 +97,7 @@ class PaymentFailedState extends State<PaymentFailed> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "Anand Vihar Terminal",
+                                    widget.from,
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: H * .018),
@@ -102,7 +107,7 @@ class PaymentFailedState extends State<PaymentFailed> {
                                     "To",
                                   ),
                                   Text(
-                                    "Kaushambi Bus Stand",
+                                    widget.to,
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: H * .018),
@@ -131,7 +136,7 @@ class PaymentFailedState extends State<PaymentFailed> {
                           child: Column(
                             children: [
                               Text(
-                                "2",
+                                widget.noOfTickets.toString(),
                                 style: TextStyle(
                                     fontSize: H * .03,
                                     fontWeight: FontWeight.bold),
@@ -195,7 +200,7 @@ class PaymentFailedState extends State<PaymentFailed> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Mr. Ankit Tripathi",
+                        NAME,
                         style: TextStyle(
                             fontSize: H * .02, fontWeight: FontWeight.bold),
                       ),

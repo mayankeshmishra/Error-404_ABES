@@ -190,7 +190,7 @@ class NewUserInfoState extends State<NewUserInfo> {
                                   decoration: InputDecoration(
                                       filled: true,
                                       fillColor: Colors.white70,
-                                      labelText: "Phone Number",
+                                      labelText: "Emergency No 1",
                                       border: OutlineInputBorder(),
                                       enabledBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.only(
@@ -311,7 +311,7 @@ class NewUserInfoState extends State<NewUserInfo> {
                                   decoration: InputDecoration(
                                       filled: true,
                                       fillColor: Colors.white70,
-                                      labelText: "Phone Number",
+                                      labelText: "Emergency No 2",
                                       border: OutlineInputBorder(),
                                       enabledBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.only(

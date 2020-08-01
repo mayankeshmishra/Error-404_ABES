@@ -14,6 +14,7 @@ import 'package:latlong/latlong.dart';
 import 'package:location/location.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:url_launcher/url_launcher.dart';
 
 class SearchDestination extends StatefulWidget {
@@ -35,14 +36,18 @@ class SearchDestinationState extends State<SearchDestination> {
   double destinationLatitude;
   double destinationLongitude;
   var selectedCity = "Select City";
+  var listningCtx;
   bool fetchingCurrentLoc = false;
   bool textFieldEnable = false;
+  var speaking = false;
   bool isGettingCityWiseStops = false;
   var address = "";
   var t = "";
   var currentLocController = TextEditingController();
   var destinationLocController = TextEditingController();
   var city = [];
+  var textDitected = false;
+  var ditectedText;
   bool gettingData = true;
   bool isSearchingStopsNearBy = false;
   var nearByStops = [];
@@ -129,95 +134,142 @@ class SearchDestinationState extends State<SearchDestination> {
                       SizedBox(
                         height: H * .015,
                       ),
-                      Container(
-                        height: H * .07,
-                        child: TypeAheadField(
-                          textFieldConfiguration: TextFieldConfiguration(
-                              enabled: (selectedCity == "Select City")
-                                  ? false
-                                  : true,
-                              controller: currentLocController,
-                              autofocus: false,
-                              decoration: InputDecoration(
-                                labelText: "Starting From",
-                                labelStyle:
-                                TextStyle(color: Colors.black),
-                                prefixIcon: Icon(
-                                  Icons.my_location,
-                                  color: Colors.black,
-                                ),
-                                border: OutlineInputBorder(),
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.circular(H * .02)),
-                                focusedBorder: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.circular(H * .02)),
-                              )),
-                          suggestionsCallback: (pattern) {
-                            return AllStops.getSuggestions(pattern);
-                          },
-                          itemBuilder: (context, suggestion) {
-                            return ListTile(
-                              leading: Icon(Icons.location_on),
-                              title: Text(suggestion),
-                            );
-                          },
-                          onSuggestionSelected: (suggestion) {
-                            setState(() {
-                              currentLocController.text = suggestion;
-                              fromStop = suggestion;
-                            });
-                          },
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            height: H * .07,
+                            width: W * .75,
+                            child: TypeAheadField(
+                              textFieldConfiguration: TextFieldConfiguration(
+                                  maxLines: 1,
+                                  enabled: (selectedCity == "Select City")
+                                      ? false
+                                      : true,
+                                  controller: currentLocController,
+                                  autofocus: false,
+                                  decoration: InputDecoration(
+                                    labelText: "Starting From",
+                                    labelStyle:
+                                    TextStyle(color: Colors.black),
+                                    prefixIcon: Icon(
+                                      Icons.my_location,
+                                      color: Colors.black,
+                                    ),
+                                    border: OutlineInputBorder(),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(H * .02)),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(H * .02)),
+                                  )),
+                              suggestionsCallback: (pattern) {
+                                return AllStops.getSuggestions(pattern);
+                              },
+                              itemBuilder: (context, suggestion) {
+                                return ListTile(
+                                  leading: Icon(Icons.location_on),
+                                  title: Text(suggestion),
+                                );
+                              },
+                              onSuggestionSelected: (suggestion) {
+                                setState(() {
+                                  currentLocController.text = suggestion;
+                                  fromStop = suggestion;
+                                });
+                              },
+                            ),
+                          ),
+                          Container(
+                            height: H * .07,
+                            width: H * .06,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Colors.black, width: 1),
+                                borderRadius: BorderRadius.circular(H * .02)
+                            ),
+                            child: IconButton(
+                              icon: Icon(Icons.mic),
+                              onPressed: () {
+                                setState(() {
+                                  speaking = true;
+                                });
+                                var ctx1;
+                                SpeachToText(context, 0);
+                              },
+                            ),
+                          )
+                        ],
                       ),
                       SizedBox(
                         height: H * .015,
                       ),
-                      Container(
-                        height: H * .07,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(H * .02),
-                        ),
-                        child: TypeAheadField(
-                          textFieldConfiguration: TextFieldConfiguration(
-                              enabled: (selectedCity == "Select City")
-                                  ? false
-                                  : true,
-                              controller: destinationLocController,
-                              autofocus: false,
-                              decoration: InputDecoration(
-                                labelText: "Going To",
-                                labelStyle:
-                                TextStyle(color: Colors.black),
-                                prefixIcon: Icon(
-                                  FontAwesomeIcons.bus,
-                                  color: Colors.black,
-                                ),
-                                border: OutlineInputBorder(),
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.circular(H * .02)),
-                                focusedBorder: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.circular(H * .02)),
-                              )),
-                          suggestionsCallback: (pattern) {
-                            return AllStops.getSuggestions(pattern);
-                          },
-                          itemBuilder: (context, suggestion) {
-                            return ListTile(
-                              leading: Icon(Icons.location_on),
-                              title: Text(suggestion),
-                            );
-                          },
-                          onSuggestionSelected: (suggestion) {
-                            setState(() {
-                              destinationLocController.text = suggestion;
-                              toStop = suggestion;
-                            });
-                          },
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            height: H * .07,
+                            width: W * .75,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(H * .02),
+                            ),
+                            child: TypeAheadField(
+                              textFieldConfiguration: TextFieldConfiguration(
+                                  enabled: (selectedCity == "Select City")
+                                      ? false
+                                      : true,
+                                  controller: destinationLocController,
+                                  autofocus: false,
+                                  decoration: InputDecoration(
+                                    labelText: "Going To",
+                                    labelStyle:
+                                    TextStyle(color: Colors.black),
+                                    prefixIcon: Icon(
+                                      FontAwesomeIcons.bus,
+                                      color: Colors.black,
+                                    ),
+                                    border: OutlineInputBorder(),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(H * .02)),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(H * .02)),
+                                  )),
+                              suggestionsCallback: (pattern) {
+                                return AllStops.getSuggestions(pattern);
+                              },
+                              itemBuilder: (context, suggestion) {
+                                return ListTile(
+                                  leading: Icon(Icons.location_on),
+                                  title: Text(suggestion),
+                                );
+                              },
+                              onSuggestionSelected: (suggestion) {
+                                setState(() {
+                                  destinationLocController.text = suggestion;
+                                  toStop = suggestion;
+                                });
+                              },
+                            ),
+                          ),
+                          Container(
+                            height: H * .07,
+                            width: H * .06,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Colors.black, width: 1),
+                                borderRadius: BorderRadius.circular(H * .02)
+                            ),
+                            child: IconButton(
+                              icon: Icon(Icons.mic),
+                              onPressed: () {
+                                SpeachToText(context, 1);
+                              },
+                            ),
+                          )
+                        ],
                       ),
                       (t != "") ? Text("$t miles") : Center()
                     ],
@@ -452,7 +504,7 @@ class SearchDestinationState extends State<SearchDestination> {
           });
     }
     else {
-      getNearbyStops(28.652050, 77.237263);
+      getNearbyStops(28.65201667, 77.23716667);
     }
   }
 
@@ -514,8 +566,8 @@ class SearchDestinationState extends State<SearchDestination> {
   }
 
   _launchURL() async {
-    var l1 = 28.652050;
-    var lt1 =77.237263;
+    var l1 = 28.65201667;
+    var lt1 = 77.23716667;
     var l2 = stopsLat[Stops.indexOf(currentLocController.text)];
     var lt2 = stopsLong[Stops.indexOf(currentLocController.text)];
     var url = 'https://www.google.com/maps/dir/?api=1&origin=$l1,${lt1}&destination=${l2},${lt2}&travelmode=walking&dir_action=navigate';
@@ -684,6 +736,289 @@ class SearchDestinationState extends State<SearchDestination> {
         ],
       ),
     );
+  }
+
+  Future<String> SpeachToText(context, choice) async {
+    var x;
+    var _localeNames;
+    var _currentLocaleId;
+    ditectedText = null;
+    stt.SpeechToText speech = stt.SpeechToText();
+    var ctx1;
+    showDialog(context: context, builder: (ctx) {
+      ctx1 = ctx;
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(H * .02)),
+        content: StatefulBuilder(builder: (ctx, setState) {
+          return Container(
+            height: H * .2,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                SpinKitWave(
+                  type: SpinKitWaveType.center,
+                  color: Colors.black,
+                  size: H * .04,
+                ),
+                (textDitected) ?
+                Text(ditectedText)
+                    : Text(
+                  "Please Speak . . .", style: TextStyle(fontSize: H * .022),)
+              ],
+            ),
+          );
+        }),
+      );
+    });
+    bool available = await speech.initialize();
+    if (available) {
+      _localeNames = await speech.locales();
+
+      var systemLocale = await speech.systemLocale();
+      _currentLocaleId = systemLocale.localeId;
+    }
+    if (available) {
+      speech.listen(
+          onResult: (text) {
+            if (double.parse(text.confidence.toString()) > 0) {
+              print(text.recognizedWords);
+              ditectedText = text.recognizedWords;
+              Navigator.pop(ctx1);
+              showDialog(context: context, builder: (ctx) {
+                return AlertDialog(
+                  title: Text("Searching For :", textAlign: TextAlign.center,),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(H * .02),),
+                  content: Container(
+                    height: H * .15,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                            width: W * .7,
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.symmetric(horizontal: H * .01),
+                            child: Text(ditectedText, style: TextStyle(
+                                fontSize: H * .02, fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,)),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            RaisedButton(
+                              color: Colors.black,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(H),),
+                              child: Container(
+                                width: W * .2,
+                                alignment: Alignment.center,
+                                child: Text("Retry",
+                                  style: TextStyle(color: Colors.yellow),),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(ctx);
+                                SpeachToText(context, choice);
+                              },
+                            ),
+                            RaisedButton(
+                              color: Colors.black,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(H),),
+                              child: Container(
+                                width: W * .2,
+                                alignment: Alignment.center,
+                                child: Text("Yes",
+                                  style: TextStyle(color: Colors.yellow),),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(ctx);
+                                applyStartingStopText(
+                                    ditectedText, context, choice);
+                              },
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              });
+            }
+          },
+          listenFor: Duration(seconds: 5),
+          localeId: _currentLocaleId,
+          cancelOnError: true,
+          partialResults: true,
+          listenMode: stt.ListenMode.confirmation);
+    }
+    else {
+      print("The user has denied the use of speech recognition.");
+    }
+    // some time later...
+    Future.delayed(Duration(seconds: 7), () {
+      speech.stop();
+      (ditectedText == null) ? Navigator.pop(ctx1) : print("");
+    });
+  }
+
+  applyStartingStopText(text, context, choice) {
+    var x = [];
+    var count = 0;
+    var s = "";
+    for (var i in Stops) {
+      if (i.trim().toLowerCase() == text.toString().toLowerCase()) {
+        s = i;
+        count++;
+        break;
+      } else
+      if (i.trim().toLowerCase().contains(text.toString().toLowerCase())) {
+        if (!x.contains(i)) {
+          x.add(i);
+        }
+      }
+    }
+    if (count > 0) {
+      if (choice == 0) {
+        setState(() {
+          currentLocController.text = s;
+        });
+      } else {
+        setState(() {
+          destinationLocController.text = s;
+        });
+      }
+    } else {
+      showDialog(context: context, builder: (ctx) {
+        var selectedIndex = [];
+        var selectedItem = "";
+        var staticIndex = [];
+        for (var i in x) {
+          selectedIndex.add(false);
+        }
+        selectedIndex.add(false);
+        staticIndex = selectedIndex;
+        return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(H * .02)),
+            title: Text("Choose From", textAlign: TextAlign.center,),
+            content: StatefulBuilder(builder: (ctx, setState) {
+              return Container(
+                height: H * .04 * (x.length + 3.5),
+                width: W,
+                alignment: Alignment.center,
+                margin: EdgeInsets.symmetric(horizontal: H * .01),
+                child: (x.length == 0) ?
+                Text("There is no Bus Stop matches with your choice",
+                  textAlign: TextAlign.center,)
+                    : ListView.builder(
+                  itemCount: x.length,
+                  itemBuilder: (ctx, index) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            for (var i = 0; i < selectedIndex.length; i++) {
+                              setState(() {
+                                selectedIndex[i] = false;
+                              });
+                            }
+                            setState(() {
+                              selectedIndex[index] = true;
+                              selectedItem = x[index];
+                            });
+                          },
+                          child: Container(
+                            height: H * .045,
+                            width: W,
+                            margin: EdgeInsets.symmetric(vertical: H * .005),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                color: (selectedIndex[index])
+                                    ? Colors.black
+                                    : Colors.white,
+                                border: Border.all(color: Colors.black),
+                                borderRadius: BorderRadius.circular(H * .02)
+                            ),
+                            child: Text(
+                              x[index], overflow: TextOverflow.ellipsis,
+                              style: TextStyle(color: (!selectedIndex[index])
+                                  ? Colors.black
+                                  : Colors.white,),),
+                          ),
+                        ),
+                        (index == x.length - 1) ? GestureDetector(
+                          onTap: () {
+                            for (var i = 0; i < selectedIndex.length; i++) {
+                              setState(() {
+                                selectedIndex[i] = false;
+                              });
+                            }
+                            setState(() {
+                              selectedIndex[x.length] = true;
+                              selectedItem = "None Of The Above";
+                            });
+                          },
+                          child: Container(
+                            height: H * .045,
+                            width: W,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                color: (selectedIndex[x.length])
+                                    ? Colors.black
+                                    : Colors.white,
+                                border: Border.all(color: Colors.black),
+                                borderRadius: BorderRadius.circular(H * .02)
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text("None Of The Above", style: TextStyle(
+                                  color: (!selectedIndex[x.length]) ? Colors
+                                      .black : Colors.white,
+                                ),),
+                              ],
+                            ),
+                          ),
+                        ) : Center(),
+                        (index == x.length - 1) ?
+                        RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(H)),
+                          color: Colors.black,
+                          child: Container(
+                            width: W,
+                            alignment: Alignment.center,
+                            child: Text("Select",
+                              style: TextStyle(color: Colors.yellow),),
+                          ),
+                          onPressed: () {
+                            if (selectedItem.trim() != "") {
+                              if (x.contains(selectedItem)) {
+                                if (choice == 0) {
+                                  setState(() {
+                                    currentLocController.text = selectedItem;
+                                  });
+                                } else {
+                                  setState(() {
+                                    destinationLocController.text =
+                                        selectedItem;
+                                  });
+                                }
+                              }
+                              Navigator.pop(ctx);
+                            }
+                          },
+                        ) : Center()
+                      ],
+                    );
+                  },
+                ),
+              );
+            },)
+        );
+      });
+    }
   }
 }
 
