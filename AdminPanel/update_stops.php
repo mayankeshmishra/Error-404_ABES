@@ -13,7 +13,7 @@
 
  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. -->
 
- <?php
+<?php
 session_start();
 
 $uid = $_SESSION['uid'];
@@ -69,17 +69,16 @@ use Google\Cloud\Storage\StorageClient;
         if ($snapshot->exists()) {
           $c = $snapshot->get('AllStops');
         }
-     
+
         foreach ($c as $r) {
-          array_push($f, $r['Name']);  
+          array_push($f, $r['Name']);
         }
-     
       }
       ?>
       var stops = <?php echo json_encode($f); ?>;
 
-        autocomplete(document.getElementById("member"), stops);
-      
+      autocomplete(document.getElementById("member"), stops);
+
     }
   </script>
   <script>
@@ -187,7 +186,7 @@ use Google\Cloud\Storage\StorageClient;
   </script>
 
   <script type='text/javascript'>
- 
+
   </script>
   <script langusage="javascript">
     window.history.forward(1);
@@ -217,8 +216,15 @@ use Google\Cloud\Storage\StorageClient;
       </div>
       <div class="sidebar-wrapper">
         <ul class="nav">
-      
-          <li class="nav-item  ">
+          <?php if ($uid == "master_admin") { ?>
+            <li class="nav-item ">
+              <a class="nav-link" href="register_local_admin.php">
+                <i class="material-icons">person</i>
+                <p>REGISTER LOCAL ADMIN</p>
+              </a>
+            </li>
+          <?php } ?>
+          <li class="nav-item ">
             <a class="nav-link" href="bus_stop.php">
               <i class="material-icons">dashboard</i>
               <p>ADD STOP</p>
@@ -257,7 +263,7 @@ use Google\Cloud\Storage\StorageClient;
 
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
         <div class="container-fluid">
-          
+
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="sr-only">Toggle navigation</span>
             <span class="navbar-toggler-icon icon-bar"></span>
@@ -341,27 +347,27 @@ use Google\Cloud\Storage\StorageClient;
 
 
                 <div class="card-body">
-                  <form  method="post">
+                  <form method="post">
                     <div class="row">
-                      
+
 
                       <div class="col-md-3">
                         <div class="form-group">
-                          <input type="text" id="member" name="member" placeholder="Stop Name" class="form-control" onclick="auto_complete()"required></br>
-                         
+                          <input type="text" id="member" name="member" placeholder="Stop Name" class="form-control" onclick="auto_complete()" required></br>
+
                         </div>
                       </div>
                       <div class="col-md-3">
                         <div class="form-group">
-                         
-                          <input type="text" id="lat" name="lat" placeholder="Latitude" class="form-control" ></br>
-                         
+
+                          <input type="text" id="lat" name="lat" placeholder="Latitude" class="form-control"></br>
+
                         </div>
                       </div>
                       <div class="col-md-3">
                         <div class="form-group">
-                         
-                          <input type="text" id="lng" name="lng" placeholder="Longitude" class="form-control" ></br>
+
+                          <input type="text" id="lng" name="lng" placeholder="Longitude" class="form-control"></br>
                         </div>
                       </div>
                     </div>

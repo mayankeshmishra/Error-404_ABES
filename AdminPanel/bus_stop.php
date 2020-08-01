@@ -80,7 +80,14 @@ use Google\Cloud\Firestore\FieldValue;
             </div>
             <div class="sidebar-wrapper">
                 <ul class="nav">
-                   
+                    <?php if ($uid == "master_admin") { ?>
+                        <li class="nav-item   ">
+                            <a class="nav-link" href="register_local_admin.php">
+                                <i class="material-icons">person</i>
+                                <p>REGISTER LOCAL ADMIN</p>
+                            </a>
+                        </li>
+                    <?php } ?>
                     <li class="nav-item active ">
                         <a class="nav-link" href="bus_stop.php">
                             <i class="material-icons">dashboard</i>
@@ -105,7 +112,7 @@ use Google\Cloud\Firestore\FieldValue;
                             <p>BUSSES</p>
                         </a>
                     </li>
-         
+
                     <li class="nav-item   ">
                         <a class="nav-link" href="logout.php">
                             <i class="material-icons">logout</i>
