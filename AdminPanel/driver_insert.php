@@ -12,17 +12,16 @@
 =========================================================
 
  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. -->
-<?php
+ <?php
 session_start();
 $uid = $_SESSION['uid'];
 require_once 'vendor/autoload.php';
 
 use Google\Cloud\Firestore\FirestoreClient;
-
+use Google\Cloud\Storage\StorageClient;
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <!-- <%@page contentType="text/html" import="java.sql.*" pageEncoding="UTF-8"%> -->
 
 <head>
@@ -52,6 +51,7 @@ use Google\Cloud\Firestore\FirestoreClient;
   </script>
 </head>
 
+
 <body class="">
   <div class="wrapper ">
     <div class="sidebar" data-color="purple" data-background-color="white" data-image="assets/img/sidebar-1.jpg">
@@ -67,39 +67,41 @@ use Google\Cloud\Firestore\FirestoreClient;
       </div>
       <div class="sidebar-wrapper">
         <ul class="nav">
-          <?php if ($uid == "master_admin") { ?>
-            <li class="nav-item   ">
-              <a class="nav-link" href="register_local_admin.php">
-                <i class="material-icons">person</i>
-                <p>REGISTER LOCAL ADMIN</p>
-              </a>
-            </li>
+        <?php if($uid == "master_admin"){?>
+          <li class="nav-item   ">
+            <a class="nav-link" href="register_local_admin.php">
+              <i class="material-icons">person</i>
+              <p>REGISTER LOCAL ADMIN</p>
+            </a>
+          </li>
           <?php } ?>
-          <li class="nav-item ">
+      
+          <li class="nav-item  ">
             <a class="nav-link" href="bus_stop.php">
               <i class="material-icons">dashboard</i>
               <p>ADD STOP</p>
             </a>
           </li>
           <li class="nav-item   ">
-            <a class="nav-link" href="update_stops.php">
+            <a class="nav-link" href="update_&_del_stops.php">
               <i class="material-icons">edit</i>
               <p>EDIT STOPS</p>
             </a>
           </li>
-          <li class="nav-item ">
+          <li class="nav-item">
             <a class="nav-link" href="bus_insert.php">
               <i class="material-icons">directions_bus</i>
               <p>ADD BUS</p>
             </a>
           </li>
-          <li class="nav-item active ">
+          <li class="nav-item">
             <a class="nav-link" href="buses.php">
               <i class="material-icons">content_paste</i>
               <p>BUSSES</p>
             </a>
           </li>
-          <li class="nav-item  ">
+     
+          <li class="nav-item active ">
             <a class="nav-link" href="driver_insert.php">
               <i class="material-icons">bubble_chart</i>
               <p>ADD DRIVERS</p>
@@ -111,14 +113,13 @@ use Google\Cloud\Firestore\FirestoreClient;
               <p>CHANGE DRIVER</p>
             </a>
           </li>
+       
           <li class="nav-item   ">
             <a class="nav-link" href="logout.php">
               <i class="material-icons">logout</i>
               <p>LOGOUT</p>
             </a>
           </li>
-
-
         </ul>
       </div>
     </div>
@@ -126,7 +127,7 @@ use Google\Cloud\Firestore\FirestoreClient;
       <!-- Navbar -->
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
         <div class="container-fluid">
-
+        
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="sr-only">Toggle navigation</span>
             <span class="navbar-toggler-icon icon-bar"></span>
@@ -144,6 +145,7 @@ use Google\Cloud\Firestore\FirestoreClient;
               </div>
             </form>
             <ul class="navbar-nav">
+
 
               <li class="nav-item dropdown">
                 <a class="nav-link" href="#pablo" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -170,21 +172,183 @@ use Google\Cloud\Firestore\FirestoreClient;
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header card-header-primary">
-                  <h4 class="card-title ">BUSSES</h4>
-                  <p class="card-category">Bus and Driver details</p>
+                  <h4 class="card-title">ADD DRIVERS</h4>
+                  <p class="card-category">Fill Details</p>
+                </div>
+                <?php
+                $City = array();
+                $config = [
+                  'keyFilePath' => 'chale chalo-cf56f051c62b.json',
+                  'projectId' => 'chale-chalo',
+                ];
+                // Create the Cloud Firestore client
+                $db = new FirestoreClient($config);
+
+                $CityRef = $db->collection('City')->document('City');
+                $snapshot = $CityRef->snapshot();
+                if ($snapshot->exists()) {
+                  $c = $snapshot->get('AllCity');
+                }
+                foreach ($c as $C) {
+                  array_push($City, $C);
+                }
+                ?>
+                <form method="post">
+                  <div class="col-md-3">
+                    <select id="City" class="form-control" name="city">
+                      <option>Choose City</option>
+                      <?php foreach ($City as $d) {
+                      ?>
+                        <option><?php echo $d; ?></option>
+                      <?php 
+                      $_SESSION['city'] = $city; 
+                    }
+                      ?>
+                    </select>
+                    <button type="submit" class="btn btn-primary" name="post">Submit</button>
+                  </div>
+                </form>
+                <div class="card-body">
+                  <form action="store.php" method="POST">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Name</label>
+                          <input type="text" class="form-control" name="driver1" required>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Email</label>
+                          <input type="text" class="form-control" name="email" required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Password</label>
+                          <input type="text" class="form-control" name="password" required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Adhaar No.</label>
+                          <input type="text" class="form-control" name="adhaar" required>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">License No.</label>
+                          <input type="text" class="form-control" name="license" required>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Address</label>
+                          <input type="text" class="form-control" name="address" required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">City</label>
+                          <input type="text" class="form-control" name="driver_city" required>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Country</label>
+                          <input type="text" class="form-control" name="country" required>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Contact No.</label>
+                          <input type="text" class="form-control" name="contact" required>
+                        </div>
+                      </div>
+                    </div>
+                    <?php
+
+                    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                      $b = array();
+                      $city = $_POST['city'];
+                      $c = $city . "Bus";
+                      $config = [
+                        'keyFilePath' => 'chale chalo-cf56f051c62b.json',
+                        'projectId' => 'chale-chalo',
+                      ];       // Create the Cloud Firestore client
+                      $db = new FirestoreClient($config);
+                      $BusRef = $db->collection($c)->documents();
+                      foreach ($BusRef as $S) {
+                        array_push($b, $S->id());
+                      }
+                    }
+                    ?>
+                    <select class="form-control" name="bus_no">
+                      <option>Bus No.</option>
+                      <option>None</option>
+                      <?php foreach ($b as $d) {
+                      ?>
+                        <option><?php echo $d; ?></option>
+                      <?php } ?>
+                    </select>
+                    <button type="submit" class="btn btn-primary pull-right" name="add">ADD</button>
+                    <div class="clearfix"></div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title ">SPARE DRIVERS</h4>
+                  <p class="card-category">Driver Details</p>
                 </div>
                 <div class="card-body">
                   <div class="table-responsive">
                     <table class="table">
+
                       <thead class=" text-primary">
-                        <th colspan="4" style="font-weight: bold">
-                          <center>BUS DETAILS</center>
+                        <th>
+                          Name
                         </th>
-                        <th colspan="3" style="font-weight: bold">
-                          <center> DRIVER DETAILS</center>
+                        <th>
+                          Adhaar No.
                         </th>
+                        <th>
+                          License No.
+                        </th>
+                        <th>
+                          Address
+                        </th>
+                        <th>
+                          City
+                        </th>
+                        <th>
+                          Country
+                        </th>
+                        <th>
+                          Contact
+                        </th>
+                      </thead>
+                      <tbody>
                         <?php
-                        $City = array();
+
                         $config = [
                           'keyFilePath' => 'chale chalo-cf56f051c62b.json',
                           'projectId' => 'chale-chalo',
@@ -192,110 +356,109 @@ use Google\Cloud\Firestore\FirestoreClient;
                         // Create the Cloud Firestore client
                         $db = new FirestoreClient($config);
 
-                        $CityRef = $db->collection('City')->document('City');
-                        $snapshot = $CityRef->snapshot();
-                        if ($snapshot->exists()) {
-                          $c = $snapshot->get('AllCity');
-                        }
-                        foreach ($c as $C) {
-                          array_push($City, $C);
+                        $driverRef = $db->collection('Drivers');
+                        $query = $driverRef->where('BusNumber', '=', 'None');
+                        $snapshot = $query->documents();
+                        foreach ($snapshot as $driver) {
+                        ?>
+                          <tr>
+                            <td><?php echo $driver["name"]; ?></td>
+                            <td><?php echo $driver["adhaar"]; ?></td>
+                            <td><?php echo $driver['license_no']; ?></td>
+                            <td><?php echo $driver["add"]; ?></td>
+                            <td><?php echo $driver["city"]; ?></td>
+                            <td><?php echo $driver['country']; ?></td>
+                            <td><?php echo $driver['contact']; ?></td>
+                          </tr>
+                        <?php
                         }
                         ?>
-                        <form method="post">
-                          <div class="col-md-3">
-                            <div class="form-group">
-                              <select id="City" class="form-control" name="city">
-                                <option>Choose City</option>
-                                <?php foreach ($City as $d) {
-                                ?>
-                                  <option><?php echo $d; ?></option>
-                                <?php } ?>
 
-                              </select>
-                              <button type="submit" class="btn btn-primary" name="post">Submit</button>
-                            </div>
-                          </div>
-                        </form>
+                      </tbody>
+                    </table>
                   </div>
-
-                  </thead>
-                  <thead class=" text-primary">
-                    <th>
-                      Bus No.
-                    </th>
-                    <th>
-                      Roadways
-                    </th>
-                    <th>
-                      From
-                    </th>
-                    <th>
-                      To
-                    </th>
-                    <th>
-                      Name
-                    </th>
-                    <th>
-                      License No.
-                    </th>
-                    <th>
-                      Contact No.
-                    </th>
-                  </thead>
-                  <tbody>
-                    <?php
-                    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                      $config = [
-                        'keyFilePath' => 'chale chalo-cf56f051c62b.json',
-                        'projectId' => 'chale-chalo',
-                      ];
-                      // Create the Cloud Firestore client
-                      $db = new FirestoreClient($config);
-                      $city = $_POST["city"];
-                      $c = $city . "Bus";
-                      $busRef = $db->collection($c);
-                      $snapshot = $busRef->documents();
-                      foreach ($snapshot as $bus) {
-                    ?>
-                        <tr>
-                          <td><?php echo $bus->id(); ?></td>
-                          <td><?php echo $city; ?></td>
-                          <?php
-                          $s = $bus->get('Stops');
-                          $c = count($s);
-                          $i = 0;
-                          //  for($i=0;$i<$c;$i++){
-                          foreach ($s as $key => $value) {
-
-                            $m = $value['StopName'];
-                            if ($i == 0) {
-                          ?>
-                              <td><?php echo $m;
-                                } ?></td>
-                              <?php if ($i == ($c - 1)) { ?>
-                                <td><?php echo $m;
-                                  }
-                                  $i++;
-                                } ?></td>
-                                <td><?php echo $bus['driverName']; ?></td>
-                                <td><?php echo $bus['license_no']; ?></td>
-                                <td><?php echo $bus['contact']; ?></td>
-                            <?php
-                          }
-                        } ?>
-
-
-                  </tbody>
-                  </table>
                 </div>
               </div>
             </div>
           </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title ">ALL DRIVERS</h4>
+                  <p class="card-category">Drivers Details</p>
+                </div>
+
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+
+                      <thead class=" text-primary">
+                        <th>
+                          Name
+                        </th>
+                        <th>
+                          Adhaar No.
+                        </th>
+                        <th>
+                          License No.
+                        </th>
+                        <th>
+                          Address
+                        </th>
+                        <th>
+                          City
+                        </th>
+                        <th>
+                          Country
+                        </th>
+                        <th>
+                          Contact
+                        </th>
+                      </thead>
+                      <tbody>
+                        <?php
+
+                        $config = [
+                          'keyFilePath' => 'chale chalo-cf56f051c62b.json',
+                          'projectId' => 'chale-chalo',
+                        ];
+                        // Create the Cloud Firestore client
+                        $db = new FirestoreClient($config);
+
+                        $driverRef = $db->collection('Drivers')->documents();
+                        foreach ($driverRef as $v) {
+                        ?>
+                          <tr>
+
+                            <td><?php echo $v["name"]; ?></td>
+                            <td><?php echo $v["adhaar"]; ?></td>
+                            <td><?php echo $v['license_no']; ?></td>
+                            <td><?php echo $v["add"]; ?></td>
+                            <td><?php echo $v["city"]; ?></td>
+                            <td><?php echo $v['country']; ?></td>
+                            <td><?php echo $v['contact']; ?></td>
+                          </tr>
+                        <?php
+                        }
+
+                        ?>
+
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
         </div>
       </div>
+
     </div>
   </div>
-  </div>
+
   <div class="fixed-plugin">
     <div class="dropdown show-dropdown">
       <a href="#" data-toggle="dropdown">
@@ -340,7 +503,12 @@ use Google\Cloud\Firestore\FirestoreClient;
         <li class="button-container">
           <a href="https://www.creative-tim.com/product/material-dashboard" target="_blank" class="btn btn-primary btn-block">Free Download</a>
         </li>
-
+        <!-- <li class="header-title">Want more components?</li>
+            <li class="button-container">
+                <a href="https://www.creative-tim.com/product/material-dashboard-pro" target="_blank" class="btn btn-warning btn-block">
+                  Get the pro version
+                </a>
+            </li> -->
         <li class="button-container">
           <a href="https://demos.creative-tim.com/material-dashboard/docs/2.1/getting-started/introduction.html" target="_blank" class="btn btn-default btn-block">
             View Documentation
@@ -393,7 +561,8 @@ use Google\Cloud\Firestore\FirestoreClient;
   <!-- Library for adding dinamically elements -->
   <script src="assets/js/plugins/arrive.min.js"></script>
   <!--  Google Maps Plugin    -->
-
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+  <!-- Chartist JS -->
   <script src="assets/js/plugins/chartist.min.js"></script>
   <!--  Notifications Plugin    -->
   <script src="assets/js/plugins/bootstrap-notify.js"></script>
@@ -401,6 +570,7 @@ use Google\Cloud\Firestore\FirestoreClient;
   <script src="assets/js/material-dashboard.js?v=2.1.1" type="text/javascript"></script>
   <!-- Material Dashboard DEMO methods, don't include it in your project! -->
   <script src="assets/demo/demo.js"></script>
+
   <script>
     $(document).ready(function() {
       $().ready(function() {
@@ -569,14 +739,6 @@ use Google\Cloud\Firestore\FirestoreClient;
           }, 1000);
 
         });
-      });
-    });
-  </script>
-  <script>
-    $(document).ready(function() {
-      $('.breakrow').click(function() {
-        $(this).nextUntil('tr.breakrow').slideToggle(200);
-
       });
     });
   </script>

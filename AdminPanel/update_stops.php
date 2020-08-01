@@ -248,7 +248,18 @@ use Google\Cloud\Storage\StorageClient;
               <p>BUSSES</p>
             </a>
           </li>
-
+          <li class="nav-item  ">
+            <a class="nav-link" href="driver_insert.php">
+              <i class="material-icons">bubble_chart</i>
+              <p>ADD DRIVERS</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="driver_change.php">
+              <i class="material-icons">loop</i>
+              <p>CHANGE DRIVER</p>
+            </a>
+          </li>
           <li class="nav-item   ">
             <a class="nav-link" href="logout.php">
               <i class="material-icons">logout</i>
