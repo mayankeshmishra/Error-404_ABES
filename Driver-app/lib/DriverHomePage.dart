@@ -20,7 +20,7 @@ class DriverHomePage extends StatefulWidget {
 }
 
 class _DriverHomePageState extends State<DriverHomePage> {
-  int selectedIndex = 0;
+  int selectedIndex = 1;
   final widgetOptions = [
     VerifyPassenger(),
     AddPassengerPage()
