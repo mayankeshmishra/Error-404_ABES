@@ -4,6 +4,7 @@ import 'package:chalechalo/Authentication/loginPage.dart';
 import 'package:chalechalo/drawer.dart';
 import 'package:chalechalo/history.dart';
 import 'package:chalechalo/main.dart';
+import 'package:chalechalo/passengerCount.dart';
 import 'package:chalechalo/profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,7 +24,8 @@ class _DriverHomePageState extends State<DriverHomePage> {
   int selectedIndex = 1;
   final widgetOptions = [
     VerifyPassenger(),
-    AddPassengerPage()
+    AddPassengerPage(),
+    PassengerCount()
   ];
  
   void onItemTapped(int index) {
@@ -43,6 +45,8 @@ class _DriverHomePageState extends State<DriverHomePage> {
                 icon: Icon(Icons.check_circle), title: Text('Verify Ticket')),
             BottomNavigationBarItem(
                 icon: Icon(Icons.person_add), title: Text('Add Passenger')),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.person), title: Text('Allowed Passenger')),
           ],
           currentIndex: selectedIndex,
           fixedColor: Colors.amber,

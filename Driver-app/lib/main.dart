@@ -7,17 +7,14 @@
 import 'dart:async';
 
 import 'package:chalechalo/Authentication/loginPage.dart';
-import 'package:chalechalo/Authentication/loginPage.dart';
 import 'package:chalechalo/Constants/constants.dart';
 import 'package:chalechalo/DriverHomePage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:chalechalo/DriverHomePage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:chalechalo/payment.dart';
 //import 'package:chalechalo/QRViewExample.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:geolocator/geolocator.dart';
 
 
 void main() => runApp(ChaleChalo());
@@ -47,13 +44,12 @@ class ChaleChaloState extends State<ChaleChaloHome>{
 var x=0.0;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     animate();
     getData123();
     FirebaseAuth.instance.currentUser().then((value){
       if(value!=null){
-        UID=value.uid;
+        UID="LjAGndgQqyNkadk8YaUL3vIEEys1";
       }
     });
   }
@@ -125,17 +121,13 @@ animate() {
     Future.delayed(Duration(seconds: 0),(){
       var db=Firestore.instance;
       String x;
-      db.collection("DelhiDrivers").document(UID).get().then((value){
-        profileData=ProfileData(
-          value.data["Name"],
-          value.data["Number"],
-          value.data["BusNumber"],
-          value.data["BusRegistrationNumber"],
-          value.data["from"],
-          value.data["to"],
-        );
+      db.collection("Drivers").document(UID).get().then((value){
+        profileData=ProfileData(value.data["name"], value.data["contact"],
+            value.data["add"], value.data["BusNumber"], value.data["adhaar"],
+            value.data["city"], value.data["country"], value.data["email"], value.data["licence_no"],
+            "", "");
         getStops();
-        print(profileData);
+        print(profileData.busRegistrationNumber);
       });
     });
   }
@@ -144,6 +136,25 @@ animate() {
   db.collection("DelhiBus").document(profileData.busRegistrationNumber).get()
   .then((value){
     print(value.data);
+    stops=value.data["Stops"];
+    if(value.data["upstream"]==true){
+      upstream=true;
+      for(var i=0;i<value.data["Stops"].length;i++){
+        if(value.data["Stops"][i]["Visited"]==false){
+          index=i;
+          break;
+        }
+      }
+    }
+    else{
+      upstream=false;
+      for(var i=value.data["Stops"].length-1;i>=0;i--){
+        if(value.data["Stops"][i]["Visited"]==false){
+          index=i;
+          break;
+        }
+      }
+    }
     for(var i in value.data["Stops"]){
       Stops.add(i["StopName"].toString());
     }
@@ -159,40 +170,61 @@ animate() {
             break;
           }
         }
+        print(StopsDetail);
       }
     });
     if(mounted){
-//      Navigator.pushAndRemoveUntil(context1, MaterialPageRoute(
-//          builder: (ctx)=>DriverHomePage()
-//      ), (route) => false);
+     Navigator.pushAndRemoveUntil(context1, MaterialPageRoute(
+         builder: (ctx)=>DriverHomePage()
+     ), (route) => false);
     }
   });
   }
 
-getData123()async{
-  var x=0.0,y=0.0;
-  //getCurrentLocation();
-  Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.bestForNavigation);
-  myLatitude=position.latitude;
-  myLongitude=position.longitude;
-  Timer.periodic(Duration(seconds: 3), (Timer t)async{
-    print("$myLatitude,$myLongitude");
-    print("Started");
-    //getCurrentLocation();
-    Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.bestForNavigation);
-    myLatitude=position.latitude;
-    myLongitude=position.longitude;
-    setState(() {
-      accuracy=position.accuracy.toString();
-    });
-    if(myLatitude!=x || myLongitude!=y){
-      x=myLatitude;
-      y=myLongitude;
-      //saveLocation();
-      setState(() {
-        distance=calculateDistance(myLatitude, myLongitude,25.918061, 81.980006).toString();
-      });
-    }
-  });
-}
+// getData123()async{
+//   var x=0.0,y=0.0;
+//   //getCurrentLocation();
+//   Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.bestForNavigation);
+//   myLatitude=position.latitude;
+//   myLongitude=position.longitude;
+//   Timer.periodic(Duration(seconds: 3), (Timer t)async{
+//     print("$myLatitude,$myLongitude");
+//     print("Started");
+//     //getCurrentLocation();
+//     Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.bestForNavigation);
+//     myLatitude=position.latitude;
+//     myLongitude=position.longitude;
+//     setState(() {
+//       accuracy=position.accuracy.toString();
+//     });
+//     if(myLatitude!=x || myLongitude!=y){
+//       x=myLatitude;
+//       y=myLongitude;
+//       //saveLocation();
+//       setState(() {
+//         distance=calculateDistance(myLatitude, myLongitude,25.4670912, 81.8240464).toString();
+//       });
+//     }
+//   });
+// }
+
+
+  // passengerStream(int index)async{
+  //   var db=Firestore.instance;
+  //   await for (var snapshot in db.collection("DelhiBus").document(profileData.busRegistrationNumber)
+  //       .snapshots()){
+  //       if(snapshot.data["upstream"]==true){
+  //         for(var i=index+1;i<snapshot.data["Stops"].length;i++){
+  //           passengerDataAfterIndex.add({"name":snapshot.data["Stops"][i]["StopName"],"passenger":snapshot.data["Stops"][i]["Passenger"]});
+  //         }
+  //         print(passengerDataAfterIndex);
+  //       }
+  //       else{
+  //         for(var i=index-1;i>=0;i--){
+  //           passengerDataAfterIndex.add({"name":snapshot.data["Stops"][i]["StopName"],"passenger":snapshot.data["Stops"][i]["Passenger"]});
+  //         }
+  //         print(passengerDataAfterIndex);
+  //       }
+  //   }
+  // }
 }
