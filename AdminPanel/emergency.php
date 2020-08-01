@@ -13,17 +13,27 @@
 
  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. -->
 
-<!DOCTYPE html>
-<html lang="en">
-<?php
+ <?php
 session_start();
 $uid = $_SESSION['uid'];
 require_once 'vendor/autoload.php';
 
 use Google\Cloud\Firestore\FirestoreClient;
 use Google\Cloud\Storage\StorageClient;
+
 ?>
-<!-- <%@page contentType="text/html" import="java.sql.*" pageEncoding="UTF-8"%> -->
+<!DOCTYPE html>
+<html lang="en">
+
+
+<style>
+    .autocomplete {
+        /*the container must be positioned relative:*/
+        position: relative;
+        display: inline-block;
+
+    }
+</style>
 
 <head>
     <meta charset="utf-8" />
@@ -40,6 +50,176 @@ use Google\Cloud\Storage\StorageClient;
     <link href="assets/css/material-dashboard.css?v=2.1.1" rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="assets/demo/demo.css" rel="stylesheet" />
+    <script>
+        function auto_complete() {
+            var number = document.getElementById("member").value;
+            <?php
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                $city = $_POST['city'];
+                $_SESSION['city'] = $city;
+                $stop_s = array();
+                $f = array();
+                $config = [
+                    'keyFilePath' => 'chale chalo-cf56f051c62b.json',
+                    'projectId' => 'chale-chalo',
+                ];       // Create the Cloud Firestore client
+                $db = new FirestoreClient($config);
+                $StopsRef = $db->collection('Stops')->document($city);
+                $snapshot = $StopsRef->snapshot();
+                if ($snapshot->exists()) {
+                    $c = $snapshot->get('AllStops');
+                }
+                foreach ($c as $S) {
+                    array_push($stop_s, $S);
+                }
+                foreach ($stop_s as $r) {
+                    array_push($f, $r['Name']);
+                }
+            }
+            ?>
+            var stops = <?php echo json_encode($f); ?>;
+
+            console.log(stops);
+            for (i = 0; i < number; i++) {
+                autocomplete(document.getElementById("member" + i), stops);
+            }
+        }
+    </script>
+    <script>
+        function autocomplete(inp, arr) {
+            /*the autocomplete function takes two arguments,
+            the text field element and an array of possible autocompleted values:*/
+            var currentFocus;
+            /*execute a function when someone writes in the text field:*/
+            inp.addEventListener("input", function(e) {
+                var a, b, i, val = this.value;
+                /*close any already open lists of autocompleted values*/
+                closeAllLists();
+                if (!val) {
+                    return false;
+                }
+                currentFocus = -1;
+                /*create a DIV element that will contain the items (values):*/
+                a = document.createElement("DIV");
+                a.setAttribute("id", this.id + "autocomplete-list");
+                a.setAttribute("class", "autocomplete-items");
+                /*append the DIV element as a child of the autocomplete container:*/
+                this.parentNode.appendChild(a);
+                /*for each item in the array...*/
+                for (i = 0; i < arr.length; i++) {
+                    /*check if the item starts with the same letters as the text field value:*/
+                    if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                        /*create a DIV element for each matching element:*/
+                        b = document.createElement("DIV");
+                        /*make the matching letters bold:*/
+                        b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                        b.innerHTML += arr[i].substr(val.length);
+                        /*insert a input field that will hold the current array item's value:*/
+                        b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                        /*execute a function when someone clicks on the item value (DIV element):*/
+                        b.addEventListener("click", function(e) {
+                            /*insert the value for the autocomplete text field:*/
+                            inp.value = this.getElementsByTagName("input")[0].value;
+                            /*close the list of autocompleted values,
+                            (or any other open lists of autocompleted values:*/
+                            closeAllLists();
+                        });
+                        a.appendChild(b);
+                    }
+                }
+            });
+            /*execute a function presses a key on the keyboard:*/
+            inp.addEventListener("keydown", function(e) {
+                var x = document.getElementById(this.id + "autocomplete-list");
+                if (x) x = x.getElementsByTagName("div");
+                if (e.keyCode == 40) {
+                    /*If the arrow DOWN key is pressed,
+                    increase the currentFocus variable:*/
+                    currentFocus++;
+                    /*and and make the current item more visible:*/
+                    addActive(x);
+                } else if (e.keyCode == 38) { //up
+                    /*If the arrow UP key is pressed,
+                    decrease the currentFocus variable:*/
+                    currentFocus--;
+                    /*and and make the current item more visible:*/
+                    addActive(x);
+                } else if (e.keyCode == 13) {
+                    /*If the ENTER key is pressed, prevent the form from being submitted,*/
+                    e.preventDefault();
+                    if (currentFocus > -1) {
+                        /*and simulate a click on the "active" item:*/
+                        if (x) x[currentFocus].click();
+                    }
+                }
+            });
+
+            function addActive(x) {
+                /*a function to classify an item as "active":*/
+                if (!x) return false;
+                /*start by removing the "active" class on all items:*/
+                removeActive(x);
+                if (currentFocus >= x.length) currentFocus = 0;
+                if (currentFocus < 0) currentFocus = (x.length - 1);
+                /*add class "autocomplete-active":*/
+                x[currentFocus].classList.add("autocomplete-active");
+            }
+
+            function removeActive(x) {
+                /*a function to remove the "active" class from all autocomplete items:*/
+                for (var i = 0; i < x.length; i++) {
+                    x[i].classList.remove("autocomplete-active");
+                }
+            }
+
+            function closeAllLists(elmnt) {
+                /*close all autocomplete lists in the document,
+                except the one passed as an argument:*/
+                var x = document.getElementsByClassName("autocomplete-items");
+                for (var i = 0; i < x.length; i++) {
+                    if (elmnt != x[i] && elmnt != inp) {
+                        x[i].parentNode.removeChild(x[i]);
+                    }
+                }
+            }
+            /*execute a function when someone clicks in the document:*/
+            document.addEventListener("click", function(e) {
+                closeAllLists(e.target);
+            });
+        }
+    </script>
+
+    <script type='text/javascript'>
+        function addFields() {
+
+            // Number of inputs to create
+            var number = document.getElementById("member").value;
+            // Container <div> where dynamic content will be placed
+            var container = document.getElementById("container");
+            // Clear previous contents of the container
+            while (container.hasChildNodes()) {
+                container.removeChild(container.lastChild);
+            }
+
+            for (i = 0; i < number; i++) {
+                container.appendChild(document.createElement("br"));
+                // Append a node with a random text
+                container.appendChild(document.createTextNode("STOP " + (i + 1) + " : "));
+
+                var iDiv = document.createElement('div');
+                iDiv.className = 'autocomplete';
+                container.appendChild(iDiv);
+
+                var input = document.createElement('input');
+                input.name = "member" + i;
+                input.id = "member" + i;
+                iDiv.appendChild(input);
+                // Append a line break 
+                container.appendChild(document.createElement("br"));
+            }
+            auto_complete();
+        }
+    </script>
     <script langusage="javascript">
         window.history.forward(1);
         browser.cache.offline.enable = false;
@@ -56,11 +236,11 @@ use Google\Cloud\Storage\StorageClient;
 <body class="">
     <div class="wrapper ">
         <div class="sidebar" data-color="purple" data-background-color="white" data-image="assets/img/sidebar-1.jpg">
-            <!--
-        Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
 
-        Tip 2: you can also add an image using data-image tag
-    -->
+            <!-- Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
+
+        Tip 2: you can also add an image using data-image tag -->
+
             <div class="logo">
                 <a href="index.jsp" class="simple-text logo-normal">
                     Bus Stop
@@ -76,7 +256,7 @@ use Google\Cloud\Storage\StorageClient;
                             </a>
                         </li>
                     <?php } ?>
-
+                   
                     <li class="nav-item  ">
                         <a class="nav-link" href="bus_stop.php">
                             <i class="material-icons">dashboard</i>
@@ -89,7 +269,7 @@ use Google\Cloud\Storage\StorageClient;
                             <p>EDIT STOPS</p>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item  ">
                         <a class="nav-link" href="bus_insert.php">
                             <i class="material-icons">directions_bus</i>
                             <p>ADD BUS</p>
@@ -101,20 +281,20 @@ use Google\Cloud\Storage\StorageClient;
                             <p>BUSSES</p>
                         </a>
                     </li>
-
-                    <li class="nav-item">
+                  
+                    <li class="nav-item ">
                         <a class="nav-link" href="driver_insert.php">
                             <i class="material-icons">bubble_chart</i>
                             <p>ADD DRIVERS</p>
                         </a>
                     </li>
-                    <li class="nav-item active  ">
+                    <li class="nav-item ">
                         <a class="nav-link" href="driver_change.php">
                             <i class="material-icons">loop</i>
-                            <p>CHANGE DRIVER</p>
+                            <p>CHANGE DRIVER </p>
                         </a>
                     </li>
-                    <li class="nav-item   ">
+                    <li class="nav-item active  ">
                         <a class="nav-link" href="emergency.php">
                             <i class="material-icons">Emergency</i>
                             <p>EMERGENCY</p>
@@ -126,11 +306,12 @@ use Google\Cloud\Storage\StorageClient;
                             <p>LOGOUT</p>
                         </a>
                     </li>
+
                 </ul>
             </div>
         </div>
         <div class="main-panel">
-            <!-- Navbar -->
+
             <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
                 <div class="container-fluid">
 
@@ -178,8 +359,7 @@ use Google\Cloud\Storage\StorageClient;
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header card-header-primary">
-                                    <h4 class="card-title">CHANGE DRIVERS</h4>
-                                    <p class="card-category">Select Driver</p>
+                                    <h4 class="card-title">EMERGENCY</h4>
                                 </div>
                                 <?php
                                 $City = array();
@@ -198,8 +378,9 @@ use Google\Cloud\Storage\StorageClient;
                                 foreach ($c as $C) {
                                     array_push($City, $C);
                                 }
+
                                 ?>
-                                <form method="post">
+                                <form autocomplete="off" method="post">
                                     <div class="col-md-3">
                                         <select id="City" class="form-control" name="city">
                                             <option>Choose City</option>
@@ -213,187 +394,49 @@ use Google\Cloud\Storage\StorageClient;
                                         <button type="submit" class="btn btn-primary" name="post">Submit</button>
                                     </div>
                                 </form>
+
+
                                 <div class="card-body">
-                                    <form action="edit_driver.php" method="post">
+                                    <form action="emergency_off.php" method="post">
                                         <div class="row">
-                                            <?php
+                                            <div class="col-md-3">
+                                                <?php
 
-                                            if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                                                $b = array();
-                                                $city = $_POST['city'];
-                                                $c = $city . "Bus";
-                                                $config = [
-                                                    'keyFilePath' => 'chale chalo-cf56f051c62b.json',
-                                                    'projectId' => 'chale-chalo',
-                                                ];       // Create the Cloud Firestore client
-                                                $db = new FirestoreClient($config);
-                                                $BusRef = $db->collection($c)->documents();
-                                                foreach ($BusRef as $S) {
-                                                    array_push($b, $S->id());
+                                                if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                                                    $b = array();
+                                                    $city = $_POST['city'];
+                                                    $c = $city . "Bus";
+                                                    $_SESSION['city'] = $city;
+                                                    $config = [
+                                                        'keyFilePath' => 'chale chalo-cf56f051c62b.json',
+                                                        'projectId' => 'chale-chalo',
+                                                    ];       // Create the Cloud Firestore client
+                                                    $db = new FirestoreClient($config);
+                                                    $BusRef = $db->collection($c)->documents();
+                                                    foreach ($BusRef as $S) {
+                                                        array_push($b, $S->id());
+                                                    }
                                                 }
-                                            }
-                                            ?>
-                                            <select class="form-control" name="bus_no">
-                                                <option>Bus No.</option>
-                                                <option>None</option>
-                                                <?php foreach ($b as $d) {
                                                 ?>
-                                                    <option><?php echo $d; ?></option>
-                                                <?php } ?>
-                                            </select>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="bmd-label-floating">Name</label>
-                                                    <input type="text" class="form-control" name="driver" id="name" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="bmd-label-floating">Email</label>
-                                                    <input type="text" class="form-control" name="email" id="email" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="bmd-label-floating">Password</label>
-                                                    <input type="text" class="form-control" name="password" id="password" required>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="bmd-label-floating">Adhaar No.</label>
-                                                    <input type="text" class="form-control" name="adhaar" id="adhaar" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="bmd-label-floating">License No.</label>
-                                                    <input type="text" class="form-control" name="license" id="license" required>
-                                                </div>
-                                            </div>
-                                        </div>
+                                                <select class="form-control" name="bus_no">
+                                                    <option>Bus No.</option>
+                                                    <option>None</option>
+                                                    <?php foreach ($b as $d) {
+                                                    ?>
+                                                        <option><?php echo $d; ?></option>
+                                                    <?php } ?>
+                                                </select>
 
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label class="bmd-label-floating">Address</label>
-                                                    <input type="text" class="form-control" name="add" id="add" required>
-                                                </div>
                                             </div>
+                                            <button type="submit" class="btn btn-primary pull-right" name="post">Emergency Off</button>
+                                            <div class="clearfix"></div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label class="bmd-label-floating">City</label>
-                                                    <input type="text" class="form-control" name="driver_city" id="driver_city" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label class="bmd-label-floating">Country</label>
-                                                    <input type="text" class="form-control" name="country" id="country" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label class="bmd-label-floating">Contact No.</label>
-                                                    <input type="text" class="form-control" name="contact" id="contact" required>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <a class="btn btn-primary pull-right" href="driver_insert.php">Add New Driver</a>
-                                        <button type="submit" class="btn btn-primary pull-right" name="post">Change</button>
-                                        <div class="clearfix"></div>
                                     </form>
                                 </div>
                             </div>
                         </div>
 
                     </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-header card-header-primary">
-                                    <h4 class="card-title ">SPARE DRIVERS</h4>
-                                    <p class="card-category">Driver Details</p>
-                                </div>
-
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table" id="table">
-
-                                            <thead class=" text-primary">
-                                                <th>
-                                                    Name
-                                                </th>
-                                                <th>
-                                                    Adhaar No.
-                                                </th>
-                                                <th>
-                                                    License No.
-                                                </th>
-                                                <th>
-                                                    Address
-                                                </th>
-                                                <th>
-                                                    City
-                                                </th>
-                                                <th>
-                                                    Country
-                                                </th>
-                                                <th>
-                                                    Contact
-                                                </th>
-                                                <th>
-                                                    Email
-                                                </th>
-                                                <th style="display:none;">
-                                                    Password
-                                                </th>
-                                            </thead>
-                                            <tbody>
-                                                <?php
-
-                                                $config = [
-                                                    'keyFilePath' => 'chale chalo-cf56f051c62b.json',
-                                                    'projectId' => 'chale-chalo',
-                                                ];
-                                                // Create the Cloud Firestore client
-                                                $db = new FirestoreClient($config);
-
-                                                $driverRef = $db->collection('Drivers');
-                                                $query = $driverRef->where('BusNumber', '=', 'None');
-                                                $snapshot = $query->documents();
-                                                foreach ($snapshot as $driver) {
-                                                ?>
-                                                    <tr>
-                                                        <td><?php echo $driver["name"]; ?></td>
-                                                        <td><?php echo $driver["adhaar"]; ?></td>
-                                                        <td><?php echo $driver['license_no']; ?></td>
-                                                        <td><?php echo $driver["add"]; ?></td>
-                                                        <td><?php echo $driver["city"]; ?></td>
-                                                        <td><?php echo $driver['country']; ?></td>
-                                                        <td><?php echo $driver['contact']; ?></td>
-                                                        <td><?php echo $driver['email']; ?></td>
-                                                        <td style="display:none;"><?php echo $driver['password']; ?></td>
-                                                    </tr>
-                                                <?php
-                                                }
-                                                ?>
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-
                 </div>
             </div>
 
@@ -444,12 +487,7 @@ use Google\Cloud\Storage\StorageClient;
                 <li class="button-container">
                     <a href="https://www.creative-tim.com/product/material-dashboard" target="_blank" class="btn btn-primary btn-block">Free Download</a>
                 </li>
-                <!-- <li class="header-title">Want more components?</li>
-            <li class="button-container">
-                <a href="https://www.creative-tim.com/product/material-dashboard-pro" target="_blank" class="btn btn-warning btn-block">
-                  Get the pro version
-                </a>
-            </li> -->
+
                 <li class="button-container">
                     <a href="https://demos.creative-tim.com/material-dashboard/docs/2.1/getting-started/introduction.html" target="_blank" class="btn btn-default btn-block">
                         View Documentation
@@ -502,7 +540,7 @@ use Google\Cloud\Storage\StorageClient;
     <!-- Library for adding dinamically elements -->
     <script src="assets/js/plugins/arrive.min.js"></script>
     <!--  Google Maps Plugin    -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+    <!-- /<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script> -->
     <!-- Chartist JS -->
     <script src="assets/js/plugins/chartist.min.js"></script>
     <!--  Notifications Plugin    -->
@@ -683,25 +721,8 @@ use Google\Cloud\Storage\StorageClient;
             });
         });
     </script>
-    <script>
-        var table = document.getElementById('table');
 
-        for (var i = 1; i < table.rows.length; i++) {
-            table.rows[i].onclick = function() {
-                //rIndex = this.rowIndex;
-                document.getElementById("name").value = this.cells[0].innerHTML;
-                document.getElementById("adhaar").value = this.cells[1].innerHTML;
-                document.getElementById("license").value = this.cells[2].innerHTML;
-                document.getElementById("add").value = this.cells[3].innerHTML;
-                document.getElementById("driver_city").value = this.cells[4].innerHTML;
-                document.getElementById("country").value = this.cells[5].innerHTML;
-                document.getElementById("contact").value = this.cells[6].innerHTML;
-                document.getElementById("email").value = this.cells[7].innerHTML;
-                document.getElementById("password").value = this.cells[8].innerHTML;
 
-            };
-        }
-    </script>
 </body>
 
 </html>

@@ -125,6 +125,12 @@ use Google\Cloud\Firestore\FieldValue;
                         </a>
                     </li>
                     <li class="nav-item   ">
+                        <a class="nav-link" href="emergency.php">
+                            <i class="material-icons">Emergency</i>
+                            <p>EMERGENCY</p>
+                        </a>
+                    </li>
+                    <li class="nav-item   ">
                         <a class="nav-link" href="logout.php">
                             <i class="material-icons">logout</i>
                             <p>LOGOUT</p>
