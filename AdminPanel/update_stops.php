@@ -12,18 +12,29 @@
 =========================================================
 
  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. -->
+
 <?php
 session_start();
+
 $uid = $_SESSION['uid'];
 require_once 'vendor/autoload.php';
 
 use Google\Cloud\Firestore\FirestoreClient;
+use Google\Cloud\Storage\StorageClient;
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- <%@page contentType="text/html" import="java.sql.*" pageEncoding="UTF-8"%> -->
+
+<style>
+  .autocomplete {
+    /*the container must be positioned relative:*/
+    position: relative;
+    display: inline-block;
+
+  }
+</style>
 
 <head>
   <meta charset="utf-8" />
@@ -40,6 +51,143 @@ use Google\Cloud\Firestore\FirestoreClient;
   <link href="assets/css/material-dashboard.css?v=2.1.1" rel="stylesheet" />
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link href="assets/demo/demo.css" rel="stylesheet" />
+  <script>
+    function auto_complete() {
+      <?php
+      if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $city = $_POST['city'];
+        $_SESSION['city'] = $city;
+        $stop_s = array();
+        $f = array();
+        $config = [
+          'keyFilePath' => 'chale chalo-cf56f051c62b.json',
+          'projectId' => 'chale-chalo',
+        ];       // Create the Cloud Firestore client
+        $db = new FirestoreClient($config);
+        $StopsRef = $db->collection('Stops')->document($city);
+        $snapshot = $StopsRef->snapshot();
+        if ($snapshot->exists()) {
+          $c = $snapshot->get('AllStops');
+        }
+
+        foreach ($c as $r) {
+          array_push($f, $r['Name']);
+        }
+      }
+      ?>
+      var stops = <?php echo json_encode($f); ?>;
+
+      autocomplete(document.getElementById("member"), stops);
+
+    }
+  </script>
+  <script>
+    function autocomplete(inp, arr) {
+      /*the autocomplete function takes two arguments,
+      the text field element and an array of possible autocompleted values:*/
+      var currentFocus;
+      /*execute a function when someone writes in the text field:*/
+      inp.addEventListener("input", function(e) {
+        var a, b, i, val = this.value;
+        /*close any already open lists of autocompleted values*/
+        closeAllLists();
+        if (!val) {
+          return false;
+        }
+        currentFocus = -1;
+        /*create a DIV element that will contain the items (values):*/
+        a = document.createElement("DIV");
+        a.setAttribute("id", this.id + "autocomplete-list");
+        a.setAttribute("class", "autocomplete-items");
+        /*append the DIV element as a child of the autocomplete container:*/
+        this.parentNode.appendChild(a);
+        /*for each item in the array...*/
+        for (i = 0; i < arr.length; i++) {
+          /*check if the item starts with the same letters as the text field value:*/
+          if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+            /*create a DIV element for each matching element:*/
+            b = document.createElement("DIV");
+            /*make the matching letters bold:*/
+            b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+            b.innerHTML += arr[i].substr(val.length);
+            /*insert a input field that will hold the current array item's value:*/
+            b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+            /*execute a function when someone clicks on the item value (DIV element):*/
+            b.addEventListener("click", function(e) {
+              /*insert the value for the autocomplete text field:*/
+              inp.value = this.getElementsByTagName("input")[0].value;
+              /*close the list of autocompleted values,
+              (or any other open lists of autocompleted values:*/
+              closeAllLists();
+            });
+            a.appendChild(b);
+          }
+        }
+      });
+      /*execute a function presses a key on the keyboard:*/
+      inp.addEventListener("keydown", function(e) {
+        var x = document.getElementById(this.id + "autocomplete-list");
+        if (x) x = x.getElementsByTagName("div");
+        if (e.keyCode == 40) {
+          /*If the arrow DOWN key is pressed,
+          increase the currentFocus variable:*/
+          currentFocus++;
+          /*and and make the current item more visible:*/
+          addActive(x);
+        } else if (e.keyCode == 38) { //up
+          /*If the arrow UP key is pressed,
+          decrease the currentFocus variable:*/
+          currentFocus--;
+          /*and and make the current item more visible:*/
+          addActive(x);
+        } else if (e.keyCode == 13) {
+          /*If the ENTER key is pressed, prevent the form from being submitted,*/
+          e.preventDefault();
+          if (currentFocus > -1) {
+            /*and simulate a click on the "active" item:*/
+            if (x) x[currentFocus].click();
+          }
+        }
+      });
+
+      function addActive(x) {
+        /*a function to classify an item as "active":*/
+        if (!x) return false;
+        /*start by removing the "active" class on all items:*/
+        removeActive(x);
+        if (currentFocus >= x.length) currentFocus = 0;
+        if (currentFocus < 0) currentFocus = (x.length - 1);
+        /*add class "autocomplete-active":*/
+        x[currentFocus].classList.add("autocomplete-active");
+      }
+
+      function removeActive(x) {
+        /*a function to remove the "active" class from all autocomplete items:*/
+        for (var i = 0; i < x.length; i++) {
+          x[i].classList.remove("autocomplete-active");
+        }
+      }
+
+      function closeAllLists(elmnt) {
+        /*close all autocomplete lists in the document,
+        except the one passed as an argument:*/
+        var x = document.getElementsByClassName("autocomplete-items");
+        for (var i = 0; i < x.length; i++) {
+          if (elmnt != x[i] && elmnt != inp) {
+            x[i].parentNode.removeChild(x[i]);
+          }
+        }
+      }
+      /*execute a function when someone clicks in the document:*/
+      document.addEventListener("click", function(e) {
+        closeAllLists(e.target);
+      });
+    }
+  </script>
+
+  <script type='text/javascript'>
+
+  </script>
   <script langusage="javascript">
     window.history.forward(1);
     browser.cache.offline.enable = false;
@@ -52,14 +200,15 @@ use Google\Cloud\Firestore\FirestoreClient;
   </script>
 </head>
 
+
 <body class="">
   <div class="wrapper ">
     <div class="sidebar" data-color="purple" data-background-color="white" data-image="assets/img/sidebar-1.jpg">
-      <!--
-        Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
 
-        Tip 2: you can also add an image using data-image tag
-    -->
+      <!-- Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
+
+        Tip 2: you can also add an image using data-image tag -->
+
       <div class="logo">
         <a href="index.jsp" class="simple-text logo-normal">
           Bus Stop
@@ -68,7 +217,7 @@ use Google\Cloud\Firestore\FirestoreClient;
       <div class="sidebar-wrapper">
         <ul class="nav">
           <?php if ($uid == "master_admin") { ?>
-            <li class="nav-item   ">
+            <li class="nav-item ">
               <a class="nav-link" href="register_local_admin.php">
                 <i class="material-icons">person</i>
                 <p>REGISTER LOCAL ADMIN</p>
@@ -81,19 +230,19 @@ use Google\Cloud\Firestore\FirestoreClient;
               <p>ADD STOP</p>
             </a>
           </li>
-          <li class="nav-item   ">
+          <li class="nav-item  active ">
             <a class="nav-link" href="update_stops.php">
               <i class="material-icons">edit</i>
               <p>EDIT STOPS</p>
             </a>
           </li>
-          <li class="nav-item ">
+          <li class="nav-item  ">
             <a class="nav-link" href="bus_insert.php">
               <i class="material-icons">directions_bus</i>
               <p>ADD BUS</p>
             </a>
           </li>
-          <li class="nav-item active ">
+          <li class="nav-item">
             <a class="nav-link" href="buses.php">
               <i class="material-icons">content_paste</i>
               <p>BUSSES</p>
@@ -124,12 +273,11 @@ use Google\Cloud\Firestore\FirestoreClient;
             </a>
           </li>
 
-
         </ul>
       </div>
     </div>
     <div class="main-panel">
-      <!-- Navbar -->
+
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
         <div class="container-fluid">
 
@@ -150,6 +298,7 @@ use Google\Cloud\Firestore\FirestoreClient;
               </div>
             </form>
             <ul class="navbar-nav">
+
 
               <li class="nav-item dropdown">
                 <a class="nav-link" href="#pablo" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -176,132 +325,83 @@ use Google\Cloud\Firestore\FirestoreClient;
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header card-header-primary">
-                  <h4 class="card-title ">BUSSES</h4>
-                  <p class="card-category">Bus and Driver details</p>
+                  <h4 class="card-title">ADD BUS</h4>
+                  <p class="card-category">Fill Details</p>
                 </div>
-                <div class="card-body">
-                  <div class="table-responsive">
-                    <table class="table">
-                      <thead class=" text-primary">
-                        <th colspan="4" style="font-weight: bold">
-                          <center>BUS DETAILS</center>
-                        </th>
-                        <th colspan="3" style="font-weight: bold">
-                          <center> DRIVER DETAILS</center>
-                        </th>
-                        <?php
-                        $City = array();
-                        $config = [
-                          'keyFilePath' => 'chale chalo-cf56f051c62b.json',
-                          'projectId' => 'chale-chalo',
-                        ];
-                        // Create the Cloud Firestore client
-                        $db = new FirestoreClient($config);
+                <?php
+                $City = array();
+                $config = [
+                  'keyFilePath' => 'chale chalo-cf56f051c62b.json',
+                  'projectId' => 'chale-chalo',
+                ];
+                // Create the Cloud Firestore client
+                $db = new FirestoreClient($config);
 
-                        $CityRef = $db->collection('City')->document('City');
-                        $snapshot = $CityRef->snapshot();
-                        if ($snapshot->exists()) {
-                          $c = $snapshot->get('AllCity');
-                        }
-                        foreach ($c as $C) {
-                          array_push($City, $C);
-                        }
-                        ?>
-                        <form method="post">
-                          <div class="col-md-3">
-                            <div class="form-group">
-                              <select id="City" class="form-control" name="city">
-                                <option>Choose City</option>
-                                <?php foreach ($City as $d) {
-                                ?>
-                                  <option><?php echo $d; ?></option>
-                                <?php } ?>
+                $CityRef = $db->collection('City')->document('City');
+                $snapshot = $CityRef->snapshot();
+                if ($snapshot->exists()) {
+                  $c = $snapshot->get('AllCity');
+                }
+                foreach ($c as $C) {
+                  array_push($City, $C);
+                }
 
-                              </select>
-                              <button type="submit" class="btn btn-primary" name="post">Submit</button>
-                            </div>
-                          </div>
-                        </form>
+                ?>
+                <form autocomplete="off" method="post">
+                  <div class="col-md-3">
+                    <select id="City" class="form-control" name="city">
+                      <option>Choose City</option>
+                      <?php foreach ($City as $d) {
+                      ?>
+                        <option><?php echo $d; ?></option>
+                      <?php }
+                      ?>
+
+                    </select>
+                    <button type="submit" class="btn btn-primary" name="post">Submit</button>
                   </div>
-
-                  </thead>
-                  <thead class=" text-primary">
-                    <th>
-                      Bus No.
-                    </th>
-                    <th>
-                      Roadways
-                    </th>
-                    <th>
-                      From
-                    </th>
-                    <th>
-                      To
-                    </th>
-                    <th>
-                      Name
-                    </th>
-                    <th>
-                      License No.
-                    </th>
-                    <th>
-                      Contact No.
-                    </th>
-                  </thead>
-                  <tbody>
-                    <?php
-                    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                      $config = [
-                        'keyFilePath' => 'chale chalo-cf56f051c62b.json',
-                        'projectId' => 'chale-chalo',
-                      ];
-                      // Create the Cloud Firestore client
-                      $db = new FirestoreClient($config);
-                      $city = $_POST["city"];
-                      $c = $city . "Bus";
-                      $busRef = $db->collection($c);
-                      $snapshot = $busRef->documents();
-                      foreach ($snapshot as $bus) {
-                    ?>
-                        <tr>
-                          <td><?php echo $bus->id(); ?></td>
-                          <td><?php echo $city; ?></td>
-                          <?php
-                          $s = $bus->get('Stops');
-                          $c = count($s);
-                          $i = 0;
-                          //  for($i=0;$i<$c;$i++){
-                          foreach ($s as $key => $value) {
-
-                            $m = $value['StopName'];
-                            if ($i == 0) {
-                          ?>
-                              <td><?php echo $m;
-                                } ?></td>
-                              <?php if ($i == ($c - 1)) { ?>
-                                <td><?php echo $m;
-                                  }
-                                  $i++;
-                                } ?></td>
-                                <td><?php echo $bus['driverName']; ?></td>
-                                <td><?php echo $bus['license_no']; ?></td>
-                                <td><?php echo $bus['contact']; ?></td>
-                            <?php
-                          }
-                        } ?>
+                </form>
 
 
-                  </tbody>
-                  </table>
+                <div class="card-body">
+                  <form method="post">
+                    <div class="row">
+
+
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <input type="text" id="member" name="member" placeholder="Stop Name" class="form-control" onclick="auto_complete()" required></br>
+
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group">
+
+                          <input type="text" id="lat" name="lat" placeholder="Latitude" class="form-control"></br>
+
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group">
+
+                          <input type="text" id="lng" name="lng" placeholder="Longitude" class="form-control"></br>
+                        </div>
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary pull-right" name="post" formaction="edit_stops.php">Update</button>
+                    <div class="clearfix"></div>
+                  </form>
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </div>
+
     </div>
   </div>
-  </div>
+
   <div class="fixed-plugin">
     <div class="dropdown show-dropdown">
       <a href="#" data-toggle="dropdown">
@@ -399,7 +499,8 @@ use Google\Cloud\Firestore\FirestoreClient;
   <!-- Library for adding dinamically elements -->
   <script src="assets/js/plugins/arrive.min.js"></script>
   <!--  Google Maps Plugin    -->
-
+  <!-- /<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script> -->
+  <!-- Chartist JS -->
   <script src="assets/js/plugins/chartist.min.js"></script>
   <!--  Notifications Plugin    -->
   <script src="assets/js/plugins/bootstrap-notify.js"></script>
@@ -407,6 +508,7 @@ use Google\Cloud\Firestore\FirestoreClient;
   <script src="assets/js/material-dashboard.js?v=2.1.1" type="text/javascript"></script>
   <!-- Material Dashboard DEMO methods, don't include it in your project! -->
   <script src="assets/demo/demo.js"></script>
+
   <script>
     $(document).ready(function() {
       $().ready(function() {
@@ -578,14 +680,7 @@ use Google\Cloud\Firestore\FirestoreClient;
       });
     });
   </script>
-  <script>
-    $(document).ready(function() {
-      $('.breakrow').click(function() {
-        $(this).nextUntil('tr.breakrow').slideToggle(200);
 
-      });
-    });
-  </script>
 
 </body>
 

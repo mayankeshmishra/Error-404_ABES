@@ -25,7 +25,16 @@ dependencies:
   cupertino_icons: ^0.1.2
   qr_code_scanner: ^0.0.13
   paytm: ^1.0.3
+  filter_list: ^0.0.4
   http: ^0.12.1
+  flutter_spinkit: ^4.1.2+1
+  firebase_auth:
+  firebase_storage: ^3.1.5
+  shared_preferences: ^0.5.7+1
+  font_awesome_flutter: ^8.8.1
+  cloud_firestore:
+  otp_text_field: ^1.0.1
+  flutter_typeahead: ^1.8.5
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -41,6 +50,8 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+    - assets/background.jpeg
+    - assets/logo.png
   fonts:
     - family: Lobster
       fonts:

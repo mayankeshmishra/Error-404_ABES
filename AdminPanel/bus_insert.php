@@ -55,11 +55,10 @@ use Google\Cloud\Firestore\FirestoreClient;
         if ($snapshot->exists()) {
           $c = $snapshot->get('AllStops');
         }
-     
+
         foreach ($c as $r) {
-          array_push($f, $r['Name']);  
+          array_push($f, $r['Name']);
         }
-     
       }
       ?>
       var stops = <?php echo json_encode($f); ?>;
@@ -232,6 +231,26 @@ use Google\Cloud\Firestore\FirestoreClient;
       </div>
       <div class="sidebar-wrapper">
         <ul class="nav">
+          <?php if ($uid == "master_admin") { ?>
+            <li class="nav-item   ">
+              <a class="nav-link" href="register_local_admin.php">
+                <i class="material-icons">person</i>
+                <p>REGISTER LOCAL ADMIN</p>
+              </a>
+            </li>
+          <?php } ?>
+          <li class="nav-item ">
+            <a class="nav-link" href="bus_stop.php">
+              <i class="material-icons">dashboard</i>
+              <p>ADD STOP</p>
+            </a>
+          </li>
+          <li class="nav-item   ">
+            <a class="nav-link" href="update_stops.php">
+              <i class="material-icons">edit</i>
+              <p>EDIT STOPS</p>
+            </a>
+          </li>
           <li class="nav-item active ">
             <a class="nav-link" href="bus_insert.php">
               <i class="material-icons">directions_bus</i>
@@ -242,6 +261,24 @@ use Google\Cloud\Firestore\FirestoreClient;
             <a class="nav-link" href="buses.php">
               <i class="material-icons">content_paste</i>
               <p>BUSSES</p>
+            </a>
+          </li>
+          <li class="nav-item  ">
+            <a class="nav-link" href="driver_insert.php">
+              <i class="material-icons">bubble_chart</i>
+              <p>ADD DRIVERS</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="driver_change.php">
+              <i class="material-icons">loop</i>
+              <p>CHANGE DRIVER</p>
+            </a>
+          </li>
+          <li class="nav-item   ">
+            <a class="nav-link" href="emergency.php">
+              <i class="material-icons">Emergency</i>
+              <p>EMERGENCY</p>
             </a>
           </li>
           <li class="nav-item   ">
@@ -258,7 +295,7 @@ use Google\Cloud\Firestore\FirestoreClient;
 
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
         <div class="container-fluid">
-          
+
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="sr-only">Toggle navigation</span>
             <span class="navbar-toggler-icon icon-bar"></span>

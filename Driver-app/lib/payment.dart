@@ -1,3 +1,4 @@
+import 'package:chalechalo/drawer.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
@@ -171,107 +172,7 @@ class _PaymentState extends State<PaymentPage> {
             ),
           ),
         ),
-        drawer: Drawer(
-            child: Column(
-          children: <Widget>[
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.only(
-                top: 30,
-                bottom: 10,
-              ),
-              color: Colors.amber,
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: AssetImage(
-                            'assets/driver.png',
-                          ),
-                          fit: BoxFit.fill),
-                    ),
-                  ),
-                  Text(
-                    'Mayankesh Mishra',
-                    style: TextStyle(
-                      fontSize: 22,
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                  Text(
-                    '8634374634',
-                    style: TextStyle(
-                      color: Colors.black87,
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              color: Colors.black87,
-              child: ListTile(
-                leading: Icon(
-                  Icons.person,
-                  color: Colors.amber,
-                ),
-                title: Text(
-                  'Profile',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.amber,
-                  ),
-                ),
-                onTap: null,
-              ),
-            ),
-            Container(
-              color: Colors.black87,
-              child: ListTile(
-                leading: Icon(
-                  Icons.book,
-                  color: Colors.amber,
-                ),
-                title: Text(
-                  'Account History',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.amber,
-                  ),
-                ),
-                onTap: null,
-              ),
-            ),
-            Container(
-              color: Colors.black87,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 277.0),
-                child: ListTile(
-                  title: Text(
-                    '',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  onTap: null,
-                ),
-              ),
-            ),
-            Container(
-              color: Colors.amber,
-              child: ListTile(
-                leading: Icon(Icons.arrow_back),
-                title: Text(
-                  'Logout',
-                  style: TextStyle(fontSize: 18),
-                ),
-                onTap: null,
-              ),
-            ),
-          ],
-        )),
+        drawer: drawer(context),
       ),
     );
   }
