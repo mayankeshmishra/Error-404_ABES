@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "56180449204",
+    "firebase_url": "https://chale-chalo.firebaseio.com",
+    "project_id": "chale-chalo",
+    "storage_bucket": "chale-chalo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:56180449204:android:4bc06bdccba5726ea19ce1",
+        "android_client_info": {
+          "package_name": "com.example.chale_chalo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "56180449204-ufhp2sv6qnm5be4g51pamm8qej6eg5ae.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0RkWvgOKePj2uzQChXwkYI2UD7ybLmqQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "56180449204-ufhp2sv6qnm5be4g51pamm8qej6eg5ae.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

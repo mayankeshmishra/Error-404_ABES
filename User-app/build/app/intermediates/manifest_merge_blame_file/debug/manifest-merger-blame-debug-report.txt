@@ -1,0 +1,242 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.example.chale_chalo"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="16"
+9        android:targetSdkVersion="28" />
+10    <!--
+11         Flutter needs it to communicate with the running application
+12         to allow setting breakpoints, to provide hot reload, etc.
+13    -->
+14    <uses-permission android:name="android.permission.INTERNET" />
+14-->D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\android\app\src\main\AndroidManifest.xml:8:5-67
+14-->D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\android\app\src\main\AndroidManifest.xml:8:22-64
+15    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+15-->D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\android\app\src\main\AndroidManifest.xml:9:5-79
+15-->D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\android\app\src\main\AndroidManifest.xml:9:22-76
+16    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+16-->D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\android\app\src\main\AndroidManifest.xml:10:5-81
+16-->D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\android\app\src\main\AndroidManifest.xml:10:22-78
+17    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+17-->[:image_picker] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-80
+17-->[:image_picker] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:7:22-77
+18    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Although the *SdkVersion is captured in gradle build files, this is required for non gradle builds -->
+18-->[:image_picker] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:8:5-81
+18-->[:image_picker] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:8:22-78
+19    <!-- <uses-sdk android:minSdkVersion="14" /> -->
+20    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+20-->[com.google.firebase:firebase-firestore:21.3.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\eb9cdfd575500b7d989353e0134b4454\jetified-firebase-firestore-21.3.0\AndroidManifest.xml:13:5-79
+20-->[com.google.firebase:firebase-firestore:21.3.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\eb9cdfd575500b7d989353e0134b4454\jetified-firebase-firestore-21.3.0\AndroidManifest.xml:13:22-76
+21
+22    <uses-feature
+22-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\6f4e6eb26f6c204062e462fe30c558b2\play-services-maps-17.0.0\AndroidManifest.xml:26:5-28:35
+23        android:glEsVersion="0x00020000"
+23-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\6f4e6eb26f6c204062e462fe30c558b2\play-services-maps-17.0.0\AndroidManifest.xml:27:9-41
+24        android:required="true" />
+24-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\6f4e6eb26f6c204062e462fe30c558b2\play-services-maps-17.0.0\AndroidManifest.xml:28:9-32
+25
+26    <application
+26-->D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\android\app\src\main\AndroidManifest.xml:11:5-36:19
+27        android:name="io.flutter.app.FlutterApplication"
+27-->D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\android\app\src\main\AndroidManifest.xml:12:9-57
+28        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+28-->[androidx.core:core:1.2.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\35f29bb1a578f0319e9c3e21730b6b49\core-1.2.0\AndroidManifest.xml:24:18-86
+29        android:debuggable="true"
+30        android:icon="@mipmap/ic_launcher"
+30-->D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\android\app\src\main\AndroidManifest.xml:15:9-43
+31        android:label="chale_chalo"
+31-->D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\android\app\src\main\AndroidManifest.xml:13:9-36
+32        android:usesCleartextTraffic="true" >
+32-->D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\android\app\src\main\AndroidManifest.xml:14:9-44
+33        <meta-data
+33-->D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\android\app\src\main\AndroidManifest.xml:17:9-18:73
+34            android:name="com.google.android.geo.API_KEY"
+34-->D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\android\app\src\main\AndroidManifest.xml:17:20-65
+35            android:value="AIzaSyDbj-HZAEaeYL6m3Dqol-2ADW67uXUG8vU" />
+35-->D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\android\app\src\main\AndroidManifest.xml:18:16-71
+36
+37        <activity
+37-->D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\android\app\src\main\AndroidManifest.xml:19:9-30:20
+38            android:name="com.example.chale_chalo.MainActivity"
+38-->D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\android\app\src\main\AndroidManifest.xml:20:13-41
+39            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+39-->D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\android\app\src\main\AndroidManifest.xml:23:13-163
+40            android:hardwareAccelerated="true"
+40-->D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\android\app\src\main\AndroidManifest.xml:24:13-47
+41            android:launchMode="singleTop"
+41-->D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\android\app\src\main\AndroidManifest.xml:21:13-43
+42            android:theme="@style/LaunchTheme"
+42-->D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\android\app\src\main\AndroidManifest.xml:22:13-47
+43            android:windowSoftInputMode="adjustResize" >
+43-->D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\android\app\src\main\AndroidManifest.xml:25:13-55
+44            <intent-filter>
+44-->D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\android\app\src\main\AndroidManifest.xml:26:13-29:29
+45                <action android:name="android.intent.action.MAIN" />
+45-->D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\android\app\src\main\AndroidManifest.xml:27:17-68
+45-->D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\android\app\src\main\AndroidManifest.xml:27:25-66
+46
+47                <category android:name="android.intent.category.LAUNCHER" />
+47-->D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\android\app\src\main\AndroidManifest.xml:28:17-76
+47-->D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\android\app\src\main\AndroidManifest.xml:28:27-74
+48            </intent-filter>
+49        </activity>
+50        <!--
+51             Don't delete the meta-data below.
+52             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
+53        -->
+54        <meta-data
+54-->D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\android\app\src\main\AndroidManifest.xml:33:9-35:33
+55            android:name="flutterEmbedding"
+55-->D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\android\app\src\main\AndroidManifest.xml:34:13-44
+56            android:value="2" />
+56-->D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\android\app\src\main\AndroidManifest.xml:35:13-30
+57
+58        <provider
+58-->[:image_picker] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:11:9-19:20
+59            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
+59-->[:image_picker] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-82
+60            android:authorities="com.example.chale_chalo.flutter.image_provider"
+60-->[:image_picker] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-74
+61            android:exported="false"
+61-->[:image_picker] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:14:13-37
+62            android:grantUriPermissions="true" >
+62-->[:image_picker] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:15:13-47
+63            <meta-data
+63-->[:image_picker] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:16:13-18:75
+64                android:name="android.support.FILE_PROVIDER_PATHS"
+64-->[:image_picker] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:17:17-67
+65                android:resource="@xml/flutter_image_picker_file_paths" />
+65-->[:image_picker] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:18:17-72
+66        </provider>
+67
+68        <service
+68-->[:cloud_firestore] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\cloud_firestore\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-12:19
+69            android:name="com.google.firebase.components.ComponentDiscoveryService"
+69-->[:cloud_firestore] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\cloud_firestore\intermediates\library_manifest\debug\AndroidManifest.xml:8:18-89
+70            android:directBootAware="true"
+70-->[com.google.firebase:firebase-common:19.3.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\c6ca246c85707e95e08d1750913663b2\jetified-firebase-common-19.3.0\AndroidManifest.xml:34:13-43
+71            android:exported="false" >
+71-->[com.google.firebase:firebase-firestore:21.3.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\eb9cdfd575500b7d989353e0134b4454\jetified-firebase-firestore-21.3.0\AndroidManifest.xml:19:13-37
+72            <meta-data
+72-->[:cloud_firestore] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\cloud_firestore\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-11:85
+73                android:name="com.google.firebase.components:io.flutter.plugins.firebase.cloudfirestore.FlutterFirebaseAppRegistrar"
+73-->[:cloud_firestore] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\cloud_firestore\intermediates\library_manifest\debug\AndroidManifest.xml:10:17-133
+74                android:value="com.google.firebase.components.ComponentRegistrar" />
+74-->[:cloud_firestore] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\cloud_firestore\intermediates\library_manifest\debug\AndroidManifest.xml:11:17-82
+75            <meta-data
+75-->[:firebase_auth] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\firebase_auth\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-11:85
+76                android:name="com.google.firebase.components:io.flutter.plugins.firebaseauth.FlutterFirebaseAppRegistrar"
+76-->[:firebase_auth] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\firebase_auth\intermediates\library_manifest\debug\AndroidManifest.xml:10:17-122
+77                android:value="com.google.firebase.components.ComponentRegistrar" />
+77-->[:firebase_auth] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\firebase_auth\intermediates\library_manifest\debug\AndroidManifest.xml:11:17-82
+78            <meta-data
+78-->[:firebase_storage] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\firebase_storage\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-11:85
+79                android:name="com.google.firebase.components:io.flutter.plugins.firebase.storage.FlutterFirebaseAppRegistrar"
+79-->[:firebase_storage] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\firebase_storage\intermediates\library_manifest\debug\AndroidManifest.xml:10:17-126
+80                android:value="com.google.firebase.components.ComponentRegistrar" />
+80-->[:firebase_storage] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\firebase_storage\intermediates\library_manifest\debug\AndroidManifest.xml:11:17-82
+81            <meta-data
+81-->[:firebase_core] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\firebase_core\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-11:85
+82                android:name="com.google.firebase.components:io.flutter.plugins.firebase.core.FlutterFirebaseAppRegistrar"
+82-->[:firebase_core] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\firebase_core\intermediates\library_manifest\debug\AndroidManifest.xml:10:17-123
+83                android:value="com.google.firebase.components.ComponentRegistrar" />
+83-->[:firebase_core] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\firebase_core\intermediates\library_manifest\debug\AndroidManifest.xml:11:17-82
+84            <meta-data
+84-->[com.google.firebase:firebase-firestore:21.3.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\eb9cdfd575500b7d989353e0134b4454\jetified-firebase-firestore-21.3.0\AndroidManifest.xml:20:13-22:85
+85                android:name="com.google.firebase.components:com.google.firebase.firestore.FirestoreRegistrar"
+85-->[com.google.firebase:firebase-firestore:21.3.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\eb9cdfd575500b7d989353e0134b4454\jetified-firebase-firestore-21.3.0\AndroidManifest.xml:21:17-111
+86                android:value="com.google.firebase.components.ComponentRegistrar" />
+86-->[com.google.firebase:firebase-firestore:21.3.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\eb9cdfd575500b7d989353e0134b4454\jetified-firebase-firestore-21.3.0\AndroidManifest.xml:22:17-82
+87            <meta-data
+87-->[com.google.firebase:firebase-auth:19.2.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\a83bb62cb43b672cf00b874e0ee6110c\firebase-auth-19.2.0\AndroidManifest.xml:36:13-38:85
+88                android:name="com.google.firebase.components:com.google.firebase.auth.FirebaseAuthRegistrar"
+88-->[com.google.firebase:firebase-auth:19.2.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\a83bb62cb43b672cf00b874e0ee6110c\firebase-auth-19.2.0\AndroidManifest.xml:37:17-109
+89                android:value="com.google.firebase.components.ComponentRegistrar" />
+89-->[com.google.firebase:firebase-auth:19.2.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\a83bb62cb43b672cf00b874e0ee6110c\firebase-auth-19.2.0\AndroidManifest.xml:38:17-82
+90            <meta-data
+90-->[com.google.firebase:firebase-storage:17.0.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\4a9c222e4fb0e06cc26919f8ae80843b\jetified-firebase-storage-17.0.0\AndroidManifest.xml:31:13-33:85
+91                android:name="com.google.firebase.components:com.google.firebase.storage.StorageRegistrar"
+91-->[com.google.firebase:firebase-storage:17.0.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\4a9c222e4fb0e06cc26919f8ae80843b\jetified-firebase-storage-17.0.0\AndroidManifest.xml:32:17-107
+92                android:value="com.google.firebase.components.ComponentRegistrar" />
+92-->[com.google.firebase:firebase-storage:17.0.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\4a9c222e4fb0e06cc26919f8ae80843b\jetified-firebase-storage-17.0.0\AndroidManifest.xml:33:17-82
+93        </service>
+94
+95        <provider
+95-->[:flutter_mailer] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\flutter_mailer\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-16:20
+96            android:name="com.dataxad.flutter_mailer.FlutterMailerFileProvider"
+96-->[:flutter_mailer] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\flutter_mailer\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-80
+97            android:authorities="com.example.chale_chalo.adv_provider"
+97-->[:flutter_mailer] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\flutter_mailer\intermediates\library_manifest\debug\AndroidManifest.xml:10:13-64
+98            android:exported="false"
+98-->[:flutter_mailer] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\flutter_mailer\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-37
+99            android:grantUriPermissions="true" >
+99-->[:flutter_mailer] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\flutter_mailer\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-47
+100            <meta-data
+100-->[:image_picker] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:16:13-18:75
+101                android:name="android.support.FILE_PROVIDER_PATHS"
+101-->[:image_picker] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:17:17-67
+102                android:resource="@xml/flutter_mailer_paths" />
+102-->[:image_picker] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:18:17-72
+103        </provider>
+104
+105        <activity
+105-->[:url_launcher] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\url_launcher\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-11:74
+106            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
+106-->[:url_launcher] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\url_launcher\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-74
+107            android:exported="false"
+107-->[:url_launcher] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\url_launcher\intermediates\library_manifest\debug\AndroidManifest.xml:10:13-37
+108            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+108-->[:url_launcher] D:\SIH FINAL USER SIDE\_Chale-Chalo-UserApp\User-app\build\url_launcher\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-71
+109        <activity
+109-->[com.google.firebase:firebase-auth:19.2.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\a83bb62cb43b672cf00b874e0ee6110c\firebase-auth-19.2.0\AndroidManifest.xml:24:9-31:50
+110            android:name="com.google.firebase.auth.internal.FederatedSignInActivity"
+110-->[com.google.firebase:firebase-auth:19.2.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\a83bb62cb43b672cf00b874e0ee6110c\firebase-auth-19.2.0\AndroidManifest.xml:25:13-85
+111            android:excludeFromRecents="true"
+111-->[com.google.firebase:firebase-auth:19.2.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\a83bb62cb43b672cf00b874e0ee6110c\firebase-auth-19.2.0\AndroidManifest.xml:26:13-46
+112            android:exported="true"
+112-->[com.google.firebase:firebase-auth:19.2.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\a83bb62cb43b672cf00b874e0ee6110c\firebase-auth-19.2.0\AndroidManifest.xml:27:13-36
+113            android:launchMode="singleTask"
+113-->[com.google.firebase:firebase-auth:19.2.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\a83bb62cb43b672cf00b874e0ee6110c\firebase-auth-19.2.0\AndroidManifest.xml:28:13-44
+114            android:permission="com.google.firebase.auth.api.gms.permission.LAUNCH_FEDERATED_SIGN_IN"
+114-->[com.google.firebase:firebase-auth:19.2.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\a83bb62cb43b672cf00b874e0ee6110c\firebase-auth-19.2.0\AndroidManifest.xml:29:13-102
+115            android:theme="@android:style/Theme.Translucent.NoTitleBar" /> <!-- Needs to be explicitly declared on P+ -->
+115-->[com.google.firebase:firebase-auth:19.2.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\a83bb62cb43b672cf00b874e0ee6110c\firebase-auth-19.2.0\AndroidManifest.xml:30:13-72
+116        <uses-library
+116-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\6f4e6eb26f6c204062e462fe30c558b2\play-services-maps-17.0.0\AndroidManifest.xml:33:9-35:40
+117            android:name="org.apache.http.legacy"
+117-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\6f4e6eb26f6c204062e462fe30c558b2\play-services-maps-17.0.0\AndroidManifest.xml:34:13-50
+118            android:required="false" />
+118-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\6f4e6eb26f6c204062e462fe30c558b2\play-services-maps-17.0.0\AndroidManifest.xml:35:13-37
+119
+120        <activity
+120-->[com.google.android.gms:play-services-base:17.2.1] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\c74e9d76b9181d3585ba58111e512b89\play-services-base-17.2.1\AndroidManifest.xml:23:9-26:75
+121            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+121-->[com.google.android.gms:play-services-base:17.2.1] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\c74e9d76b9181d3585ba58111e512b89\play-services-base-17.2.1\AndroidManifest.xml:24:13-79
+122            android:exported="false"
+122-->[com.google.android.gms:play-services-base:17.2.1] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\c74e9d76b9181d3585ba58111e512b89\play-services-base-17.2.1\AndroidManifest.xml:25:13-37
+123            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+123-->[com.google.android.gms:play-services-base:17.2.1] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\c74e9d76b9181d3585ba58111e512b89\play-services-base-17.2.1\AndroidManifest.xml:26:13-72
+124
+125        <provider
+125-->[com.google.firebase:firebase-common:19.3.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\c6ca246c85707e95e08d1750913663b2\jetified-firebase-common-19.3.0\AndroidManifest.xml:26:9-30:39
+126            android:name="com.google.firebase.provider.FirebaseInitProvider"
+126-->[com.google.firebase:firebase-common:19.3.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\c6ca246c85707e95e08d1750913663b2\jetified-firebase-common-19.3.0\AndroidManifest.xml:27:13-77
+127            android:authorities="com.example.chale_chalo.firebaseinitprovider"
+127-->[com.google.firebase:firebase-common:19.3.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\c6ca246c85707e95e08d1750913663b2\jetified-firebase-common-19.3.0\AndroidManifest.xml:28:13-72
+128            android:exported="false"
+128-->[com.google.firebase:firebase-common:19.3.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\c6ca246c85707e95e08d1750913663b2\jetified-firebase-common-19.3.0\AndroidManifest.xml:29:13-37
+129            android:initOrder="100" />
+129-->[com.google.firebase:firebase-common:19.3.0] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\c6ca246c85707e95e08d1750913663b2\jetified-firebase-common-19.3.0\AndroidManifest.xml:30:13-36
+130
+131        <meta-data
+131-->[com.google.android.gms:play-services-basement:17.2.1] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\76910aa66bdcaa37c578f8486702c330\jetified-play-services-basement-17.2.1\AndroidManifest.xml:23:9-25:69
+132            android:name="com.google.android.gms.version"
+132-->[com.google.android.gms:play-services-basement:17.2.1] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\76910aa66bdcaa37c578f8486702c330\jetified-play-services-basement-17.2.1\AndroidManifest.xml:24:13-58
+133            android:value="@integer/google_play_services_version" />
+133-->[com.google.android.gms:play-services-basement:17.2.1] C:\Users\Ankit\.gradle\caches\transforms-2\files-2.1\76910aa66bdcaa37c578f8486702c330\jetified-play-services-basement-17.2.1\AndroidManifest.xml:25:13-66
+134    </application>
+135
+136</manifest>
