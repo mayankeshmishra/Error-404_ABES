@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "chale-chalo",
+  "private_key_id": "cf56f051c62b2976255b9c93e32e70cfa2c5dcdf",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCXoZshGw+tUkDM\nGBpOeUDZMzHH9BhEod7haJAjTmFMq8W4LGtWSWeFUTO/5iUEuuj/lGK8bCWVeh5H\nOrrclCeKKSMwbIUTE4VBLISrXQYhGaAKHeENP+EmWcCBgb5Fod3YP6l0NV42YwHn\n8I/iOmoA6f0kaabFx+1TKjnBnNNQEhe0pW2f5FS8MZ9UxuaVydp46NgxNyIcETbu\nJ/QH41sjMHB2tl2ezyfnHmMA5/Ofp/0ss1ONfoiaBIMUpApBCrzFD3MO82CeuS8L\nXtzOre+Nk0BmmVm/WAjxquXbasAK4756Las5QvydXjOkvdkNf246joz+xZ4/eYeD\n0KnDuqLNAgMBAAECggEAEo2PWyTMrW2H3dEXKuyS1DX7jIE1P586E6+FGg966p7b\n5us8c5wwrUh1wgW0GC48gxp8svGymZBjHbO1wyE3mKPsQ9O2EVL39jUEbf6drjV3\nS7WYi1P6cFmsAHdHuOJo2rmouhOA7xD8iIzP4M46mS5dhHPkQtqcaGrIEq9l0FaY\n1p7qQkEdCbGliAoqW3KPO5V2xMeZKuwXvImg0JlWSz4kXXDYLbWOoYxtcaa1uKa5\nuj0alcTlDIIoJLmUqHyEAtB1suq1e+VrW2D9u1TeTgbuHAJG0pQNfKPsQL6vZPOa\n0MVsF0+lnZC1VQacC4nsi1scart9y6axTFF9pYp7iwKBgQDF9r+ydUpXVqaAnc4e\nJWYf1t0KI+oGMpHCVfBP2aFUQ6/0kjpQ92dXoiIUuObI/gaTjrLRBy2JsWQ5DjwO\nvYFBvDwBfO7QvtN7yfuiDwtvdGHNAy6mgnFfzqfhoMOdiIh6/7+vD0uBo5xgLHtT\nA7aH/McYLABstF10u+OdPskT1wKBgQDEFZTejLimTnduXdjqJInul2dOYyrVhcGg\nERbREKn/tBCa79EHkMYf6G7++5Zomhe2xSGbB/KnKpZBLMtBqqD3e6JKIvGPKzzX\ndZWSSW4JxxMxOIIUcA3NxQnfhVUWvZO9ockOFm0rF8cFvnFzan3N3lBFrj7xf2Nn\n3Zq3Qfdp+wKBgBmR2obhcX3AencoauQn7n30Uc6qfuLYC02vrf+SW603pPWRIakt\nm5KNJZvJmj2h2hWbG+u14qLjX8+i0A0TWyuzdYi3q10ZGNXna/ItwUtfG/bQD2mA\ndcZrOfIBwuKJLR++AvNIpXcUO/GMLU22sA/2jXzIyjFARsX6Mtcvsec3AoGAWSL2\nabTOu8svv5wp30Z87VkmPRwXfLkxK/KYzLEmlnbklYovG6FUb2zaCE+WMDbcUNmM\nTU1voU5av4X9X/yQ7+/j9o+r/8lH/yoUtEttGkTFFLr7Zw8JN2E6+8FAzPWhE7NY\nEm9fcRd+Ab5xFGZ0igFlvEdZla6zIaQ7kNMMBcECgYAdbFvfT70RuxfHfrXyDhfH\n2uTIEs7Gq7FJngybUPr0627Udgud38zq+7HYLQ6IBHda1mRRR/aF52lzXpMQ4wxY\neybAkV+KIpiTr+ZVlx0r0/Moq1enfnxOJlaBF58an0jR6Tw1VqDzxEaeG9AcWDd6\nv0j4WFX68Ghjr+8PE6IE1w==\n-----END PRIVATE KEY-----\n",
+  "client_email": "chalechalo@chale-chalo.iam.gserviceaccount.com",
+  "client_id": "113464870605884178276",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/chalechalo%40chale-chalo.iam.gserviceaccount.com"
+}
