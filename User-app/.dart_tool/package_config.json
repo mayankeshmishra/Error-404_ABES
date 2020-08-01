@@ -296,6 +296,12 @@
       "languageVersion": "2.3"
     },
     {
+      "name": "image_downloader",
+      "rootUri": "file:///C:/Users/Ankit/flutter/.pub-cache/hosted/pub.dartlang.org/image_downloader-0.20.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
       "name": "image_picker",
       "rootUri": "file:///C:/Users/Ankit/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker-0.6.7+3",
       "packageUri": "lib/",
@@ -506,6 +512,12 @@
       "languageVersion": "2.6"
     },
     {
+      "name": "screenshot",
+      "rootUri": "file:///C:/Users/Ankit/flutter/.pub-cache/hosted/pub.dartlang.org/screenshot-0.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
       "name": "share",
       "rootUri": "file:///C:/Users/Ankit/flutter/.pub-cache/hosted/pub.dartlang.org/share-0.6.4+3",
       "packageUri": "lib/",
@@ -674,7 +686,7 @@
       "languageVersion": "2.1"
     }
   ],
-  "generated": "2020-08-01T08:23:22.177724Z",
+  "generated": "2020-08-01T18:48:44.690374Z",
   "generator": "pub",
   "generatorVersion": "2.9.0-10.0.dev.flutter-7706afbcf5"
 }

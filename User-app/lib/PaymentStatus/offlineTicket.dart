@@ -1,11 +1,16 @@
+import 'dart:io';
+
 import 'package:chale_chalo/Constants/constants.dart';
 import 'package:chale_chalo/Drawer/drawer.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_downloader/image_downloader.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chale_chalo/Navigation/showJourneyNavigation.dart';
+import 'package:screenshot/screenshot.dart';
 import '../main.dart';
 import '../Navigation/showNavigation.dart';
 class OfflineTicket extends StatefulWidget {
@@ -42,6 +47,8 @@ class OfflineTicketState extends State<OfflineTicket> {
         }
       }
     }
+   var screenshotController = ScreenshotController();
+   File ss;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -299,7 +306,38 @@ class OfflineTicketState extends State<OfflineTicket> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  screenshotController
+                      .capture()
+                      .then((File image) async {
+                    //print("Capture Done");
+                    setState(() {
+                      ss = image;
+                    });
+                    StorageReference storageReference;
+                    storageReference = await FirebaseStorage.instance
+                        .ref()
+                        .child(PHONE)
+                        .child("ticket");
+                    StorageUploadTask task = storageReference.putFile(image);
+                    (await task.onComplete).ref.getDownloadURL().then((
+                        url) async {
+                      var db = Firestore.instance;
+                      var imageId = await ImageDownloader.downloadImage(url);
+                    });
+                    // Save image to gallery,  Needs plugin  https://pub.dev/packages/image_gallery_saver
+                    print("File Saved to Gallery");
+                    showDialog(context: context, builder: (ctx) {
+                      return AlertDialog(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(H * .02)),
+                        content: Text("Ticket Saved to your gallery"),
+                      );
+                    });
+                  }).catchError((onError) {
+                    print(onError);
+                  });
+                },
                 child: Text(
                   "Save Ticket",
                   style: TextStyle(
@@ -313,7 +351,9 @@ class OfflineTicketState extends State<OfflineTicket> {
               color: Colors.black,
             ),
             GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  cancelTicket(widget.qrData.toString());
+                },
                 child: Text(
                   "Cancel Ticket",
                   style: TextStyle(
@@ -326,6 +366,42 @@ class OfflineTicketState extends State<OfflineTicket> {
       ),
     );
   }
-
+   cancelTicket(String transactionID) {
+     var dateParse = DateTime.parse(DateTime.now().toString());
+     var formattedDate = "${dateParse.day}-${dateParse.month}-${dateParse.year}";
+     String date = formattedDate.toString();
+     var busNumber = transactionID.split(";")[2];
+     var db = Firestore.instance;
+     db.collection("DelhiBus").document(busNumber).collection("tickets")
+         .document(date).get()
+         .then((value) {
+       List<dynamic> ticketInfo = value.data["allTickets"];
+       for (var i = 0; i < ticketInfo.length; i++) {
+         if (ticketInfo[i]["transactionId"] == transactionID) {
+           ticketInfo.removeAt(i);
+           break;
+         }
+       }
+       print(ticketInfo);
+       db.collection("DelhiBus").document(busNumber).collection("tickets")
+           .document(date).updateData({"allTickets": ticketInfo})
+           .whenComplete(() {
+         db.collection("AllUsers").document(PHONE).get().then((value) {
+           List<dynamic> myBooking = value.data["allBookings"];
+           for (var i = 0; i < myBooking.length; i++) {
+             if (myBooking[i]["transactionId"] == transactionID) {
+               myBooking[i]["transactionId"] = "Cancelled";
+               myBooking[i]["isVerified"] = true;
+               break;
+             }
+           }
+           db.collection("AllUsers").document(PHONE).updateData(
+               {"allBookings": myBooking}).whenComplete(() {
+             print("Done");
+           });
+         });
+       });
+     });
+   }
   generateQR() async {}
 }
