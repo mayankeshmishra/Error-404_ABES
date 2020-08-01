@@ -297,9 +297,7 @@ class RegisterState extends State<LoginPageHome> {
         });
       }
       else{
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-          builder: (ctx)=> DriverHomePage()
-        ), (route) => false);
+        getProfileData();
       }
     } catch (e) {
       print(e.toString());
@@ -317,6 +315,52 @@ class RegisterState extends State<LoginPageHome> {
       }
     }
   }
-
+  getProfileData(){
+    Future.delayed(Duration(seconds: 0),(){
+      var db=Firestore.instance;
+      String x;
+      db.collection("DelhiDrivers").document(UID).get().then((value){
+        profileData=ProfileData(
+          value.data["Name"],
+          value.data["Number"],
+          value.data["BusNumber"],
+          value.data["BusRegistrationNumber"],
+          value.data["from"],
+          value.data["to"],
+        );
+        getStops();
+        print(profileData);
+      });
+    });
+  }
+  getStops(){
+    var db=Firestore.instance;
+    db.collection("DelhiBus").document(profileData.busRegistrationNumber).get()
+        .then((value){
+      print(value.data);
+      for(var i in value.data["Stops"]){
+        Stops.add(i["StopName"].toString());
+      }
+      db.collection("Stops").document("Delhi").get().then((value){
+        for(var i in Stops) {
+          for (var j in value.data["AllStops"]) {
+            if(i.toLowerCase()==j["Name"].toString().toLowerCase()){
+              StopsDetail.add([
+                i,
+                j["Latitude"],
+                j["Longitude"]
+              ]);
+              break;
+            }
+          }
+        }
+      });
+      if(mounted){
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+          builder: (ctx)=>DriverHomePage()
+      ), (route) => false);
+      }
+    });
+  }
 
 }
