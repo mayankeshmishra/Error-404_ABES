@@ -1,10 +1,11 @@
+import 'package:chalechalo/Constants/constants.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.black54,
       appBar: AppBar(
         title: Text(
           'Profile',
@@ -16,24 +17,24 @@ class Profile extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.black87,
       ),
       body: Center(
         child: Column(
           children: <Widget>[
             SizedBox(
-              height: 80,
-              width: 100,
+              height: 30,
+              width: double.infinity,
             ),
             CircleAvatar(
-              radius: 60,
+              radius: 50,
               backgroundImage: AssetImage('assets/profile.jpg'),
             ),
             SizedBox(
               height: 10,
             ),
             Text(
-              "Richa Srivastava",
+              profileData.name,
               style: TextStyle(
                 color: Colors.amber,
                 fontFamily: 'Roboto-boldItallic',
@@ -45,7 +46,7 @@ class Profile extends StatelessWidget {
               height: 10,
             ),
             Text(
-              "7838049418",
+              profileData.number,
               style: TextStyle(
                 color: Colors.amber,
                 fontFamily: ' Roboto-italic',
@@ -57,94 +58,102 @@ class Profile extends StatelessWidget {
               height: 25,
             ),
             Card(
-              color: Colors.white30,
+              color: Colors.amber,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0)),
               margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
               child: ListTile(
-                leading: Icon(Icons.directions_bus, color: Colors.amber),
+                leading: Icon(Icons.directions_bus, color: Colors.black),
                 title: Text(
-                  "Bus Registration Number",
+                  "Bus-Reg-No",
                   style: TextStyle(
                       fontFamily: ' Roboto-italic',
                       fontSize: 15,
-                      color: Colors.amber),
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black),
                 ),
                 trailing: Text(
-                  "UP14 DA 4598",
+                  profileData.busRegistrationNumber,
                   style: TextStyle(
                       fontFamily: ' Roboto-italic',
                       fontSize: 15,
-                      color: Colors.amber),
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
                 ),
               ),
             ),
             Card(
-              color: Colors.white30,
+              color: Colors.amber,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0)),
               margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
               child: ListTile(
-                leading: Icon(Icons.label_important, color: Colors.amber),
+                leading: Icon(Icons.label_important, color: Colors.black),
                 title: Text(
                   "Bus Number",
                   style: TextStyle(
                       fontFamily: ' Roboto-italic',
                       fontSize: 15,
-                      color: Colors.amber),
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black),
                 ),
                 trailing: Text(
-                  "986",
+                  profileData.busNumber,
                   style: TextStyle(
                       fontFamily: ' Roboto-italic',
                       fontSize: 15,
-                      color: Colors.amber),
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
                 ),
               ),
             ),
             Card(
-              color: Colors.white30,
+              color: Colors.amber,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0)),
               margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
               child: ListTile(
-                leading: Icon(Icons.place, color: Colors.amber),
+                leading: Icon(Icons.place, color: Colors.black),
                 title: Text(
                   "From",
                   style: TextStyle(
                       fontFamily: ' Roboto-italic',
                       fontSize: 15,
-                      color: Colors.amber),
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black),
                 ),
                 trailing: Text(
-                  "Dilshad Garden",
+                  profileData.from,
                   style: TextStyle(
                       fontFamily: ' Roboto-italic',
                       fontSize: 15,
-                      color: Colors.amber),
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
                 ),
               ),
             ),
             Card(
-              color: Colors.white30,
+              color: Colors.amber,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0)),
               margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
               child: ListTile(
-                leading: Icon(Icons.pin_drop, color: Colors.amber),
+                leading: Icon(Icons.pin_drop, color: Colors.black),
                 title: Text(
                   "To",
                   style: TextStyle(
                       fontFamily: ' Roboto-italic',
                       fontSize: 15,
-                      color: Colors.amber),
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black),
                 ),
                 trailing: Text(
-                  "Jhilmil",
+                  profileData.to,
                   style: TextStyle(
                       fontFamily: ' Roboto-italic',
                       fontSize: 15,
-                      color: Colors.amber),
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
                 ),
               ),
             ),
