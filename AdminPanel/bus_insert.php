@@ -55,11 +55,10 @@ use Google\Cloud\Firestore\FirestoreClient;
         if ($snapshot->exists()) {
           $c = $snapshot->get('AllStops');
         }
-     
+
         foreach ($c as $r) {
-          array_push($f, $r['Name']);  
+          array_push($f, $r['Name']);
         }
-     
       }
       ?>
       var stops = <?php echo json_encode($f); ?>;
@@ -232,6 +231,18 @@ use Google\Cloud\Firestore\FirestoreClient;
       </div>
       <div class="sidebar-wrapper">
         <ul class="nav">
+          <li class="nav-item ">
+            <a class="nav-link" href="bus_stop.php">
+              <i class="material-icons">dashboard</i>
+              <p>ADD STOP</p>
+            </a>
+          </li>
+          <li class="nav-item   ">
+            <a class="nav-link" href="update_stops.php">
+              <i class="material-icons">edit</i>
+              <p>EDIT STOPS</p>
+            </a>
+          </li>
           <li class="nav-item active ">
             <a class="nav-link" href="bus_insert.php">
               <i class="material-icons">directions_bus</i>
@@ -258,7 +269,7 @@ use Google\Cloud\Firestore\FirestoreClient;
 
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
         <div class="container-fluid">
-          
+
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="sr-only">Toggle navigation</span>
             <span class="navbar-toggler-icon icon-bar"></span>
