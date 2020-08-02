@@ -75,6 +75,12 @@ use Google\Cloud\Storage\StorageClient;
                             </a>
                         </li>
                     <?php } ?>
+                    <li class="nav-item   ">
+                        <a class="nav-link" href="trackbus.php">
+                            <i class="material-icons">location_ons</i>
+                            <p>TRACK BUS</p>
+                        </a>
+                    </li>
                     <li class="nav-item  ">
                         <a class="nav-link" href="access_bus_cctv.php">
                             <i class="material-icons">duo</i>

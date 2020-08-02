@@ -256,6 +256,12 @@ use Google\Cloud\Storage\StorageClient;
                             </a>
                         </li>
                     <?php } ?>
+                    <li class="nav-item   ">
+                        <a class="nav-link" href="trackbus.php">
+                            <i class="material-icons">location_ons</i>
+                            <p>TRACK BUS</p>
+                        </a>
+                    </li>
                     <li class="nav-item active ">
                         <a class="nav-link" href="access_bus_cctv.php">
                             <i class="material-icons">duo</i>
@@ -369,7 +375,7 @@ use Google\Cloud\Storage\StorageClient;
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header card-header-primary">
-                                    <h4 class="card-title">EMERGENCY</h4>
+                                    <h4 class="card-title">CCTV FOOTAGE</h4>
                                 </div>
                                 <?php
                                 $City = array();
