@@ -1,5 +1,6 @@
 import 'dart:async';
 //import 'package:chalechalo/DriverHomePage.dart';
+import 'package:chalechalo/changeStream.dart';
 import 'package:chalechalo/passengerForm/passenger.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -45,13 +46,14 @@ class ProfileData {
 double myLatitude;
 double myLongitude;
 var STOPS="";
+var IS_RIDING=false;
 getData123() {
   print("getData Called");
   double x = 0, y = 0;
   getCurrentLocation();
   Timer.periodic(Duration(seconds: 2), (Timer t) {
     getCurrentLocation();
-    if (myLatitude != x || myLongitude != y) {
+    if (myLatitude != x || myLongitude != y && IS_RIDING) {
       x = myLatitude;
       y = myLongitude;
       saveLocation();
@@ -160,7 +162,6 @@ saveLocation() async {
       STOPS=stops[index]["StopName"];
       if (index == stops.length - 1) {
         stops[index]["Visited"] = false;
-        upstream = false;
         index = stops.length - 2;
         for (var i = 0; i < stops.length; i++) {
           stops[i]["Passenger"] = 0;
@@ -169,8 +170,13 @@ saveLocation() async {
       }
       db.collection("DelhiBus")
           .document(profileData.busRegistrationNumber)
-          .updateData({"Stops": stops, "upstream": upstream}).whenComplete(
+          .updateData({"Stops": stops}).whenComplete(
               (){
+                if(index==stops.length - 1){
+                  Navigator.pushAndRemoveUntil(emergencyContext, MaterialPageRoute(
+                      builder: (ctx)=>ChangeStream()
+                  ), (route) => false);
+                }
         index++;
         print("UPDATED");
       });
@@ -200,7 +206,6 @@ saveLocation() async {
       stops[index]["Visited"] = true;
       if (index == 0) {
         stops[index]["Visited"] = false;
-        upstream = true;
         index = 1;
         for (var i = 0; i < stops.length; i++) {
           stops[i]["Passenger"] = 0;
@@ -210,8 +215,13 @@ saveLocation() async {
       db
           .collection("DelhiBus")
           .document(profileData.busRegistrationNumber)
-          .updateData({"Stops": stops, "upstream": upstream}).whenComplete(
+          .updateData({"Stops": stops}).whenComplete(
               () {
+                if(index==0){
+                  Navigator.pushAndRemoveUntil(emergencyContext, MaterialPageRoute(
+                      builder: (ctx)=>ChangeStream()
+                  ), (route) => false);
+                }
         index--;
         print("Done");
       });
