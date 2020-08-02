@@ -1,11 +1,12 @@
 import 'dart:async';
-import 'package:chalechalo/DriverHomePage.dart';
+//import 'package:chalechalo/DriverHomePage.dart';
 import 'package:chalechalo/passengerForm/passenger.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong/latlong.dart';
 import 'package:location/location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../main.dart';
 
@@ -43,6 +44,7 @@ class ProfileData {
 
 double myLatitude;
 double myLongitude;
+var STOPS="";
 getData123() {
   print("getData Called");
   double x = 0, y = 0;
@@ -119,91 +121,11 @@ getCurrentLocation() async {
         });
   }
 }
-// saveLocation()async {
-//   var db=Firestore.instance;
-//   var upstream;
-//   await db.collection("DelhiBus").document(profileData.busRegistrationNumber).updateData({"lat":myLatitude,"long":myLongitude});//.whenComplete((){});
-//       db.collection("DelhiBus").document(profileData.busRegistrationNumber).get().then((value){
-//         var stop=value.data["AllStops"];
-//           if(value.data["upstream"]==true){
-//             upstream=true;
-//             for(var i=0;i<value.data["AllStops"].length;i++){
-//               if(value.data["AllStops"][i]["Visited"]==false){
-//                 print("");
-//                 print("");
-//                 print("Comapre From Database");
-//                 print(value.data["AllStops"][i]);
-//                 print("---------------------");
-//                 //print(StopsDetail);
-//                 var x=0.00,y=0.00;
-//                 for(var j in StopsDetail){
-//                   //print(j[0].toString().toLowerCase());
-//                   if(j[0].toString().toLowerCase()==value.data["AllStops"][i]["StopName"].toString().toLowerCase()){
-//                     x=double.parse(j[1]);
-//                     y=double.parse(j[2]);
-//                     print("Compare To Stop Data From Shared Pref");
-//                     print(j);
-//                     print("");
-//                     print("");
-//                     break;
-//                   }
-//                 }
-//                 print(calculateDistance(myLatitude, myLongitude,x,y));
-//                 if(calculateDistance(myLatitude, myLongitude,x,y)<=100){
-//                   stop[i]["Visited"]=true;
-//                   if(i==stop.length-1){
-//                     upstream=false;
-//                     for(var i=0;i<stop.length;i++){
-//                       stop[i]["Passenger"]=0;
-//                       stop[i]["Visited"]=false;
-//                     }
-//                   }
-//                   db.collection("DelhiBus").document(profileData.busRegistrationNumber)
-//                   .updateData({"AllStops":stop,"upstream":upstream}).whenComplete((){
-//                     print("UPDATED");
-//                   });
-//                 }
-//                 break;
-//               }
-//             }
-//           }
-//           else{
-//             upstream=false;
-//             for(var i=value.data["AllStops"].length-1;i>=0;i--){
-//               if(value.data["AllStops"][i]["Visited"]==false){
-//                 var x,y;
-//                 for(var j in StopsDetail){
-//                   if(j[0].toString().toLowerCase()==value.data["AllStops"][i]["StopName"].toString().toLowerCase()){
-//                     x=double.parse(j[1]);
-//                     y=double.parse(j[2]);
-//                   }
-//                 }
-//                 if(calculateDistance(myLatitude, myLongitude,x,y)<=50){
-//                   print("Calculate Distance Called");
-//                   stop[i]["Visited"]=true;
-//                   if(i==stop.length-1){
-//                     upstream=true;
-//                     for(var i=0;i<stop.length;i++){
-//                       stop[i]["Passenger"]=0;
-//                       stop[i]["Visited"]=false;
-//                     }
-//                   }
-//                   db.collection("DelhiBus").document(profileData.busRegistrationNumber)
-//                       .updateData({"AllStops":stop,"upstream":upstream}).whenComplete((){
-//                     print("Done");
-//                   });
-//                 }
-//                 break;
-//               }
-//             }
-//           }
-//       });
-
-// }
 
 saveLocation() async {
   // print(stops);
   // print(upstream);
+
   var db = Firestore.instance;
   await db
       .collection("DelhiBus")
@@ -233,9 +155,11 @@ saveLocation() async {
       }
     }
     print(calculateDistance(myLatitude, myLongitude, x, y));
-    if (calculateDistance(myLatitude, myLongitude, x, y) <= 100) {
+    if (calculateDistance(myLatitude, myLongitude, x, y) <= 200 && STOPS!=stops[index]["StopName"]) {
       stops[index]["Visited"] = true;
+      STOPS=stops[index]["StopName"];
       if (index == stops.length - 1) {
+        stops[index]["Visited"] = false;
         upstream = false;
         index = stops.length - 2;
         for (var i = 0; i < stops.length; i++) {
@@ -243,11 +167,10 @@ saveLocation() async {
           stops[i]["Visited"] = false;
         }
       }
-      db
-          .collection("DelhiBus")
+      db.collection("DelhiBus")
           .document(profileData.busRegistrationNumber)
           .updateData({"Stops": stops, "upstream": upstream}).whenComplete(
-              () {
+              (){
         index++;
         print("UPDATED");
       });
@@ -272,10 +195,11 @@ saveLocation() async {
       }
     }
     print(calculateDistance(myLatitude, myLongitude, x, y));
-    if (calculateDistance(myLatitude, myLongitude, x, y) <= 100) {
+    if (calculateDistance(myLatitude, myLongitude, x, y) <= 100){
       print("Calculate Distance Called");
       stops[index]["Visited"] = true;
       if (index == 0) {
+        stops[index]["Visited"] = false;
         upstream = true;
         index = 1;
         for (var i = 0; i < stops.length; i++) {
@@ -303,15 +227,20 @@ double calculateDistance(Lat1, Long1, Lat2, Lang2) {
   return meter;
 }
 var emergencyContext;
-var emergency=[];
+var emergency=0;
 emergencyStream()async{
+  SharedPreferences pref=await SharedPreferences.getInstance();
+  if(pref.containsKey("emergency")){
+    emergency=pref.get("emergency");
+  }
   var db = Firestore.instance;
   await for (var snapshot in db
       .collection("DelhiBus")
       .document(profileData.busRegistrationNumber)
       .snapshots()){
-    if(snapshot.data["Emergency"].length>0 && snapshot.data["Emergency"]!=emergency){
-      emergency=snapshot.data["Emergency"];
+    if(snapshot.data["Emergency"].length > emergency ){
+      emergency=snapshot.data["Emergency"].length;
+      pref.setInt("emergency", emergency);
       showDialog(context: emergencyContext,builder: (ctx){
         return AlertDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(H*.02)),
@@ -319,6 +248,10 @@ emergencyStream()async{
           content: Text("Your bus is being monitored as someone reported an emergency. Resolve it as soon as possible",textAlign: TextAlign.center,),
         );
       });
+    }else if(snapshot.data["Emergency"].length < emergency){
+      emergency=snapshot.data["Emergency"].length;
+      pref.setInt("emergency", emergency);
     }
+    print(emergency);
   }
 }
