@@ -16,6 +16,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
+import 'navigationUrl.dart';
+
 
 void main() => runApp(ChaleChalo());
 class ChaleChalo extends StatelessWidget{
@@ -46,10 +48,10 @@ var x=0.0;
   void initState() {
     super.initState();
     animate();
-    getData123();
+
     FirebaseAuth.instance.currentUser().then((value){
       if(value!=null){
-        UID="LjAGndgQqyNkadk8YaUL3vIEEys1";
+        UID=value.uid;
       }
     });
   }
@@ -92,17 +94,11 @@ animate() {
           backgroundColor: Colors.transparent,
 
           body: Center(
-            child: Column(
-              children: [
-                AnimatedContainer(
-                  duration: Duration(milliseconds: 1500),
-                  height: H * x,
-                  width: H * x,
-                  child: Image.asset("assets/logo.png"),
-                ),
-                Text(distance,style: TextStyle(color: YELLOW,fontSize: H*.06),),
-                Text(accuracy,style: TextStyle(color: YELLOW,fontSize: H*.04),),
-              ],
+            child: AnimatedContainer(
+              duration: Duration(milliseconds: 1500),
+              height: H * x,
+              width: H * x,
+              child: Image.asset("assets/logo.png"),
             ),
           ),
           bottomNavigationBar: Container(
@@ -121,12 +117,14 @@ animate() {
     Future.delayed(Duration(seconds: 0),(){
       var db=Firestore.instance;
       String x;
+      print(UID);
       db.collection("Drivers").document(UID).get().then((value){
         profileData=ProfileData(value.data["name"], value.data["contact"],
             value.data["add"], value.data["BusNumber"], value.data["adhaar"],
             value.data["city"], value.data["country"], value.data["email"], value.data["licence_no"],
             "", "");
         getStops();
+        getData123();
         print(profileData.busRegistrationNumber);
       });
     });
@@ -175,11 +173,11 @@ animate() {
     });
     if(mounted){
      Navigator.pushAndRemoveUntil(context1, MaterialPageRoute(
-         builder: (ctx)=>DriverHomePage()
+         builder: (ctx)=>NavigationUrl()
      ), (route) => false);
     }
   });
-  }
+}
 
 // getData123()async{
 //   var x=0.0,y=0.0;

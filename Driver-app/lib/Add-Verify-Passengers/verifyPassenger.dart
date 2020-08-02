@@ -30,6 +30,7 @@ class _VerifyPassengerState extends State<VerifyPassenger> {
 
   @override
   Widget build(BuildContext context) {
+    emergencyContext=context;
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black),

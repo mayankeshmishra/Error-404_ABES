@@ -27,10 +27,9 @@ class _AddPassengerPageState extends State<AddPassengerPage> {
   void initState() {
     super.initState();
   }
-
-
   @override
   Widget build(BuildContext context) {
+    emergencyContext=context;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(

@@ -29,6 +29,7 @@ dependencies:
   http: ^0.12.1
   flutter_spinkit: ^4.1.2+1
   firebase_auth:
+  url_launcher: ^5.5.0
   firebase_storage: ^3.1.5
   shared_preferences: ^0.5.7+1
   font_awesome_flutter: ^8.8.1
@@ -38,6 +39,7 @@ dependencies:
   location: ^3.0.2
   geolocator: ^5.3.2+2
   latlong: ^0.6.1
+  carousel_slider: ^2.2.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -55,6 +57,10 @@ flutter:
     - assets/
     - assets/background.jpeg
     - assets/logo.png
+    - assets/step1.png
+    - assets/step2.png
+    - assets/step3.png
+    - assets/step4.png
   fonts:
     - family: Lobster
       fonts:

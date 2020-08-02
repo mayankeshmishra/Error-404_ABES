@@ -302,3 +302,23 @@ double calculateDistance(Lat1, Long1, Lat2, Lang2) {
       LengthUnit.Meter, new LatLng(Lat1, Long1), new LatLng(Lat2, Lang2));
   return meter;
 }
+var emergencyContext;
+var emergency=[];
+emergencyStream()async{
+  var db = Firestore.instance;
+  await for (var snapshot in db
+      .collection("DelhiBus")
+      .document(profileData.busRegistrationNumber)
+      .snapshots()){
+    if(snapshot.data["Emergency"].length>0 && snapshot.data["Emergency"]!=emergency){
+      emergency=snapshot.data["Emergency"];
+      showDialog(context: emergencyContext,builder: (ctx){
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(H*.02)),
+          title: Text("Emergency Reported",style: TextStyle(color: Colors.red),textAlign: TextAlign.center,),
+          content: Text("Your bus is being monitored as someone reported an emergency. Resolve it as soon as possible",textAlign: TextAlign.center,),
+        );
+      });
+    }
+  }
+}
