@@ -88,31 +88,6 @@ class Profile extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10.0)),
               margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
               child: ListTile(
-                leading: Icon(Icons.label_important, color: Colors.black),
-                title: Text(
-                  "Bus Number",
-                  style: TextStyle(
-                      fontFamily: ' Roboto-italic',
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black),
-                ),
-                trailing: Text(
-                  profileData.busNumber,
-                  style: TextStyle(
-                      fontFamily: ' Roboto-italic',
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
-                ),
-              ),
-            ),
-            Card(
-              color: Colors.amber,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)),
-              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
-              child: ListTile(
                 leading: Icon(Icons.place, color: Colors.black),
                 title: Text(
                   "From",

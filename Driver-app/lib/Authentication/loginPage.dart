@@ -35,6 +35,7 @@ class RegisterState extends State<LoginPageHome> {
   var _email="";
   var _password="";
   var mainError="";
+  String uid;
   String x = "Sign Up";
   bool checking = false;
   @override
@@ -291,15 +292,14 @@ class RegisterState extends State<LoginPageHome> {
       AuthResult result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       FirebaseUser user=result.user;
+      uid=user.uid;
       if(result.additionalUserInfo.isNewUser){
         setState(() {
           mainError="You have not registered yet";
         });
       }
       else{
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-          builder: (ctx)=> DriverHomePage()
-        ), (route) => false);
+        getProfileData();
       }
     } catch (e) {
       print(e.toString());
@@ -317,6 +317,70 @@ class RegisterState extends State<LoginPageHome> {
       }
     }
   }
-
+  getProfileData(){
+    Future.delayed(Duration(seconds: 0),(){
+      var db=Firestore.instance;
+      String x;
+      db.collection("Drivers").document(uid).get().then((value){
+        profileData=ProfileData(value.data["name"], value.data["contact"],
+            value.data["add"], value.data["BusNumber"], value.data["adhaar"],
+            value.data["city"], value.data["country"], value.data["email"], value.data["licence_no"],
+            "", "");
+        getStops();
+        print(profileData);
+      });
+    });
+  }
+  getStops(){
+    var db=Firestore.instance;
+    db.collection("DelhiBus").document(profileData.busRegistrationNumber).get()
+        .then((value){
+      print(value.data);
+      stops=value.data["AllStops"];
+      if(value.data["upstream"]==true){
+        upstream=true;
+        for(var i=0;i<value.data["AllStops"].length;i++){
+          if(value.data["AllStops"][i]["Visited"]==false){
+            index=i;
+            break;
+          }
+        }
+      }
+      else{
+        upstream=false;
+        for(var i=value.data["AllStops"].length-1;i>=0;i--){
+          if(value.data["AllStops"][i]["Visited"]==false){
+            index=i;
+            break;
+          }
+        }
+      }
+      for(var i in value.data["AllStops"]){
+        Stops.add(i["StopName"].toString());
+      }
+      var len=Stops.length;
+      profileData.from=Stops[0];
+      profileData.to=Stops[len-1];
+      db.collection("Stops").document("Delhi").get().then((value){
+        for(var i in Stops) {
+          for (var j in value.data["AllStops"]) {
+            if(i.toLowerCase()==j["Name"].toString().toLowerCase()){
+              StopsDetail.add([
+                i,
+                j["Latitude"],
+                j["Longitude"]
+              ]);
+              break;
+            }
+          }
+        }
+      });
+      if(mounted){
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+          builder: (ctx)=>DriverHomePage()
+      ), (route) => false);
+      }
+    });
+  }
 
 }
