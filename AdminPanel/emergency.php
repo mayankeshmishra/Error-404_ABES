@@ -13,7 +13,7 @@
 
  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. -->
 
- <?php
+<?php
 session_start();
 $uid = $_SESSION['uid'];
 require_once 'vendor/autoload.php';
@@ -256,7 +256,7 @@ use Google\Cloud\Storage\StorageClient;
                             </a>
                         </li>
                     <?php } ?>
-                   
+
                     <li class="nav-item  ">
                         <a class="nav-link" href="bus_stop.php">
                             <i class="material-icons">dashboard</i>
@@ -281,7 +281,12 @@ use Google\Cloud\Storage\StorageClient;
                             <p>BUSSES</p>
                         </a>
                     </li>
-                  
+                    <li class="nav-item   ">
+                        <a class="nav-link" href="edit_bus.php">
+                            <i class="material-icons">library_books</i>
+                            <p>EDIT BUS ROUTES</p>
+                        </a>
+                    </li>
                     <li class="nav-item ">
                         <a class="nav-link" href="driver_insert.php">
                             <i class="material-icons">bubble_chart</i>

@@ -112,6 +112,12 @@ use Google\Cloud\Firestore\FieldValue;
                             <p>BUSSES</p>
                         </a>
                     </li>
+                    <li class="nav-item   ">
+                        <a class="nav-link" href="edit_bus.php">
+                            <i class="material-icons">library_books</i>
+                            <p>EDIT BUS ROUTES</p>
+                        </a>
+                    </li>
                     <li class="nav-item  ">
                         <a class="nav-link" href="driver_insert.php">
                             <i class="material-icons">bubble_chart</i>
