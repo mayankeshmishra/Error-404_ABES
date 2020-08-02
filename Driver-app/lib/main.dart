@@ -9,6 +9,7 @@ import 'dart:async';
 import 'package:chalechalo/Authentication/loginPage.dart';
 import 'package:chalechalo/Constants/constants.dart';
 import 'package:chalechalo/DriverHomePage.dart';
+import 'package:chalechalo/changeStream.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:chalechalo/payment.dart';
@@ -124,7 +125,7 @@ animate() {
             value.data["city"], value.data["country"], value.data["email"], value.data["licence_no"],
             "", "");
         getStops();
-        getData123();
+        //getData123();
         print(profileData.busRegistrationNumber);
       });
     });
@@ -173,7 +174,7 @@ animate() {
     });
     if(mounted){
      Navigator.pushAndRemoveUntil(context1, MaterialPageRoute(
-         builder: (ctx)=>NavigationUrl()
+         builder: (ctx)=>(IS_RIDING==false)?ChangeStream():NavigationUrl()
      ), (route) => false);
     }
   });
