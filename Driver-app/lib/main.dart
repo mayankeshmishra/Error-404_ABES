@@ -125,7 +125,7 @@ animate() {
             value.data["city"], value.data["country"], value.data["email"], value.data["licence_no"],
             "", "");
         getStops();
-        //getData123();
+        getData123();
         print(profileData.busRegistrationNumber);
       });
     });
@@ -174,7 +174,7 @@ animate() {
     });
     if(mounted){
      Navigator.pushAndRemoveUntil(context1, MaterialPageRoute(
-         builder: (ctx)=>(IS_RIDING==false)?ChangeStream():NavigationUrl()
+         builder: (ctx)=>DriverHomePage()
      ), (route) => false);
     }
   });

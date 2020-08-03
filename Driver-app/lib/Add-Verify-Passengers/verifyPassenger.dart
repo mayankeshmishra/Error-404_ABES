@@ -336,7 +336,7 @@ floatingActionButton:
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: H * .03,
+                            fontSize: H * .023,
                             color: paid ? Colors.white : Colors.black),
                       ),
                       paid

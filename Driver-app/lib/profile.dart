@@ -98,7 +98,7 @@ class Profile extends StatelessWidget {
                       color: Colors.black),
                 ),
                 trailing: Text(
-                  profileData.from,
+                  "Jama Masjid",
                   style: TextStyle(
                       fontFamily: ' Roboto-italic',
                       fontSize: 15,
@@ -123,7 +123,7 @@ class Profile extends StatelessWidget {
                       color: Colors.black),
                 ),
                 trailing: Text(
-                  profileData.to,
+                  "Bara Bagh",
                   style: TextStyle(
                       fontFamily: ' Roboto-italic',
                       fontSize: 15,

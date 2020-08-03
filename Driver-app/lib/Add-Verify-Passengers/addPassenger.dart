@@ -169,7 +169,7 @@ class _AddPassengerPageState extends State<AddPassengerPage> {
         db.collection("DelhiBus").document(profileData.busRegistrationNumber).
         collection("tickets").document(date).setData({"allTickets":[{
           "transactionId": transactionId,
-          "isVerified":false,
+          "isVerified":true,
         }]}).whenComplete((){
           print("Ticket Saved in Bus Side (NEW)");
           setState(() {
