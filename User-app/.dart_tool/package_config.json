@@ -290,6 +290,12 @@
       "languageVersion": "1.20"
     },
     {
+      "name": "hardware_buttons",
+      "rootUri": "file:///C:/Users/Ankit/flutter/.pub-cache/hosted/pub.dartlang.org/hardware_buttons-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
       "name": "http",
       "rootUri": "file:///C:/Users/Ankit/flutter/.pub-cache/hosted/pub.dartlang.org/http-0.12.1",
       "packageUri": "lib/",
@@ -716,7 +722,7 @@
       "languageVersion": "2.1"
     }
   ],
-  "generated": "2020-08-03T06:42:00.094964Z",
+  "generated": "2020-08-03T08:22:01.249593Z",
   "generator": "pub",
   "generatorVersion": "2.9.0-10.0.dev.flutter-7706afbcf5"
 }

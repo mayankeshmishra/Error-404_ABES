@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'dart:ui' as ui;
+import 'package:chale_chalo/Constants/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -171,9 +172,12 @@ class _ShowNavigationPageState extends State<ShowNavigationPage> {
     // Initializing PolylinePoints
     print(currentStop);
     if (currentStop == widget.from) {
+      if(blind==true){
+        speak("Your Bus has arrived");
+      }
       Alert(
         context: ctx,
-        title: "Chale Chalo",
+        title: "Lok Rath",
         style: AlertStyle(
             titleStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
         desc: "Your Bus has arrived",

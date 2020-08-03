@@ -229,19 +229,19 @@ navigate(index, context) {
       break;
     case 3:
       {
-        Share.share('Travel with Chale Chalo and insure a Safe journey');
+        Share.share('Travel with Lok Rath and insure a Safe journey');
       }
       break;
     case 4:
       {
         launchUrl(
-            'mailto:chalechalosih@gmail.com?subject=Complaint | Chale Chalo&body=Please do not change the subject.');
+            'mailto:chalechalosih@gmail.com?subject=Complaint | Lok Rath&body=Please do not change the subject.');
       }
       break;
     case 5:
       {
         launchUrl(
-            'mailto:chalechalosih@gmail.com?subject=Contact | Chale Chalo&body=Please do not change the subject.');
+            'mailto:chalechalosih@gmail.com?subject=Contact | Lok Rath&body=Please do not change the subject.');
       }
   }
 }

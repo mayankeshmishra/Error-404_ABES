@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:chale_chalo/Constants/constants.dart';
@@ -17,6 +18,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:hardware_buttons/hardware_buttons.dart' as HardwareButtons;
+
 
 class SearchDestination extends StatefulWidget {
   @override
@@ -56,12 +59,32 @@ class SearchDestinationState extends State<SearchDestination> {
   var stopsLong = [];
   String fromStop, toStop;
   FlutterTts flutterTts = FlutterTts();
+  String _latestHardwareButtonEvent;
+  StreamSubscription<HardwareButtons.VolumeButtonEvent> _volumeButtonSubscription;
+  StreamSubscription<HardwareButtons.HomeButtonEvent> _homeButtonSubscription;
+  StreamSubscription<HardwareButtons.LockButtonEvent> _lockButtonSubscription;
+
   @override
   void initState() {
     super.initState();
     getCityName();
     getDrawerData();
     getCityPref();
+//    travelingBusNumber="UP18BA3749";
+//    travelingDriverName="Akshat Atray";
+//    travelingDriverNumber="7905084484";
+//    _volumeButtonSubscription = HardwareButtons.volumeButtonEvents.listen((event) {
+//      setState(() {
+//        _latestHardwareButtonEvent = event.toString();
+//        if(_latestHardwareButtonEvent=="VolumeButtonEvent.VOLUME_UP"){
+//          inputs.add("up");
+//        }else{
+//          inputs.add("down");
+//        }
+//      });
+//      turnInputEmpty();
+//    });
+
   }
 
   @override
@@ -320,7 +343,7 @@ class SearchDestinationState extends State<SearchDestination> {
                           } else {
                             Alert(
                               context: context,
-                              title: "Chale Chalo",
+                              title: "Lok Rath",
                               desc: "Please provide valid Stations",
                               buttons: [
                                 DialogButton(
@@ -371,6 +394,7 @@ class SearchDestinationState extends State<SearchDestination> {
           child: GestureDetector(
             onTap: () {
               getCurrentLocation();
+             /// print(_latestHardwareButtonEvent);
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -381,7 +405,8 @@ class SearchDestinationState extends State<SearchDestination> {
                       color: YELLOW,
                       fontSize: H * .02,
                       fontWeight: FontWeight.bold,
-                      letterSpacing: 1.5),
+                      letterSpacing: 1.5
+                  ),
                 ),
                 SizedBox(
                   width: H * .02,
@@ -437,7 +462,6 @@ class SearchDestinationState extends State<SearchDestination> {
         return;
       }
     }
-
     _permissionGranted = await location.hasPermission();
     if (_permissionGranted == PermissionStatus.denied) {
       _permissionGranted = await location.requestPermission();
@@ -713,7 +737,7 @@ class SearchDestinationState extends State<SearchDestination> {
       } else {
         Alert(
           context: context,
-          title: "Chale Chalo",
+          title: "Lok Rath",
           style: AlertStyle(
             titleStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
           ),
@@ -978,10 +1002,12 @@ class SearchDestinationState extends State<SearchDestination> {
       if (choice == 0) {
         setState(() {
           currentLocController.text = s;
+          fromStop=s;
         });
       } else {
         setState(() {
           destinationLocController.text = s;
+          toStop=s;
         });
       }
     } else {
@@ -1135,11 +1161,13 @@ class SearchDestinationState extends State<SearchDestination> {
                                                     setState(() {
                                                       currentLocController
                                                           .text = selectedItem;
+                                                      fromStop=selectedItem;
                                                     });
                                                   } else {
                                                     setState(() {
                                                       destinationLocController
                                                           .text = selectedItem;
+                                                      toStop=selectedItem;
                                                     });
                                                   }
                                                 }

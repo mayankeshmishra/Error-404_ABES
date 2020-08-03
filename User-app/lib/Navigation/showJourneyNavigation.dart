@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,7 +12,7 @@ import '../Constants/constants.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mailgun/mailgun.dart';
 import 'package:twilio_flutter/twilio_flutter.dart';
-
+import 'package:hardware_buttons/hardware_buttons.dart' as HardwareButtons;
 final _firestore = Firestore.instance;
 
 class ShowJourneyNavigationPage extends StatefulWidget {
@@ -32,6 +33,10 @@ class ShowJourneyNavigationPage extends StatefulWidget {
 }
 
 class _ShowJourneyNavigationPageState extends State<ShowJourneyNavigationPage> {
+  String _latestHardwareButtonEvent;
+  StreamSubscription<HardwareButtons.VolumeButtonEvent> _volumeButtonSubscription;
+  StreamSubscription<HardwareButtons.HomeButtonEvent> _homeButtonSubscription;
+  StreamSubscription<HardwareButtons.LockButtonEvent> _lockButtonSubscription;
   CameraPosition _initialLocation = CameraPosition(target: LatLng(0.0, 0.0));
 
   GoogleMapController mapController;
@@ -240,7 +245,35 @@ class _ShowJourneyNavigationPageState extends State<ShowJourneyNavigationPage> {
       print(e);
     }
   }
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    travelingBusNumber=widget.busNo;
+    travelingDriverName=widget.driverName;
+    travelingDriverNumber=widget.driverNumber;
+    _volumeButtonSubscription = HardwareButtons.volumeButtonEvents.listen((event) {
+      setState(() {
+        _latestHardwareButtonEvent = event.toString();
+        if(_latestHardwareButtonEvent=="VolumeButtonEvent.VOLUME_UP"){
+          inputs.add("up");
+        }else{
+          inputs.add("down");
+        }
+      });
+      turnInputEmpty();
+    });
 
+
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _volumeButtonSubscription?.cancel();
+    _homeButtonSubscription?.cancel();
+    _lockButtonSubscription?.cancel();
+  }
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;

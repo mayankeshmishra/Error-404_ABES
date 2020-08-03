@@ -430,7 +430,7 @@ class FaqsState extends State<Faqs> {
   }
 
   launchUrl() async {
-    var url = 'mailto:chalechalosih@gmail.com?subject=Query | Chale Chalo&body=Please do not change the subject.';
+    var url = 'mailto:chalechalosih@gmail.com?subject=Query | Lok Rath&body=Please do not change the subject.';
     if (await canLaunch(url)) {
       await launch(url);
     } else {
