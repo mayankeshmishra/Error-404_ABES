@@ -39,6 +39,7 @@ List allStops=[];
 String NAME = "---";
 String PHONE = "---";
 String EMAIL = "---";
+bool blind;
 File AVTAR;
 List<String> numbersForSMS = [];
 

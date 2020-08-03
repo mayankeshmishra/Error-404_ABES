@@ -15,7 +15,7 @@ class CarouselCard {
     estimate=estimate.substring(0,estimate.indexOf(' '));
     double factor=0;
     if(fromStop.length>toStop.length){
-      factor=1/(fromStop.length/220);
+      factor=1/(fromStop.length/200);
     }
     else{
       factor=1/(toStop.length/220);
@@ -24,121 +24,118 @@ class CarouselCard {
               width: W * 0.7,
               color: Colors.white,
               margin: EdgeInsets.all(5.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                child: Container(
-                  child: Wrap(
-                    children: <Widget>[
-                      Container(
-                        color: Colors.yellow,
-                        padding: EdgeInsets.only(top: 10, bottom: 10, left: 10),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.baseline,
-                          textBaseline: TextBaseline.ideographic,
-                          children: <Widget>[
-                            Text(
-                              estimate,
-                              style: TextStyle(
-                                  fontSize: 35, fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              suffix,
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w600),
-                            ),
-                            Spacer(),
-                            Container(
-                              color: Colors.black,
-                              child: Padding(
-                                padding: EdgeInsets.all(3.0),
-                                child: Text(
-                                  price,
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            Text('Bus No :',
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.w400)),
-                            Text(busNo,
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.w500))
-                          ],
-                        ),
-                      ),
-                      Divider(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+              child: Container(
+                child: Wrap(
+                  children: <Widget>[
+                    Container(
+                      color: Colors.yellow,
+                      padding: EdgeInsets.only(top: 2, bottom: 2, left: 10),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.baseline,
+                        textBaseline: TextBaseline.ideographic,
                         children: <Widget>[
-                          LinearPercentIndicator(
-                            width: W * 0.5,
-                            lineHeight: 14.0,
-                            percent: passengers/capacity,
-                            animation: true,
-                            animationDuration: 2000,
-                            leading: Icon(Icons.mood, color: Colors.green),
-                            trailing: Icon(Icons.mood_bad, color: Colors.red),
-                            linearStrokeCap: LinearStrokeCap.roundAll,
-                            backgroundColor: Colors.black26,
-                            progressColor: Color(0Xffffd600),
+                          Text(
+                            estimate,
+                            style: TextStyle(
+                                fontSize: 35, fontWeight: FontWeight.bold),
                           ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            suffix,
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w600),
+                          ),
+                          Spacer(),
+                          Container(
+                            color: Colors.black,
+                            child: Padding(
+                              padding: EdgeInsets.all(3.0),
+                              child: Text(
+                                price,
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          )
                         ],
                       ),
-                      Center(
-                        child: Text(
-                          '$passengers/$capacity',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                      Divider(),
-                      Row(
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
-                          Text(fromStop,
+                          Text('Bus No :',
                               style: TextStyle(
-                                fontSize: factor,
-                              )),
-                          Icon(
-                            Icons.compare_arrows,
-                            color: Color(0Xffffd600),
-                            size: 30,
-                          ),
-                          Text(toStop,
+                                  fontSize: 20, fontWeight: FontWeight.w400)),
+                          Text(busNo,
                               style: TextStyle(
-                                fontSize: factor,
-                              ))
+                                  fontSize: 20, fontWeight: FontWeight.w500))
                         ],
                       ),
-                      Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(12.0),
-                          child: RatingBarIndicator(
-                            rating: totalRating/noOfRatings,
-                            itemBuilder: (context, index) => Icon(
-                              Icons.star,
-                              color: Color(0Xffffd600),
-                            ),
-                            itemCount: 5,
-                            itemSize: 35.0,
-                            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                            direction: Axis.horizontal,
+                    ),
+                    Divider(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        LinearPercentIndicator(
+                          width: W * 0.5,
+                          lineHeight: 14.0,
+                          percent: passengers/capacity,
+                          animation: true,
+                          animationDuration: 2000,
+                          leading: Icon(Icons.mood, color: Colors.green),
+                          trailing: Icon(Icons.mood_bad, color: Colors.red),
+                          linearStrokeCap: LinearStrokeCap.roundAll,
+                          backgroundColor: Colors.black26,
+                          progressColor: Color(0Xffffd600),
+                        ),
+                      ],
+                    ),
+                    Center(
+                      child: Text(
+                        '$passengers/$capacity',
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                    Divider(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Text(fromStop,
+                            style: TextStyle(
+                              fontSize: factor,
+                            )),
+                        Icon(
+                          Icons.compare_arrows,
+                          color: Color(0Xffffd600),
+                          size: 30,
+                        ),
+                        Text(toStop,
+                            style: TextStyle(
+                              fontSize: factor,
+                            ))
+                      ],
+                    ),
+                    Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: RatingBarIndicator(
+                          rating: totalRating/noOfRatings,
+                          itemBuilder: (context, index) => Icon(
+                            Icons.star,
+                            color: Color(0Xffffd600),
                           ),
+                          itemCount: 5,
+                          itemSize: 25.0,
+                          itemPadding: EdgeInsets.symmetric(horizontal: 5.0),
+                          direction: Axis.horizontal,
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             );

@@ -16,7 +16,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-
+import 'package:flutter_tts/flutter_tts.dart';
 import 'Drawer/drawer.dart';
 
 CarouselCard card = CarouselCard();
@@ -40,10 +40,11 @@ class BusListState extends State<BusList> {
   String fromLat, fromLong;
   String toLat, toLong;
   double priceDis;
-  int passengers=30;
+  int passengers = 30;
   Position _northeastCoordinates;
   Position _southwestCoordinates;
   GoogleMapController mapController;
+  FlutterTts flutterTts = FlutterTts();
   @override
   void initState() {
     getDistanceMatrix();
@@ -54,18 +55,14 @@ class BusListState extends State<BusList> {
     try {
       if (double.parse(fromLat) <= double.parse(toLat)) {
         _southwestCoordinates = Position(
-            latitude: double.parse(fromLat),
-            longitude: double.parse(fromLong));
+            latitude: double.parse(fromLat), longitude: double.parse(fromLong));
         _northeastCoordinates = Position(
-            latitude: double.parse(toLat),
-            longitude: double.parse(toLong));
+            latitude: double.parse(toLat), longitude: double.parse(toLong));
       } else {
         _southwestCoordinates = Position(
-            latitude: double.parse(toLat),
-            longitude: double.parse(toLong));
+            latitude: double.parse(toLat), longitude: double.parse(toLong));
         _northeastCoordinates = Position(
-            latitude: double.parse(fromLat),
-            longitude: double.parse(fromLong));
+            latitude: double.parse(fromLat), longitude: double.parse(fromLong));
       }
       mapController.animateCamera(
         CameraUpdate.newLatLngBounds(
@@ -96,14 +93,14 @@ class BusListState extends State<BusList> {
   //       .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
   //   if (position != null) {
-      
+
   //   }
   // }
 
   getStopsData() async {
     var db = Firestore.instance;
     await db.collection("Stops").document("Delhi").get().then((value) {
-      allStops=value.data["AllStops"];
+      allStops = value.data["AllStops"];
       for (var i in value.data["AllStops"]) {
         if (i["Name"].toString() == widget.from) {
           fromLat = i["Latitude"];
@@ -112,7 +109,6 @@ class BusListState extends State<BusList> {
           toLat = i["Latitude"];
           toLong = i["Longitude"];
         }
-
       }
     });
   }
@@ -167,7 +163,7 @@ class BusListState extends State<BusList> {
     print(latlong);
     try {
       Response response = await dio.get(
-        "https://maps.googleapis.com/maps/api/distancematrix/json?&origins=${latlong}&destinations=${fromLat},${fromLong}&units=metric&key=AIzaSyDbj-HZAEaeYL6m3Dqol-2ADW67uXUG8vU");
+          "https://maps.googleapis.com/maps/api/distancematrix/json?&origins=${latlong}&destinations=${fromLat},${fromLong}&units=metric&key=AIzaSyDbj-HZAEaeYL6m3Dqol-2ADW67uXUG8vU");
       for (var i = 0; i < widget.busList.length; i++) {
         distanceMatrix =
             new DistanceMatrix.fromJson(json.decode(response.toString()), i);
@@ -178,11 +174,11 @@ class BusListState extends State<BusList> {
       print(e);
     }
     for (var i = 0; i < widget.busList.length; i++) {
-      var stops=widget.busList[i]['stops'];
+      var stops = widget.busList[i]['stops'];
       print(stops);
-      for(var k=0;k<stops.length;k++){
-        if(stops[k]['StopName'].toLowerCase()==widget.from.toLowerCase()){
-          passengers=stops[k]['Passenger'];
+      for (var k = 0; k < stops.length; k++) {
+        if (stops[k]['StopName'].toLowerCase() == widget.from.toLowerCase()) {
+          passengers = stops[k]['Passenger'];
           break;
         }
       }
@@ -202,8 +198,7 @@ class BusListState extends State<BusList> {
             totalRating: 20,
             noOfRatings: 5,
             driverName: widget.busList[i]['driverName'],
-            driverNumber: widget.busList[i]['driverContact']
-            ),
+            driverNumber: widget.busList[i]['driverContact']),
       );
     }
     setState(() {
@@ -252,40 +247,65 @@ class BusListState extends State<BusList> {
     });
   }
 
-  saveTransactionBusSide(String transactionId,String busNo){
-    var db=Firestore.instance;
+  saveTransactionBusSide(String transactionId, String busNo) {
+    var db = Firestore.instance;
     var dateParse = DateTime.parse(DateTime.now().toString());
     var formattedDate = "${dateParse.day}-${dateParse.month}-${dateParse.year}";
     String date = formattedDate.toString();
-    db.collection("DelhiBus").document(busNo).
-    collection("tickets").getDocuments().then((value){
-      var count=0;
+    db
+        .collection("DelhiBus")
+        .document(busNo)
+        .collection("tickets")
+        .getDocuments()
+        .then((value) {
+      var count = 0;
       var docData;
-      for(var element in value.documents) {
-        if (element.documentID == date){
-          docData=element.data["allTickets"];
+      for (var element in value.documents) {
+        if (element.documentID == date) {
+          docData = element.data["allTickets"];
           count++;
           break;
         }
       }
-      if(count==0){
-        db.collection("DelhiBus").document(busNo).
-        collection("tickets").document(date).setData({"allTickets":[{
-          "transactionId": transactionId,
-          "isVerified":false,
-        }]}).whenComplete((){
+      if (count == 0) {
+        db
+            .collection("DelhiBus")
+            .document(busNo)
+            .collection("tickets")
+            .document(date)
+            .setData({
+          "allTickets": [
+            {
+              "transactionId": transactionId,
+              "isVerified": false,
+            }
+          ]
+        }).whenComplete(() {
           print("Ticket Saved in Bus Side (NEW)");
         });
-      }
-      else{
-        docData.add({"transactionId": transactionId,
-          "isVerified":false,});
-        db.collection("DelhiBus").document(busNo).
-        collection("tickets").document(date).updateData({"allTickets":docData}).whenComplete((){
+      } else {
+        docData.add({
+          "transactionId": transactionId,
+          "isVerified": false,
+        });
+        db
+            .collection("DelhiBus")
+            .document(busNo)
+            .collection("tickets")
+            .document(date)
+            .updateData({"allTickets": docData}).whenComplete(() {
           print("Ticket Saved in Bus Side (OLD)");
         });
       }
     });
+  }
+
+  Future _speak(String text) async {
+    await flutterTts.setLanguage("hi-IN");
+    await flutterTts.setSpeechRate(0.8);
+    await flutterTts.setVolume(1.0);
+    await flutterTts.setPitch(1.1);
+    await flutterTts.speak(text);
   }
 
   @override
@@ -320,7 +340,8 @@ class BusListState extends State<BusList> {
               markers: {
                 Marker(
                   markerId: MarkerId('FROM'),
-                  position: LatLng(double.parse(fromLat), double.parse(fromLong)),
+                  position:
+                      LatLng(double.parse(fromLat), double.parse(fromLong)),
                 ),
                 Marker(
                   markerId: MarkerId('TO'),
@@ -336,187 +357,244 @@ class BusListState extends State<BusList> {
                   children: <Widget>[
                     CarouselSlider(
                       options: CarouselOptions(
-                        autoPlay: false,
-                        aspectRatio: 1.3,
-                        enlargeCenterPage: true,
-                          enableInfiniteScroll: false
-                      ),
+                          autoPlay: false,
+                          aspectRatio: 0.9,
+                          enlargeCenterPage: true,
+                          enableInfiniteScroll: false),
                       items: busList
                           .map(
-                            (item) => GestureDetector(
-                                onTap: () {
-                                  Alert(
-                                    context: context,
-                                    title: "Chale Chalo",
-                                    style: AlertStyle(
-                                      titleStyle: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 30),
-                                    ),
-                                    desc:
-                                        "How would you like to buy your ticket",
-                                    buttons: [
-                                      DialogButton(
-                                        child: Text(
-                                          "ONLINE",
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                        onPressed: () {
-                                          Alert(
-                                              context: context,
-                                              title: "Chale Chalo",
-                                              style: AlertStyle(
-                                                titleStyle: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 30),
-                                              ),
-                                              content: Column(
-                                                children: <Widget>[
-                                                  TextField(
-                                                    keyboardType:
-                                                        TextInputType.number,
-                                                    decoration: InputDecoration(
-                                                      icon: Icon(Icons.people),
-                                                      labelText:
-                                                          'Enter No. of Passengers',
-                                                    ),
-                                                    onChanged: (value) {
-                                                      setState(() {
-                                                        noOfTickets =
-                                                            int.parse(value);
-                                                        amount = amount *
-                                                            noOfTickets;
-                                                      });
-                                                    },
-                                                  ),
-                                                ],
-                                              ),
-                                              buttons: [
-                                                DialogButton(
-                                                  onPressed: () =>
-                                                      Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          PaymentPage(
-                                                              amount: amount
-                                                                  .toString(),
-                                                              busNo: item.busNo,
-                                                              driverName:
-                                                                  item.driverName,
-                                                              driverNumber:
-                                                                  item.driverNumber,
-                                                              startingStop:
-                                                                  widget.from,
-                                                              destinationStop:
-                                                                  widget.to,
-                                                              noOfTickets:
-                                                                  noOfTickets),
-                                                    ),
-                                                  ),
-                                                  child: Text(
-                                                    "Buy Tickets",
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 20),
-                                                  ),
-                                                  color: YELLOW,
-                                                )
-                                              ]).show();
-                                        },
-                                        color: YELLOW,
+                            (item) => Container(
+                              child: Column(
+                                children: [
+                                  Container(
+                                      decoration: new BoxDecoration(
+                                        color: Colors.yellow,
+                                        shape: BoxShape.circle,
                                       ),
-                                      DialogButton(
-                                        child: Text(
-                                          "OFFLINE",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w500),
-                                        ),
+                                      child: IconButton(
+                                        icon: Icon(Icons.mic),
                                         onPressed: () {
-                                          Alert(
-                                              context: context,
-                                              title: "Chale Chalo",
-                                              style: AlertStyle(
-                                                titleStyle: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 30),
-                                              ),
-                                              content: Column(
-                                                children: <Widget>[
-                                                  TextField(
-                                                    keyboardType:
-                                                        TextInputType.number,
-                                                    decoration: InputDecoration(
-                                                      icon: Icon(Icons.people),
-                                                      labelText:
-                                                          'Enter No. of Passengers',
-                                                    ),
-                                                    onChanged: (value) {
-                                                      setState(() {
-                                                        noOfTickets =
-                                                            int.parse(value);
-                                                        amount = amount *
-                                                            noOfTickets;
-                                                      });
-                                                    },
-                                                  ),
-                                                ],
-                                              ),
-                                              buttons: [
-                                                DialogButton(
-                                                  onPressed: () {
-                                                    saveTransaction(
-                                                        transactionId: '$NAME;$PHONE;${item.busNo};${widget.from};${widget.to};$noOfTickets;${amount.toString()}',
-                                                        busNumber: item.busNo,
-                                                        driverName: item.driverName,
-                                                        driverNumber: item.driverNumber,
-                                                        startingStop: widget.from,
-                                                        destinationStop: widget.to,
-                                                        amount: amount.toString(),
-                                                        );
-                                                    saveTransactionBusSide('$NAME;$PHONE;${item.busNo};${widget.from};${widget.to};$noOfTickets;${amount.toString()}',item.busNo);
-                                                      Navigator.push(context,MaterialPageRoute(builder: (context)=>OfflineTicket(
-                                                        qrData: '$NAME;$PHONE;${item.busNo};${widget.from};${widget.to};$noOfTickets;${amount.toString()}',
-                                                        from: widget.from,
-                                                        to: widget.to,
-                                                        busNo: item.busNo,
-                                                        noOfTickets: noOfTickets.toString(),
-                                                        driverName: item.driverName,
-                                                        driverNumber: item.driverNumber,
-                                                      )));
-                                                  },
-                                                  child: Text(
-                                                    "Buy Offline Tickets",
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 20),
-                                                  ),
-                                                  color: Colors.black,
-                                                )
-                                              ]).show();
+                                          //speech here
+                                          int rating=(item.totalRating/item.noOfRatings).round();
+                                          var price=(int.parse(item.price.substring(3,5))==5)?'Paanch':(int.parse(item.price.substring(3,5))==10)?'Dus':'Pundrah';
+                                          _speak('yeh bus ${item.eta} me ayegi aur iski ticket ${price} rupay ki hai . Iss bus me abhi ${item.passengers} yatri hai aur iski rating paanch sitara me se ${(rating==1)?'ek':(rating==2)?'do':(rating==3)?'teen':(rating==4)?'Chaar':'Paanch'} sitara hai');
                                         },
-                                        color: Colors.black,
-                                      )
-                                    ],
-                                  ).show();
-                                },
-                                child: card.getCard(
-                                    H: H,
-                                    W: W,
-                                    eta: item.eta,
-                                    busNo: item.busNo,
-                                    fromStop: item.from,
-                                    toStop: item.to,
-                                    totalRating: item.totalRating,
-                                    noOfRatings: item.noOfRatings,
-                                    price: item.price,
-                                    passengers: item.passengers,
-                                    capacity: item.capacity)),
+                                      )),
+                                  SizedBox(height: 5),
+                                  GestureDetector(
+                                      onTap: () {
+                                        Alert(
+                                          context: context,
+                                          title: "Chale Chalo",
+                                          style: AlertStyle(
+                                            titleStyle: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 30),
+                                          ),
+                                          desc:
+                                              "How would you like to buy your ticket",
+                                          buttons: [
+                                            DialogButton(
+                                              child: Text(
+                                                "ONLINE",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                              onPressed: () {
+                                                Alert(
+                                                    context: context,
+                                                    title: "Chale Chalo",
+                                                    style: AlertStyle(
+                                                      titleStyle: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 30),
+                                                    ),
+                                                    content: Column(
+                                                      children: <Widget>[
+                                                        TextField(
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .number,
+                                                          decoration:
+                                                              InputDecoration(
+                                                            icon: Icon(
+                                                                Icons.people),
+                                                            labelText:
+                                                                'Enter No. of Passengers',
+                                                          ),
+                                                          onChanged: (value) {
+                                                            setState(() {
+                                                              noOfTickets =
+                                                                  int.parse(
+                                                                      value);
+                                                              amount = amount *
+                                                                  noOfTickets;
+                                                            });
+                                                          },
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    buttons: [
+                                                      DialogButton(
+                                                        onPressed: () =>
+                                                            Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) => PaymentPage(
+                                                                amount: amount
+                                                                    .toString(),
+                                                                busNo:
+                                                                    item.busNo,
+                                                                driverName: item
+                                                                    .driverName,
+                                                                driverNumber: item
+                                                                    .driverNumber,
+                                                                startingStop:
+                                                                    widget.from,
+                                                                destinationStop:
+                                                                    widget.to,
+                                                                noOfTickets:
+                                                                    noOfTickets),
+                                                          ),
+                                                        ),
+                                                        child: Text(
+                                                          "Buy Tickets",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 20),
+                                                        ),
+                                                        color: YELLOW,
+                                                      )
+                                                    ]).show();
+                                              },
+                                              color: YELLOW,
+                                            ),
+                                            DialogButton(
+                                              child: Text(
+                                                "OFFLINE",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                              onPressed: () {
+                                                Alert(
+                                                    context: context,
+                                                    title: "Chale Chalo",
+                                                    style: AlertStyle(
+                                                      titleStyle: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 30),
+                                                    ),
+                                                    content: Column(
+                                                      children: <Widget>[
+                                                        TextField(
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .number,
+                                                          decoration:
+                                                              InputDecoration(
+                                                            icon: Icon(
+                                                                Icons.people),
+                                                            labelText:
+                                                                'Enter No. of Passengers',
+                                                          ),
+                                                          onChanged: (value) {
+                                                            setState(() {
+                                                              noOfTickets =
+                                                                  int.parse(
+                                                                      value);
+                                                              amount = amount *
+                                                                  noOfTickets;
+                                                            });
+                                                          },
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    buttons: [
+                                                      DialogButton(
+                                                        onPressed: () {
+                                                          saveTransaction(
+                                                            transactionId:
+                                                                '$NAME;$PHONE;${item.busNo};${widget.from};${widget.to};$noOfTickets;${amount.toString()}',
+                                                            busNumber:
+                                                                item.busNo,
+                                                            driverName:
+                                                                item.driverName,
+                                                            driverNumber: item
+                                                                .driverNumber,
+                                                            startingStop:
+                                                                widget.from,
+                                                            destinationStop:
+                                                                widget.to,
+                                                            amount: amount
+                                                                .toString(),
+                                                          );
+                                                          saveTransactionBusSide(
+                                                              '$NAME;$PHONE;${item.busNo};${widget.from};${widget.to};$noOfTickets;${amount.toString()}',
+                                                              item.busNo);
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          OfflineTicket(
+                                                                            qrData:
+                                                                                '$NAME;$PHONE;${item.busNo};${widget.from};${widget.to};$noOfTickets;${amount.toString()}',
+                                                                            from:
+                                                                                widget.from,
+                                                                            to: widget.to,
+                                                                            busNo:
+                                                                                item.busNo,
+                                                                            noOfTickets:
+                                                                                noOfTickets.toString(),
+                                                                            driverName:
+                                                                                item.driverName,
+                                                                            driverNumber:
+                                                                                item.driverNumber,
+                                                                          )));
+                                                        },
+                                                        child: Text(
+                                                          "Buy Offline Tickets",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 20),
+                                                        ),
+                                                        color: Colors.black,
+                                                      )
+                                                    ]).show();
+                                              },
+                                              color: Colors.black,
+                                            )
+                                          ],
+                                        ).show();
+                                      },
+                                      child: card.getCard(
+                                          H: H,
+                                          W: W,
+                                          eta: item.eta,
+                                          busNo: item.busNo,
+                                          fromStop: item.from,
+                                          toStop: item.to,
+                                          totalRating: item.totalRating,
+                                          noOfRatings: item.noOfRatings,
+                                          price: item.price,
+                                          passengers: item.passengers,
+                                          capacity: item.capacity)),
+                                  SizedBox(
+                                    height: 30,
+                                  )
+                                ],
+                              ),
+                            ),
                           )
                           .toList(),
                     ),

@@ -7,6 +7,7 @@ import 'package:chale_chalo/Drawer/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:share/share.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../main.dart';
@@ -20,7 +21,8 @@ Widget drawer(BuildContext context) {
     "FAQs",
     "Invite Friend",
     "Complain",
-    "Contact Us"
+    "Contact Us",
+    "Visually Impaired"
   ];
   List<Icon> menuIcons = [
     Icon(
@@ -45,6 +47,10 @@ Widget drawer(BuildContext context) {
     ),
     Icon(
       Icons.contact_mail,
+      color: YELLOW,
+    ),
+    Icon(
+      FontAwesomeIcons.blind,
       color: YELLOW,
     )
   ];
@@ -114,18 +120,37 @@ Widget drawer(BuildContext context) {
                       },
                       child: Column(
                         children: [
-                          ListTile(
-                            leading: menuIcons[index],
-                            title: Text(
-                              menuItems[index],
-                              style:
-                              TextStyle(fontSize: H * .018, color: YELLOW),
-                            ),
-                            trailing: Icon(
-                              Icons.chevron_right,
-                              color: YELLOW,
-                              size: H * .018,
-                            ),
+                          StatefulBuilder(
+                            builder: (ctx, setState) {
+                              return ListTile(
+                                leading: menuIcons[index],
+                                title: Text(
+                                  menuItems[index],
+                                  style:
+                                  TextStyle(fontSize: H * .018, color: YELLOW),
+                                ),
+                                trailing: (index == menuItems.length - 1) ?
+                                Switch(
+                                  value: blind,
+                                  inactiveTrackColor: Colors.grey[600],
+                                  activeTrackColor: Colors.yellow,
+                                  activeColor: Colors.yellow[800],
+                                  onChanged: (val) async {
+                                    setState(() {
+                                      blind = val;
+                                    });
+                                    SharedPreferences pref = await SharedPreferences
+                                        .getInstance();
+                                    pref.setBool("isBlind", val);
+                                  },
+                                )
+                                    : Icon(
+                                  Icons.chevron_right,
+                                  color: YELLOW,
+                                  size: H * .018,
+                                ),
+                              );
+                            },
                           ),
                           Container(
                             width: W,

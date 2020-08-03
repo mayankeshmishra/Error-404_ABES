@@ -224,6 +224,12 @@
       "languageVersion": "2.2"
     },
     {
+      "name": "flutter_tts",
+      "rootUri": "file:///C:/Users/Ankit/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_tts-1.2.6",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
       "name": "flutter_typeahead",
       "rootUri": "file:///C:/Users/Ankit/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_typeahead-1.8.5",
       "packageUri": "lib/",
@@ -302,6 +308,12 @@
       "languageVersion": "2.1"
     },
     {
+      "name": "image_gallery_saver",
+      "rootUri": "file:///C:/Users/Ankit/flutter/.pub-cache/hosted/pub.dartlang.org/image_gallery_saver-1.5.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
       "name": "image_picker",
       "rootUri": "file:///C:/Users/Ankit/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker-0.6.7+3",
       "packageUri": "lib/",
@@ -336,6 +348,12 @@
       "rootUri": "file:///C:/Users/Ankit/flutter/.pub-cache/hosted/pub.dartlang.org/js-0.6.2",
       "packageUri": "lib/",
       "languageVersion": "2.0"
+    },
+    {
+      "name": "json_annotation",
+      "rootUri": "file:///C:/Users/Ankit/flutter/.pub-cache/hosted/pub.dartlang.org/json_annotation-3.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.6"
     },
     {
       "name": "latlong",
@@ -444,6 +462,12 @@
       "rootUri": "file:///C:/Users/Ankit/flutter/.pub-cache/hosted/pub.dartlang.org/percent_indicator-2.1.5",
       "packageUri": "lib/",
       "languageVersion": "1.19"
+    },
+    {
+      "name": "permission_handler",
+      "rootUri": "file:///C:/Users/Ankit/flutter/.pub-cache/hosted/pub.dartlang.org/permission_handler-3.3.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
     },
     {
       "name": "platform",
@@ -566,6 +590,12 @@
       "languageVersion": "2.6"
     },
     {
+      "name": "speech_to_text",
+      "rootUri": "file:///C:/Users/Ankit/flutter/.pub-cache/hosted/pub.dartlang.org/speech_to_text-2.3.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
       "name": "stack_trace",
       "rootUri": "file:///C:/Users/Ankit/flutter/.pub-cache/hosted/pub.dartlang.org/stack_trace-1.9.3",
       "packageUri": "lib/",
@@ -686,7 +716,7 @@
       "languageVersion": "2.1"
     }
   ],
-  "generated": "2020-08-01T18:48:44.690374Z",
+  "generated": "2020-08-03T06:42:00.094964Z",
   "generator": "pub",
   "generatorVersion": "2.9.0-10.0.dev.flutter-7706afbcf5"
 }
