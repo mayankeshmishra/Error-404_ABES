@@ -33,6 +33,12 @@ class _DriverHomePageState extends State<DriverHomePage> {
       selectedIndex = index;
     });
   }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    emergencyStream();
+  }
 
   @override
   Widget build(BuildContext context) {

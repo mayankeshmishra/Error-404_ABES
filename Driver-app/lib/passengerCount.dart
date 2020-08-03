@@ -51,6 +51,7 @@ class _PassengerCountState extends State<PassengerCount> {
   }
 
   Widget buildList(context) {
+    emergencyContext=context;
     return ListView.builder(
         itemCount: passengerDataAfterIndex.length,
         itemBuilder: (context, i) {

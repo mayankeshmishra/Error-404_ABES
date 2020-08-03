@@ -318,6 +318,8 @@ class RegisterState extends State<LoginPageHome> {
     }
   }
   getProfileData(){
+    getData123();
+    UID=uid;
     Future.delayed(Duration(seconds: 0),(){
       var db=Firestore.instance;
       String x;
@@ -336,11 +338,11 @@ class RegisterState extends State<LoginPageHome> {
     db.collection("DelhiBus").document(profileData.busRegistrationNumber).get()
         .then((value){
       print(value.data);
-      stops=value.data["AllStops"];
+      stops=value.data["Stops"];
       if(value.data["upstream"]==true){
         upstream=true;
-        for(var i=0;i<value.data["AllStops"].length;i++){
-          if(value.data["AllStops"][i]["Visited"]==false){
+        for(var i=0;i<value.data["Stops"].length;i++){
+          if(value.data["Stops"][i]["Visited"]==false){
             index=i;
             break;
           }
@@ -348,14 +350,14 @@ class RegisterState extends State<LoginPageHome> {
       }
       else{
         upstream=false;
-        for(var i=value.data["AllStops"].length-1;i>=0;i--){
-          if(value.data["AllStops"][i]["Visited"]==false){
+        for(var i=value.data["Stops"].length-1;i>=0;i--){
+          if(value.data["Stops"][i]["Visited"]==false){
             index=i;
             break;
           }
         }
       }
-      for(var i in value.data["AllStops"]){
+      for(var i in value.data["Stops"]){
         Stops.add(i["StopName"].toString());
       }
       var len=Stops.length;

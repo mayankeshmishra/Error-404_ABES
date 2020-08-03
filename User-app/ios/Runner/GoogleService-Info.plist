@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>56180449204-g06ab8kdi7ga9i5oqcmcofjdgofq0hi4.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.56180449204-g06ab8kdi7ga9i5oqcmcofjdgofq0hi4</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBgiPVvVJnDgSIzZ9zcZng9fCBBq3XgwXY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>56180449204</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.chaleChalo</string>
+	<key>PROJECT_ID</key>
+	<string>chale-chalo</string>
+	<key>STORAGE_BUCKET</key>
+	<string>chale-chalo.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:56180449204:ios:a00b1e26adca53a0a19ce1</string>
+	<key>DATABASE_URL</key>
+	<string>https://chale-chalo.firebaseio.com</string>
+</dict>
+</plist>
