@@ -12,7 +12,7 @@
 =========================================================
 
  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. -->
-<?php
+ <?php
 session_start();
 $uid = $_SESSION['uid'];
 require_once 'vendor/autoload.php';
@@ -112,7 +112,7 @@ use Google\Cloud\Firestore\FirestoreClient;
               <p>CCTV FOOTAGE</p>
             </a>
           </li>
-          <li class="nav-item ">
+          <li class="nav-item active">
             <a class="nav-link" href="user_history.php">
               <i class="material-icons">view_list</i>
               <p>USER HISTORY</p>
@@ -136,16 +136,16 @@ use Google\Cloud\Firestore\FirestoreClient;
               <p>ADD BUS</p>
             </a>
           </li>
+          <li class="nav-item  ">
+            <a class="nav-link" href="buses.php">
+              <i class="material-icons">content_paste</i>
+              <p>BUSSES</p>
+            </a>
+          </li>
           <li class="nav-item ">
             <a class="nav-link" href="bus_travel_history.php">
               <i class="material-icons">view_list</i>
               <p>BUSSES TRAVEL HISTORY</p>
-            </a>
-          </li>
-          <li class="nav-item active ">
-            <a class="nav-link" href="buses.php">
-              <i class="material-icons">content_paste</i>
-              <p>BUSSES</p>
             </a>
           </li>
           <li class="nav-item   ">
@@ -229,147 +229,85 @@ use Google\Cloud\Firestore\FirestoreClient;
         <div class="container-fluid">
           <div class="row">
             <div class="col-md-12">
-              <div class="card">
-                <div class="card-header card-header-primary">
-                  <h4 class="card-title ">BUSSES</h4>
-                  <p class="card-category">Bus and Driver details</p>
-                </div>
-                <div class="card-body">
-                  <div class="table-responsive">
-                    <table class="table">
-                      <thead class=" text-primary">
-                        <th colspan="4" style="font-weight: bold">
-                          <center>BUS DETAILS</center>
-                        </th>
-                        <th colspan="3" style="font-weight: bold">
-                          <center> DRIVER DETAILS</center>
-                        </th>
-                        <?php
-                        $City = array();
-                        $config = [
-                          'keyFilePath' => 'chale chalo-cf56f051c62b.json',
-                          'projectId' => 'chale-chalo',
-                        ];
-                        // Create the Cloud Firestore client
-                        $db = new FirestoreClient($config);
+              <?php
+              if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                $config = [
+                  'keyFilePath' => 'chale chalo-cf56f051c62b.json',
+                  'projectId' => 'chale-chalo',
+                ];
+                // Create the Cloud Firestore client
+                $db = new FirestoreClient($config);
+                $phone = $_POST['ph_no'];
+                $ph = "+91".$phone;
+                $userRef = $db->collection('AllUsers')->document($ph);
+                $snapshot = $userRef->snapshot();
+                if($snapshot->exists()) {
+                  $details = $snapshot->get('allBookings');
+              ?>
+                  <div class="card">
 
-                        $CityRef = $db->collection('City')->document('City');
-                        $snapshot = $CityRef->snapshot();
-                        if ($snapshot->exists()) {
-                          $c = $snapshot->get('AllCity');
-                        }
-                        foreach ($c as $C) {
-                          array_push($City, $C);
-                        }
-                        ?>
-                        <form method="post">
-                          <div class="col-md-3">
-                            <div class="form-group">
-                              <select id="City" class="form-control" name="city">
-                                <option>Choose City</option>
-                                <?php foreach ($City as $d) {
-                                ?>
-                                  <option><?php echo $d; ?></option>
-                                <?php } ?>
+                    <!-- <div class="card-body"> -->
+                    <div class="table-responsive">
+                      <table class="table">
+                      <div class="card">
+                      <div class="card-header card-header-primary">
+                          <div class= 'row'>
+                                    <h4 class="card-title"><?php echo $snapshot->get('name'); ?></h4>
+                                    
+                                  
+                                    </div>
+                                </div>
+                        <thead class=" text-primary">
+                          <th>
+                          Bus Number
+                          </th>
+                          <th>
+                           Driver Name
+                          </th>
+                          <th>
+                          Driver Number
+                          </th>
+                          <th>
+                            From
+                          </th>
+                          <th>
+                            To
+                          </th>
 
-                              </select>
-                              <button type="submit" class="btn btn-primary" name="post">Submit</button>
-                            </div>
-                          </div>
-                        </form>
+                        </thead>
+                        <tbody>
+
+                          <tr>
+                          
+                              <?php foreach ($details as $i) {
+                                
+                              ?>
+                                <td><?php echo $i['busNumber']; ?></td>
+                                <td><?php echo $i['driverName']; ?></td>
+                                <td><?php echo $i['driverNumber']; ?></td>
+                                <td><?php echo $i['from']; ?></td>
+                                <td><?php echo $i['to']; ?></td>
+
+
+                          </tr>
+
+                  <?php
+                                }
+                              }
+                            }
+                           ?>
+
+
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
-
-                  </thead>
-                  <thead class=" text-primary">
-                    <th>
-                      Bus No.
-                    </th>
-                    <th>
-                      Roadways
-                    </th>
-                    <th>
-                      From
-                    </th>
-                    <th>
-                      To
-                    </th>
-                    <th>
-                      Rating
-                    </th>
-                    <th>
-                      Name
-                    </th>
-                    <th>
-                      License No.
-                    </th>
-                    <th>
-                      Contact No.
-                    </th>
-                  </thead>
-                  <tbody>
-                    <?php
-                    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                      $config = [
-                        'keyFilePath' => 'chale chalo-cf56f051c62b.json',
-                        'projectId' => 'chale-chalo',
-                      ];
-                      // Create the Cloud Firestore client
-                      $db = new FirestoreClient($config);
-                      $city = $_POST["city"];
-                      $c = $city . "Bus";
-                      $busRef = $db->collection($c);
-                      $snapshot = $busRef->documents();
-                      foreach ($snapshot as $bus) {
-                    ?>
-                        <tr>
-                          <td><?php echo $bus->id(); ?></td>
-                          <td><?php echo $city; ?></td>
-                          <?php
-                          $s = $bus->get('Stops');
-                          $c = count($s);
-                          $i = 0;
-                          //  for($i=0;$i<$c;$i++){
-                          foreach ($s as $key => $value) {
-
-                            $m = $value['StopName'];
-                            if ($i == 0) {
-                          ?>
-                              <td><?php echo $m;
-                                } ?></td>
-                              <?php if ($i == ($c - 1)) { ?>
-                                <td><?php echo $m;
-                                  }
-                                  $i++;
-                                } ?></td>
-                                <td><?php
-                                    // $totalr = $bus['rating'];
-                                    // $r = $bus['noOfRating'];
-                                    // $avg = $r / $totalr;
-                                    ?>
-                                  <div class="stars-outer">
-                                    <div class="stars-inner"></div>
-                                  </div>
-
-                                </td>
-                                <td><?php echo $bus['driverName']; ?></td>
-                                <td><?php echo $bus['license_no']; ?></td>
-                                <td><?php echo $bus['contact']; ?></td>
-
-                            <?php
-                          }
-                        } ?>
-
-
-                  </tbody>
-                  </table>
-                </div>
-              </div>
+                  <!-- </div> -->
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
   </div>
 
   <div class="fixed-plugin">

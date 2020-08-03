@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($username == "admin" && $password == "admin123") {
         $_SESSION['uid'] = "master_admin";
         echo '<script language="javascript">';
-        echo 'window.location.href="bus_insert.php";';
+        echo 'window.location.href="register_local_admin.php";';
         echo '</script>';
     } 
     else{
