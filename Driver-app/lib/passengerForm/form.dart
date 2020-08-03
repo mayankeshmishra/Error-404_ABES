@@ -28,6 +28,8 @@ class _UserFormState extends State<UserForm> {
     "Male",
     "Female"
   ];
+  var noOfPassenger=[1,2,3,4,5,6,7,8,9,10];
+  var selectedPassenger="---";
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -79,6 +81,9 @@ class _UserFormState extends State<UserForm> {
                      borderSide: BorderSide(color: Colors.black87)
                    ),
                   ),
+                  onChanged: (val){
+                    passenger.phoneNumber=val.toString().trim();
+                  },
                 ),
               ),
               Container(
@@ -115,6 +120,7 @@ class _UserFormState extends State<UserForm> {
                   onSuggestionSelected: (suggestion) {
                     setState(() {
                       fromStopController.text = suggestion;
+                      passenger.from=suggestion.toString().trim();
                     });
                   },
                 ),
@@ -156,8 +162,47 @@ class _UserFormState extends State<UserForm> {
                   onSuggestionSelected: (suggestion) {
                     setState(() {
                       toStopController.text = suggestion;
+                      passenger.to=suggestion.toString().trim();
                     });
                   },
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(left: H*.02, right: H*.02,  bottom: H*.015),
+                padding: EdgeInsets.only(left: H*.02, right: H*.02),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(H * .005),
+                  border: Border.all(color: Colors.black,width: 1)
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "No. of Passengers : $selectedPassenger",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black),
+                    ),
+                    DropdownButton<dynamic>(
+                      isExpanded: false,
+                      elevation: 0,
+                      hint: Container(
+                        alignment: Alignment.center,
+                      ),
+                      items: noOfPassenger.map((dynamic dropDownString) {
+                        return DropdownMenuItem<dynamic>(
+                          child: Container(width:W*.1,child: Text(dropDownString.toString())),
+                          value: dropDownString,
+                        );
+                      }).toList(),
+                      onChanged: (dynamic selectedItem) {
+                        setState(() {
+                          selectedPassenger = selectedItem.toString();
+                          passenger.passengerCount=selectedPassenger;
+                        });
+                      },
+                    ),
+                  ],
                 ),
               ),
             ],

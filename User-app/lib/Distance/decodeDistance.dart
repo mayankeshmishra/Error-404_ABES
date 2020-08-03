@@ -23,7 +23,7 @@ class DistanceMatrix {
 
 class Element {
   final Distance distance;
-  final Duration duration;
+  final Duration1 duration;
   final String status;
 
   Element({this.distance, this.duration, this.status});
@@ -31,7 +31,7 @@ class Element {
   factory Element.fromJson(Map<String, dynamic> json) {
     return Element(
         distance: new Distance.fromJson(json['distance']),
-        duration: new Duration.fromJson(json['duration']),
+        duration: new Duration1.fromJson(json['duration']),
         status: json['status']);
   }
 }
@@ -48,13 +48,13 @@ class Distance {
   }
 }
 
-class Duration {
+class Duration1 {
   final String text;
   final int value;
 
-  Duration({this.text, this.value, int milliseconds});
+  Duration1({this.text, this.value, int milliseconds});
 
-  factory Duration.fromJson(Map<String, dynamic> json) {
-    return new Duration(text: json['text'], value: json['value']);
+  factory Duration1.fromJson(Map<String, dynamic> json) {
+    return new Duration1(text: json['text'], value: json['value']);
   }
 }

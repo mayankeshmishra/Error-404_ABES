@@ -35,6 +35,7 @@ class RegisterState extends State<LoginPageHome> {
   var _email="";
   var _password="";
   var mainError="";
+  String uid;
   String x = "Sign Up";
   bool checking = false;
   @override
@@ -291,6 +292,7 @@ class RegisterState extends State<LoginPageHome> {
       AuthResult result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       FirebaseUser user=result.user;
+      uid=user.uid;
       if(result.additionalUserInfo.isNewUser){
         setState(() {
           mainError="You have not registered yet";
@@ -316,18 +318,16 @@ class RegisterState extends State<LoginPageHome> {
     }
   }
   getProfileData(){
+    getData123();
+    UID=uid;
     Future.delayed(Duration(seconds: 0),(){
       var db=Firestore.instance;
       String x;
-      db.collection("DelhiDrivers").document(UID).get().then((value){
-        profileData=ProfileData(
-          value.data["Name"],
-          value.data["Number"],
-          value.data["BusNumber"],
-          value.data["BusRegistrationNumber"],
-          value.data["from"],
-          value.data["to"],
-        );
+      db.collection("Drivers").document(uid).get().then((value){
+        profileData=ProfileData(value.data["name"], value.data["contact"],
+            value.data["add"], value.data["BusNumber"], value.data["adhaar"],
+            value.data["city"], value.data["country"], value.data["email"], value.data["licence_no"],
+            "", "");
         getStops();
         print(profileData);
       });
@@ -338,9 +338,31 @@ class RegisterState extends State<LoginPageHome> {
     db.collection("DelhiBus").document(profileData.busRegistrationNumber).get()
         .then((value){
       print(value.data);
+      stops=value.data["Stops"];
+      if(value.data["upstream"]==true){
+        upstream=true;
+        for(var i=0;i<value.data["Stops"].length;i++){
+          if(value.data["Stops"][i]["Visited"]==false){
+            index=i;
+            break;
+          }
+        }
+      }
+      else{
+        upstream=false;
+        for(var i=value.data["Stops"].length-1;i>=0;i--){
+          if(value.data["Stops"][i]["Visited"]==false){
+            index=i;
+            break;
+          }
+        }
+      }
       for(var i in value.data["Stops"]){
         Stops.add(i["StopName"].toString());
       }
+      var len=Stops.length;
+      profileData.from=Stops[0];
+      profileData.to=Stops[len-1];
       db.collection("Stops").document("Delhi").get().then((value){
         for(var i in Stops) {
           for (var j in value.data["AllStops"]) {

@@ -239,6 +239,18 @@ use Google\Cloud\Firestore\FirestoreClient;
               </a>
             </li>
           <?php } ?>
+          <li class="nav-item   ">
+            <a class="nav-link" href="trackbus.php">
+              <i class="material-icons">location_ons</i>
+              <p>TRACK BUS</p>
+            </a>
+          </li>
+          <li class="nav-item  ">
+            <a class="nav-link" href="access_bus_cctv.php">
+              <i class="material-icons">duo</i>
+              <p>CCTV FOOTAGE</p>
+            </a>
+          </li>
           <li class="nav-item ">
             <a class="nav-link" href="bus_stop.php">
               <i class="material-icons">dashboard</i>
@@ -261,6 +273,12 @@ use Google\Cloud\Firestore\FirestoreClient;
             <a class="nav-link" href="buses.php">
               <i class="material-icons">content_paste</i>
               <p>BUSSES</p>
+            </a>
+          </li>
+          <li class="nav-item   ">
+            <a class="nav-link" href="edit_bus.php">
+              <i class="material-icons">library_books</i>
+              <p>EDIT BUS ROUTES</p>
             </a>
           </li>
           <li class="nav-item  ">
@@ -392,6 +410,12 @@ use Google\Cloud\Firestore\FirestoreClient;
                         <div class="form-group">
                           <label class="bmd-label-floating">Capacity</label>
                           <input type="text" class="form-control" name="capacity" required>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">CCTV IP Address: Port No.</label>
+                          <input type="text" class="form-control" name="cctv_ip" required>
                         </div>
                       </div>
                       <div class="col-md-2">

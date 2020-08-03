@@ -281,6 +281,14 @@ class PaymentSuccessState extends State<PaymentSuccess> {
                       height: H * .03,
                     ),
                     Text(
+                      widget.qrData.substring((widget.qrData.indexOf(';')+4),(widget.qrData.indexOf(';')+6))+widget.qrData.substring(widget.qrData.length-4),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500, fontSize: H * .02),
+                    ),
+                    SizedBox(
+                      height: H * .02,
+                    ),
+                    Text(
                       "Scan Code for more detail",
                       style: TextStyle(
                           fontWeight: FontWeight.w500, fontSize: H * .02),

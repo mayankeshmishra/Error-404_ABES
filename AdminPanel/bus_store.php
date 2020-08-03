@@ -35,6 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $c = $city . "Bus";
   $driver_name = $_POST["driver1"];
   $capacity = intval($_POST["capacity"]);
+  $cctv = $_POST["cctv_ip"];
   $license_no = $_POST["license"];
   $contact = $_POST["contact"];
   $stop = $_POST["member"];
@@ -80,6 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $data = [
     'admin_uid' =>$admin_uid,
     'capacity' => $capacity,
+    'cctv_ip' => $cctv,
     'upstream' => true,
     'driverName' => $driver_name,
     'license_no' => $license_no,

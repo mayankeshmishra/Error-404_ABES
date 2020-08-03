@@ -24,7 +24,7 @@ class PreviousBookingState extends State<PreviousBooking> {
     super.initState();
     getData();
   }
-  ticketVerifiedStream(String transactionId, String busNo, String from, String to) async {
+  ticketVerifiedStream(String transactionId, String busNo, String from, String to, String driverName, String driverNumber) async {
     var db = Firestore.instance;
     await for (var snapshot in db.collection("AllUsers").document(
         PHONE)
@@ -32,7 +32,7 @@ class PreviousBookingState extends State<PreviousBooking> {
       for (var i in snapshot.data["allBookings"]) {
         if (i["transactionId"] == transactionId && i["isVerified"] == true) {
           print("You can now navigate");
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>ShowJourneyNavigationPage(busNo: busNo, from: from, to: to)));
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>ShowJourneyNavigationPage(busNo: busNo, from: from, to: to, driverName: driverName, driverNumber: driverNumber,)));
         }
       }
     }
@@ -148,7 +148,7 @@ class PreviousBookingState extends State<PreviousBooking> {
                                                 ),
                                                 onTap: () {
                                                   if(!booking[i]['isVerified']){
-                                                    ticketVerifiedStream(booking[i]["transactionId"], booking[i]["busNumber"], booking[i]["from"], booking[i]["to"]);
+                                                    ticketVerifiedStream(booking[i]["transactionId"], booking[i]["busNumber"], booking[i]["from"], booking[i]["to"],booking[i]["driverName"],booking[i]["driverNumber"]);
                                                   }
                                                   
                                                   showDialog(
@@ -223,6 +223,13 @@ class PreviousBookingState extends State<PreviousBooking> {
                                                                   height:
                                                                       H * .01,
                                                                 ),
+                                                                (';'.allMatches(booking[i]["transactionId"]).length ==7)?Row(
+                                                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                                  children: [
+                                                                    
+                                                                  Text("OTP"),
+                                                                  Text(booking[i]["transactionId"].substring((booking[i]["transactionId"].indexOf(';')+4),(booking[i]["transactionId"].indexOf(';')+6))+booking[i]["transactionId"].substring(booking[i]["transactionId"].length-4))
+                                                                ],):Center(),
                                                                 SizedBox(
                                                                   height:
                                                                       H * .005,
