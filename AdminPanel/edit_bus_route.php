@@ -16,10 +16,10 @@ use Google\Cloud\Firestore\FirestoreClient;
 
 <head>
     <meta charset="utf-8" />
-    <link rel="shortcut icon" href="img/LOGO.jfif" type="image/x-icon" />
+    <link rel="shortcut icon" href="img/icon.png" type="image/x-icon" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>
-        Admin Bus Stop
+        Admin Lokrath
     </title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <!--     Fonts and icons     -->
@@ -30,33 +30,7 @@ use Google\Cloud\Firestore\FirestoreClient;
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="assets/demo/demo.css" rel="stylesheet" />
 
-    <!-- <script type='text/javascript'>
-     function addFields() {
-       // Number of inputs to create
-       // var n=<%out.println(n);%>;
-       var number = document.getElementById("member").value;
-       // Container <div> where dynamic content will be placed
-       var container = document.getElementById("container");
-       // Clear previous contents of the container
-       //while (container.hasChildNodes()) {
-       //container.removeChild(container.lastChild);
-       //}
-       var z = Number(number) + Number(n);
-       for (i = n; i < z; i++) {
-         container.appendChild(document.createElement("br"));
-         // Append a node with a random text
-         container.appendChild(document.createTextNode("Stop " + (i + 1) + " "));
-         // Create an <input> element, set its type and name attributes
-         var input = document.createElement("input");
-         input.className = "form-control";
-         input.type = "text";
-         input.name = "member" + i;
-         container.appendChild(input);
-         // Append a line break 
 
-       }
-     }
-   </script> -->
     <script langusage="javascript">
         window.history.forward(1);
         browser.cache.offline.enable = false;
@@ -79,7 +53,7 @@ use Google\Cloud\Firestore\FirestoreClient;
     -->
             <div class="logo">
                 <a href="index.jsp" class="simple-text logo-normal">
-                    Bus Stop
+                    <i class="material-icons">directions_bus</i> Lokrath
                 </a>
             </div>
             <div class="sidebar-wrapper">
@@ -104,6 +78,12 @@ use Google\Cloud\Firestore\FirestoreClient;
                             <p>CCTV FOOTAGE</p>
                         </a>
                     </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="user_history.php">
+                            <i class="material-icons">view_list</i>
+                            <p>USER HISTORY</p>
+                        </a>
+                    </li>
                     <li class="nav-item  ">
                         <a class="nav-link" href="bus_stop.php">
                             <i class="material-icons">dashboard</i>
@@ -111,7 +91,7 @@ use Google\Cloud\Firestore\FirestoreClient;
                         </a>
                     </li>
                     <li class="nav-item   ">
-                        <a class="nav-link" href="update_&_del_stops.php">
+                        <a class="nav-link" href="update_stops.php">
                             <i class="material-icons">edit</i>
                             <p>EDIT STOPS</p>
                         </a>
@@ -120,6 +100,12 @@ use Google\Cloud\Firestore\FirestoreClient;
                         <a class="nav-link" href="bus_insert.php">
                             <i class="material-icons">directions_bus</i>
                             <p>ADD BUS</p>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="bus_travel_history.php">
+                            <i class="material-icons">view_list</i>
+                            <p>BUSSES TRAVEL HISTORY</p>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -213,7 +199,7 @@ use Google\Cloud\Firestore\FirestoreClient;
                                 <div class="card-header card-header-primary">
                                     <!-- <h4 class="card-title "><% String bus=session.getAttribute("bus_no.").toString();
                                                 out.println(bus);%></h4> -->
-                                    <p class="card-category">Bus Stop Details</p>
+                                    <p class="card-category">Lokrath Details</p>
                                 </div>
 
                                 <div class="card-body">

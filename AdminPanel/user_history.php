@@ -13,7 +13,7 @@
 
  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. -->
 
-<?php
+ <?php
 session_start();
 $uid = $_SESSION['uid'];
 require_once 'vendor/autoload.php';
@@ -249,14 +249,14 @@ use Google\Cloud\Storage\StorageClient;
             <div class="sidebar-wrapper">
                 <ul class="nav">
                     <?php if ($uid == "master_admin") { ?>
-                        <li class="nav-item  ">
+                        <li class="nav-item   ">
                             <a class="nav-link" href="register_local_admin.php">
                                 <i class="material-icons">person</i>
                                 <p>REGISTER LOCAL ADMIN</p>
                             </a>
                         </li>
                     <?php } ?>
-                    <li class="nav-item active  ">
+                    <li class="nav-item   ">
                         <a class="nav-link" href="trackbus.php">
                             <i class="material-icons">location_ons</i>
                             <p>TRACK BUS</p>
@@ -268,7 +268,7 @@ use Google\Cloud\Storage\StorageClient;
                             <p>CCTV FOOTAGE</p>
                         </a>
                     </li>
-                    <li class="nav-item ">
+                    <li class="nav-item active">
                         <a class="nav-link" href="user_history.php">
                             <i class="material-icons">view_list</i>
                             <p>USER HISTORY</p>
@@ -304,8 +304,7 @@ use Google\Cloud\Storage\StorageClient;
                             <p>BUSSES</p>
                         </a>
                     </li>
-
-                    <li class="nav-item ">
+                    <li class="nav-item   ">
                         <a class="nav-link" href="edit_bus.php">
                             <i class="material-icons">library_books</i>
                             <p>EDIT BUS ROUTES</p>
@@ -388,77 +387,25 @@ use Google\Cloud\Storage\StorageClient;
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header card-header-primary">
-                                    <h4 class="card-title">TRACK BUS</h4>
-                                    <p class="card-category">Fill Details</p>
+                                    <h4 class="card-title">User History</h4>
                                 </div>
-                                <?php
-                                $City = array();
-                                $config = [
-                                    'keyFilePath' => 'chale chalo-cf56f051c62b.json',
-                                    'projectId' => 'chale-chalo',
-                                ];
-                                // Create the Cloud Firestore client
-                                $db = new FirestoreClient($config);
-
-                                $CityRef = $db->collection('City')->document('City');
-                                $snapshot = $CityRef->snapshot();
-                                if ($snapshot->exists()) {
-                                    $c = $snapshot->get('AllCity');
-                                }
-                                foreach ($c as $C) {
-                                    array_push($City, $C);
-                                }
-
-                                ?>
-                                <form autocomplete="off" method="post">
-                                    <div class="col-md-3">
-                                        <select id="City" class="form-control" name="city">
-                                            <option>Choose City</option>
-                                            <?php foreach ($City as $d) {
-                                            ?>
-                                                <option><?php echo $d; ?></option>
-                                            <?php }
-                                            ?>
-
-                                        </select>
-                                        <button type="submit" class="btn btn-primary" name="post">Submit</button>
-                                    </div>
-                                </form>
-
+                                
+                                    
 
                                 <div class="card-body">
-                                    <form action="track.php" method="post">
+                                    <form action="user_history2.php" method="post">
                                         <div class="row">
-                                            <div class="col-md-3">
+                                           
                                                 <?php
 
                                                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                                                    $b = array();
-                                                    $city = $_POST['city'];
-                                                    $c = $city . "Bus";
-                                                    $_SESSION['city'] = $city;
-                                                    $config = [
-                                                        'keyFilePath' => 'chale chalo-cf56f051c62b.json',
-                                                        'projectId' => 'chale-chalo',
-                                                    ];       // Create the Cloud Firestore client
-                                                    $db = new FirestoreClient($config);
-                                                    $BusRef = $db->collection($c)->documents();
-                                                    foreach ($BusRef as $S) {
-                                                        array_push($b, $S->id());
-                                                    }
+                                                   
                                                 }
                                                 ?>
-                                                <select class="form-control" name="bus_no">
-                                                    <option>Bus No.</option>
-                                                    <option>None</option>
-                                                    <?php foreach ($b as $d) {
-                                                    ?>
-                                                        <option><?php echo $d; ?></option>
-                                                    <?php } ?>
-                                                </select>
+                                                <input name="ph_no" id="pac-input" class="controls" type="text" placeholder="Enter a Phone No." />
 
-                                            </div>
-                                            <button type="submit" class="btn btn-primary pull-right" name="post">Track Bus</button>
+                                            
+                                            <button type="submit" class="btn btn-primary pull-right" name="post">Search</button>
                                             <div class="clearfix"></div>
                                         </div>
                                     </form>

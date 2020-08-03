@@ -67,7 +67,7 @@ db.collection("<?php echo $c;?>").doc("<?php echo $bus_no;?>")
       var marker = new google.maps.Marker({
         position: bus_pos,
         map: map,
-        title: 'Hello World!'
+       
       });
       content = "<?php echo $bus_no;?>";
       var infowindow = new google.maps.InfoWindow({

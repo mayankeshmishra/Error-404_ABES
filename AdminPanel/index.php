@@ -27,15 +27,15 @@
     <!-- Font Awesome-->
     <script src="https://kit.fontawesome.com/ead53a4722.js" crossorigin="anonymous"></script>
 
-    <title>Bus Stop</title>
-    <link rel="shortcut icon" href="img/LOGO.jfif" type="image/x-icon" />
+    <title>Lokrath</title>
+    <link rel="shortcut icon" href="img/icon.png" type="image/x-icon" />
 </head>
 
 <body>
     <header id="header">
         <div class="container main-menu">
             <div class="row align-items-center justify-content-between d-flex">
-                <a href="index.html"><img src="img/logo-navbar.jfif" style="height:40px;"></a>
+                <a href="index.html"><img src="img/icon.png" style="height:40px;"></a>
                 <nav id="nav-menu-container">
                     <ul class="nav-menu">
                         <li class="menu-active"><a href="index.php">Home</a></li>

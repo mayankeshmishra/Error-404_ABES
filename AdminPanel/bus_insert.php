@@ -23,10 +23,10 @@ use Google\Cloud\Firestore\FirestoreClient;
 
 <head>
   <meta charset="utf-8" />
-  <link rel="shortcut icon" href="img/LOGO.jfif" type="image/x-icon" />
+  <link rel="shortcut icon" href="img/icon.png" type="image/x-icon" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
-    Admin Bus Stop
+    Admin Lokrath
   </title>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
   <!--     Fonts and icons     -->
@@ -226,7 +226,7 @@ use Google\Cloud\Firestore\FirestoreClient;
 
       <div class="logo">
         <a href="index.jsp" class="simple-text logo-normal">
-          Bus Stop
+          <i class="material-icons">directions_bus</i> Lokrath
         </a>
       </div>
       <div class="sidebar-wrapper">
@@ -252,6 +252,12 @@ use Google\Cloud\Firestore\FirestoreClient;
             </a>
           </li>
           <li class="nav-item ">
+            <a class="nav-link" href="user_history.php">
+              <i class="material-icons">view_list</i>
+              <p>USER HISTORY</p>
+            </a>
+          </li>
+          <li class="nav-item ">
             <a class="nav-link" href="bus_stop.php">
               <i class="material-icons">dashboard</i>
               <p>ADD STOP</p>
@@ -273,6 +279,12 @@ use Google\Cloud\Firestore\FirestoreClient;
             <a class="nav-link" href="buses.php">
               <i class="material-icons">content_paste</i>
               <p>BUSSES</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="bus_travel_history.php">
+              <i class="material-icons">view_list</i>
+              <p>BUSSES TRAVEL HISTORY</p>
             </a>
           </li>
           <li class="nav-item   ">

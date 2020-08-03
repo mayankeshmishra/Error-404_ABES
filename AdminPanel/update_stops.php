@@ -1,18 +1,3 @@
-<!--
-=========================================================
- Material Dashboard - v2.1.1
-=========================================================
-
- Product Page: https://www.creative-tim.com/product/material-dashboard
- Copyright 2019 Creative Tim (https://www.creative-tim.com)
- Licensed under MIT (https://github.com/creativetimofficial/material-dashboard/blob/master/LICENSE.md)
-
- Coded by Creative Tim
-
-=========================================================
-
- The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. -->
-
 <?php
 session_start();
 
@@ -41,7 +26,7 @@ use Google\Cloud\Storage\StorageClient;
   <link rel="shortcut icon" href="img/LOGO.jfif" type="image/x-icon" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
-    Admin Bus Stop
+    Admin Lokrath
   </title>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
   <!--     Fonts and icons     -->
@@ -237,6 +222,12 @@ use Google\Cloud\Storage\StorageClient;
             </a>
           </li>
           <li class="nav-item ">
+            <a class="nav-link" href="user_history.php">
+              <i class="material-icons">view_list</i>
+              <p>USER HISTORY</p>
+            </a>
+          </li>
+          <li class="nav-item ">
             <a class="nav-link" href="bus_stop.php">
               <i class="material-icons">dashboard</i>
               <p>ADD STOP</p>
@@ -252,6 +243,12 @@ use Google\Cloud\Storage\StorageClient;
             <a class="nav-link" href="bus_insert.php">
               <i class="material-icons">directions_bus</i>
               <p>ADD BUS</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="bus_travel_history.php">
+              <i class="material-icons">view_list</i>
+              <p>BUSSES TRAVEL HISTORY</p>
             </a>
           </li>
           <li class="nav-item">
