@@ -24,17 +24,17 @@ dependencies:
   cupertino_icons: ^0.1.2
   qr_code_scanner: ^0.0.13
   filter_list: ^0.0.4
-  http: ^0.12.1
+  http: ">=0.12.1 <0.14.0"
   flutter_spinkit: ^4.1.2+1
-  firebase_auth:
+  firebase_auth: any
   url_launcher: ^5.5.0
   firebase_storage: ^3.1.5
   shared_preferences: ^0.5.7+1
   font_awesome_flutter: ^8.8.1
-  cloud_firestore:
+  cloud_firestore: any
   otp_text_field: ^1.0.1
   flutter_typeahead: ^1.8.5
-  location: ^3.0.2
+  location: ">=3.0.2 <5.0.0"
   geolocator: ^5.3.2+2
   latlong: ^0.6.1
   carousel_slider: ^2.2.1
